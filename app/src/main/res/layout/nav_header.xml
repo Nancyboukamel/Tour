@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/navigation_header"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+      <TextView
+          android:id="@+id/username"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/margin_10"
+          android:layout_marginBottom="@dimen/margin_10"
+          android:text="Nancy Bou Kamel"
+          android:layout_above="@+id/email"
+          android:textColor="@color/colorAccent"
+          android:textSize="@dimen/text_size_15"/>
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_alignParentBottom="true"
+            android:text="nancyboukamel12@gmail.com"/>
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+</RelativeLayout>

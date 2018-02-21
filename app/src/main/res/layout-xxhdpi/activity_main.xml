@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/seoul"
+    tools:context="benkoreatech.me.tour.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/tour_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:background="@drawable/login">
+
+       <TextView
+            android:id="@+id/login_sticker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/login"
+            android:textSize="@dimen/text_size_20"
+            android:layout_marginTop="@dimen/margin_16"
+            android:textStyle="bold|italic"
+            android:textColor="@color/pink"/>
+
+        <RelativeLayout
+            android:id="@+id/username_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittextshape"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_50"
+            android:layout_below="@+id/login_sticker">
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Email"
+            android:textSize="@dimen/text_size_10"
+            android:padding="5dp"
+            android:background="@android:color/transparent"
+            android:textColorHint="@color/pink"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittextshape"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_30"
+            android:layout_below="@+id/username_input"
+            android:padding="5dp"
+            android:layout_marginBottom="@dimen/margin_50">
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Password"
+            android:background="@android:color/transparent"
+            android:textSize="@dimen/text_size_10"
+            android:inputType="textPassword"
+            android:textColorHint="@color/pink"/>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/tick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:layout_below="@+id/tour_app"
+        android:layout_marginTop="-30dp"
+        android:layout_centerHorizontal="true">
+        
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:src="@drawable/check"
+            />
+    </RelativeLayout>
+
+
+
+
+
+    <TextView
+        android:id="@+id/signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:textStyle="bold|italic"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:textColor="@color/colorAccent"
+        android:text="@string/not_member"/>
+
+
+</RelativeLayout>
