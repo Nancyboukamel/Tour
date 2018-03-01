@@ -16,7 +16,7 @@
     <string name="drawer_close">Close</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
-    
+
     <string name="enter_username">Please enter your username</string>
     <string name="enter_password">Please enter your password</string>
     <string name="enter_email">Please enter your email</string>
@@ -27,4 +27,6 @@
     <string name="big_category">Big Category</string>
     <string name="medium_category">Medium Category</string>
     <string name="small_category">Small Category</string>
+    <string name="title_activity_place_info">PlaceInfo</string>
+    <string name="additional_info">Additional Information:</string>
 </resources>

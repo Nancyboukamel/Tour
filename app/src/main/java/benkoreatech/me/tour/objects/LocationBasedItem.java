@@ -37,6 +37,14 @@ public class LocationBasedItem implements Serializable {
 
     private String mapy;
 
+    private String firstimage;
+
+    private String firstimage1;
+
+    private String mlevel;
+
+
+
     public String getContentid ()
     {
         return contentid;
@@ -202,14 +210,58 @@ public class LocationBasedItem implements Serializable {
         return mapy;
     }
 
+    public String getFirstimage() {
+        return firstimage;
+    }
+
+    public void setFirstimage(String firstimage) {
+        this.firstimage = firstimage;
+    }
+
+    public String getFirstimage1() {
+        return firstimage1;
+    }
+
+    public void setFirstimage1(String firstimage1) {
+        this.firstimage1 = firstimage1;
+    }
+
     public void setMapy (String mapy)
     {
         this.mapy = mapy;
     }
 
+    public String getMlevel() {
+        return mlevel;
+    }
+
+    public void setMlevel(String mlevel) {
+        this.mlevel = mlevel;
+    }
+
     @Override
-    public String toString()
-    {
-        return "[contentid = "+contentid+", tel = "+tel+", sigungucode = "+sigungucode+", areacode = "+areacode+", contenttypeid = "+contenttypeid+", masterid = "+masterid+", title = "+title+", cat1 = "+cat1+", addr1 = "+addr1+", cat3 = "+cat3+", cat2 = "+cat2+", createdtime = "+createdtime+", modifiedtime = "+modifiedtime+", readcount = "+readcount+", mapx = "+mapx+", dist = "+dist+", mapy = "+mapy+"]";
+    public String toString() {
+        return "LocationBasedItem{" +
+                "contentid='" + contentid + '\'' +
+                ", tel='" + tel + '\'' +
+                ", sigungucode='" + sigungucode + '\'' +
+                ", areacode='" + areacode + '\'' +
+                ", contenttypeid='" + contenttypeid + '\'' +
+                ", masterid='" + masterid + '\'' +
+                ", title='" + title + '\'' +
+                ", cat1='" + cat1 + '\'' +
+                ", addr1='" + addr1 + '\'' +
+                ", cat3='" + cat3 + '\'' +
+                ", cat2='" + cat2 + '\'' +
+                ", createdtime='" + createdtime + '\'' +
+                ", modifiedtime='" + modifiedtime + '\'' +
+                ", readcount='" + readcount + '\'' +
+                ", mapx='" + mapx + '\'' +
+                ", dist='" + dist + '\'' +
+                ", mapy='" + mapy + '\'' +
+                ", firstimage='" + firstimage + '\'' +
+                ", firstimage1='" + firstimage1 + '\'' +
+                ", mlevel='" + mlevel + '\'' +
+                '}';
     }
 }

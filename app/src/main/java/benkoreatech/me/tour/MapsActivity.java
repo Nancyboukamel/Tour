@@ -1,5 +1,7 @@
 package benkoreatech.me.tour;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
@@ -24,6 +26,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,12 +35,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import benkoreatech.me.tour.adapter.CityExpandableListView;
+import benkoreatech.me.tour.adapter.CustomInfoWindowAdapter;
 import benkoreatech.me.tour.adapter.ViewPagerAdapter;
 import benkoreatech.me.tour.fragment.ContentType;
 import benkoreatech.me.tour.interfaces.TourSettings;
 import benkoreatech.me.tour.interfaces.categoryInterface;
 import benkoreatech.me.tour.objects.Constants;
+import benkoreatech.me.tour.objects.InfoWindowData;
 import benkoreatech.me.tour.objects.Item;
+import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.StayItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.categoryItem;
@@ -46,7 +53,7 @@ import benkoreatech.me.tour.utils.VolleyApi;
 import benkoreatech.me.tour.utils.areaBasedListVolley;
 import benkoreatech.me.tour.utils.categortContentParse;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,TourSettings,TabLayout.OnTabSelectedListener,categoryInterface {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,TourSettings,TabLayout.OnTabSelectedListener,categoryInterface{
 
     private GoogleMap mMap;
     VolleyApi volleyApi;
@@ -64,6 +71,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     ViewPager viewPager;
     SlidingLayer slidingLayer2;
     SlidingLayer rightMenu;
+    Marker clickedMarker;
     categortContentParse categortContentParse;
     areaBasedListVolley areaBasedListVolley;
     private int[] tabIcons = {
@@ -190,8 +198,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+            @Override
+            public void onInfoWindowLongClick(Marker marker) {
+                InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
+                if(infoWindowData!=null && infoWindowData.getLocationBasedData()!=null) {
+                    final String data = infoWindowData.getLocationBasedData();
+                    Intent intent=new Intent(MapsActivity.this,PlaceInfo.class);
+                    intent.putExtra("data",data);
+                    startActivity(intent);
+                }
+
+            }
+        });
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                clickedMarker=marker;
+                Log.d("HeroJongi","on marker clicked "+marker.getPosition().latitude+"  "+marker.getPosition().longitude+"  ");
+                // make api call by giving long and lat + radius =0
+                // http://api.visitkorea.or.kr/openapi/service/rest/EngService/locationBasedList?serviceKey=9opMOuXLGj2h16CybYD9T5qTds4376qAZO4VG9qNuHKrm1d%2FfCPfUoBPDOkfQiZKB%2BidiHynuWwbnVUHgrinJw%3D%3D&numOfRows=1&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&mapX=129.2164088961&mapY=35.8420930618&radius=0
+                String aSpecificPlace= Constants.base_url+Constants.locationBasedList+"?serviceKey="+Constants.server_key+"&numOfRows=1&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&mapX="+marker.getPosition().longitude+"&mapY="+marker.getPosition().latitude+"&radius=0"+Constants.json;
+                Log.d("HeroJongi"," URL IS "+aSpecificPlace);
+                areaBasedListVolley.fetchData(aSpecificPlace,0,1);
+                return true;
+            }
+        });
 
     }
+
 
 
 
@@ -440,6 +475,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void PlotPins(categoryItem BigItem, categoryItem MediumItem, categoryItem SmallItem, int code) {
+        Log.d("HeroJongi"," HERE ");
         String areaCode = "", SigunguCode = "";
         if (locationPreference != null) {
             areaCode = locationPreference.getAreaCode();
@@ -465,12 +501,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 areabasedList += "&cat3=" + cat3;
             }
             areabasedList += Constants.json;
-            areaBasedListVolley.fetchData(areabasedList, code);
+            Log.d("HeroJongi","URL "+areabasedList);
+            areaBasedListVolley.fetchData(areabasedList, code,0);
         }
     }
 
     @Override
     public void setPins(List<areaBasedItem> areaBasedItems, int code) {
+        Log.d("HeroJongi"," array size "+areaBasedItems.size());
         if(mMap!=null && areaBasedItems.size()>0){
             mMap.clear();
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -506,4 +544,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 200));
         }
     }
+
+    @Override
+    public void setPinInfo(List<LocationBasedItem> locationBasedItems) {
+        if(locationBasedItems.size()>0 && mMap!=null && clickedMarker!=null){
+            Log.d("HeroJongi"," on Fetch Info completed "+locationBasedItems.size()+"  "+locationBasedItems.get(0).toString());
+            CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(MapsActivity.this,MapsActivity.this);
+            mMap.setInfoWindowAdapter(adapter);
+            InfoWindowData info = new InfoWindowData();
+            Gson gson=new Gson();
+            String data=gson.toJson(locationBasedItems.get(0));
+            info.setLocationBasedData(data);
+            clickedMarker.setTag(info);
+            clickedMarker.showInfoWindow();
+        }
+    }
+
+
 }

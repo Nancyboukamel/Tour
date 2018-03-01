@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class detailCommonBody implements Serializable {
     private String totalCount;
 
-    private Items items;
+    private detailCommonItem items;
 
     private String pageNo;
 
@@ -23,13 +23,11 @@ public class detailCommonBody implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public Items getItems ()
-    {
+    public detailCommonItem getItems() {
         return items;
     }
 
-    public void setItems (Items items)
-    {
+    public void setItems(detailCommonItem items) {
         this.items = items;
     }
 

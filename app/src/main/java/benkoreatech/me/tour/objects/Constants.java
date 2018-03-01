@@ -10,6 +10,7 @@ public class Constants {
     public static final String searchStay="searchStay";
     public static final String categoryCode="categoryCode";
     public static final String areaBasedList="areaBasedList";
+    public static final String locationBasedList="locationBasedList";
     public static final String contentTypeId="contentTypeId";
     public static final String register="http://samy.trustworthy.co.kr/register.php";
     public static final String login="http://samy.trustworthy.co.kr/login.php";
