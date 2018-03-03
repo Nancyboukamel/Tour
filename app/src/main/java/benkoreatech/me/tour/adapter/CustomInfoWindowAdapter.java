@@ -37,7 +37,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     private Activity activity;
     Context context;
-    ImageView imageView;
     TextView place_name;
 
     public CustomInfoWindowAdapter(Activity activity,Context context){
@@ -53,7 +52,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     @Override
     public View getInfoContents(Marker marker) {
         View view = activity.getLayoutInflater().inflate(R.layout.windowinfo, null);
-         imageView=(ImageView) view.findViewById(R.id.place_picture);
          place_name=(TextView) view.findViewById(R.id.place_name);
         InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
         if(infoWindowData!=null && infoWindowData.getLocationBasedData()!=null) {
@@ -61,11 +59,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             Gson gson = new Gson();
             if(data!=null && !data.equalsIgnoreCase("") && context!=null) {
                 LocationBasedItem locationBasedItem = gson.fromJson(data, LocationBasedItem.class);
-                Log.d("HeroJongi","Picture is "+locationBasedItem.getFirstimage());
-                String picture = locationBasedItem.getFirstimage();
-//                if(picture!=null && !picture.equalsIgnoreCase("")) {
-//                    Picasso.with(context).load(picture).onlyScaleDown().centerCrop().into(imageView, new MarkerCallback(marker));
-//                }
                 place_name.setText(locationBasedItem.getTitle());
 
 

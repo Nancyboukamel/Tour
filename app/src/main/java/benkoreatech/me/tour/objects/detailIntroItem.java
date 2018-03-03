@@ -81,6 +81,7 @@ public class detailIntroItem implements Serializable {
     private String usetimefestival;
 
     //75
+    private String expagerangeleports;
 
     private String accomcountleports;
 
@@ -969,6 +970,14 @@ public class detailIntroItem implements Serializable {
         this.shipinfo = shipinfo;
     }
 
+    public String getExpagerangeleports() {
+        return expagerangeleports;
+    }
+
+    public void setExpagerangeleports(String expagerangeleports) {
+        this.expagerangeleports = expagerangeleports;
+    }
+
     @Override
     public String toString() {
         return "detailIntroItem{" +
@@ -1008,6 +1017,7 @@ public class detailIntroItem implements Serializable {
                 ", sponsor2tel='" + sponsor2tel + '\'' +
                 ", subevent='" + subevent + '\'' +
                 ", usetimefestival='" + usetimefestival + '\'' +
+                ", expagerangeleports='" + expagerangeleports + '\'' +
                 ", accomcountleports='" + accomcountleports + '\'' +
                 ", accomcountle='" + accomcountle + '\'' +
                 ", infocenterleports='" + infocenterleports + '\'' +

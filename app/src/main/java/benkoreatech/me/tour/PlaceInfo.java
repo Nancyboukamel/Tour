@@ -29,26 +29,56 @@ ImageView place_image;
 Toolbar toolbar;
 TextView overview,title,direction,telephone,website,information_center,open_date,close_date,park_facility,available_season,available_time,experience_type,experience_age,accomcount;
 TextView used_time_culture,closed_date_culture,parking_facility,parking_fee,usefee,spendtime,scale,admitted_person,info_center;
-TextView open_period,closed_period,sport_parking_facility,sport_parking_fee,available_time_sport,reservation_guide,attend_person,admission_fee,scale_sport,sport_experience_age,sport_persons,sport_info_center;
+TextView open_period,closed_period,sport_parking_facility,sport_parking_fee,available_time_sport,reservation_guide,admission_fee,scale_sport,sport_experience_age,sport_persons,sport_info_center;
+TextView accomendation_capacity,benikia,checkin_time,checkout_time,check_cooking,foodplace,goodstay,hanok,infocenterlodging;
+TextView parkinglodging,pickup,roomcount,reservationlodging,reservartion_url,roomtype,scale_lodging,sub_facility;
+TextView fairday,infocentershopping,opendateshopping,opentime,parkingshopping,restdateshopping,restroom,saleitem,salesshopping,shopguide;
 detailCommonVolley detailCommonVolley;
 detailIntroVolley detailIntroVolley;
 detailCommonItem detailCommonItem;
-RelativeLayout tourist,culture,sports;
+RelativeLayout tourist,culture,sports,stay,shopping;
 LocationBasedItem locationBasedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_info);
+        fairday=(TextView) findViewById(R.id.fairday);
+        infocentershopping=(TextView) findViewById(R.id.infocentershopping);
+        opendateshopping=(TextView) findViewById(R.id.opendateshopping);
+        opentime=(TextView) findViewById(R.id.opentime);
+        parkingshopping=(TextView)findViewById(R.id.parkingshopping);
+        restdateshopping=(TextView) findViewById(R.id.restdateshopping);
+        restroom=(TextView) findViewById(R.id.restroom);
+        saleitem=(TextView) findViewById(R.id.scaleitem);
+        salesshopping=(TextView) findViewById(R.id.saleshopping);
+        shopguide=(TextView) findViewById(R.id.shopguide);
         open_period=(TextView) findViewById(R.id.open_period);
         closed_period=(TextView) findViewById(R.id.closed_period);
+        shopping=(RelativeLayout) findViewById(R.id.shopping);
         sport_parking_facility=(TextView) findViewById(R.id.sport_parking_facility);
         sport_parking_fee=(TextView) findViewById(R.id.sport_parking_fee);
         available_time_sport=(TextView) findViewById(R.id.available_time_sport);
         reservation_guide=(TextView) findViewById(R.id.reservation_guide);
-        attend_person=(TextView) findViewById(R.id.attend_person);
         admission_fee=(TextView) findViewById(R.id.admission_fee);
         scale_sport=(TextView) findViewById(R.id.scale_sport);
+        foodplace=(TextView) findViewById(R.id.foodplace);
+        roomtype=(TextView) findViewById(R.id.roomtype);
+        scale_lodging=(TextView) findViewById(R.id.scalelodging);
+        sub_facility=(TextView) findViewById(R.id.subfacility);
+        goodstay=(TextView) findViewById(R.id.goodstay);
+        hanok=(TextView) findViewById(R.id.hanok);
+        reservartion_url=(TextView) findViewById(R.id.reservationurl);
+        parkinglodging=(TextView) findViewById(R.id.parkinglodging);
+        pickup=(TextView) findViewById(R.id.pickup);
+        roomcount=(TextView) findViewById(R.id.roomcount);
+        reservationlodging=(TextView) findViewById(R.id.reservationlodging);
+        infocenterlodging=(TextView) findViewById(R.id.infocenterlodging);
+        accomendation_capacity=(TextView) findViewById(R.id.accomendation_capacity);
+        benikia=(TextView) findViewById(R.id.benikia);
+        checkin_time=(TextView) findViewById(R.id.checkintime);
+        checkout_time=(TextView) findViewById(R.id.checkouttime);
+        check_cooking=(TextView) findViewById(R.id.chkcooking);
         sport_experience_age=(TextView) findViewById(R.id.sport_experience_age);
         sport_persons=(TextView) findViewById(R.id.sport_persons);
         sport_info_center=(TextView) findViewById(R.id.sport_info_center);
@@ -80,6 +110,7 @@ LocationBasedItem locationBasedItem;
         info_center=(TextView) findViewById(R.id.info_center);
         culture=(RelativeLayout) findViewById(R.id.culture);
         sports=(RelativeLayout) findViewById(R.id.sports);
+        stay=(RelativeLayout) findViewById(R.id.stay);
         detailCommonVolley=new detailCommonVolley(this,this);
         detailIntroVolley=new detailIntroVolley(this,this);
         String data=getIntent().getStringExtra("data");
@@ -361,14 +392,6 @@ LocationBasedItem locationBasedItem;
                    else{
                        reservation_guide.setVisibility(View.GONE);
                    }
-                   if(detailIntroItem.getAccomcountleports()!=null && !detailIntroItem.getAccomcountleports().equalsIgnoreCase("")){
-                       String time="<b> Number of admitted persons: </b>"+detailIntroItem.getAccomcountleports();
-                       SpannableString text = new SpannableString(Html.fromHtml(time));
-                       attend_person.setText(text, TextView.BufferType.SPANNABLE);
-                   }
-                   else{
-                       attend_person.setVisibility(View.GONE);
-                   }
                    if(detailIntroItem.getUsefeeleports()!=null &&!detailIntroItem.getUsefeeleports().equalsIgnoreCase("")){
                        String time="<b> Admission fee: </b>"+detailIntroItem.getUsefeeleports();
                        SpannableString text = new SpannableString(Html.fromHtml(time));
@@ -385,7 +408,253 @@ LocationBasedItem locationBasedItem;
                    else{
                        scale_sport.setVisibility(View.GONE);
                    }
-                   // experience age ............
+                   // experience age ............ expagerangeleports
+                   if(detailIntroItem.getExpagerangeleports()!=null && !detailIntroItem.getExpagerangeleports().equalsIgnoreCase("")){
+                       String time="<b> Experience age: </b>"+detailIntroItem.getExpagerangeleports();
+                       SpannableString text = new SpannableString(Html.fromHtml(time));
+                       sport_experience_age.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       sport_experience_age.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getAccomcountleports()!=null && !detailIntroItem.getAccomcountleports().equalsIgnoreCase("")){
+                       String time="<b> Number of addmitted persons: </b>"+detailIntroItem.getAccomcountleports();
+                       SpannableString text = new SpannableString(Html.fromHtml(time));
+                       sport_persons.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       sport_persons.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getInfocenterleports()!=null && !detailIntroItem.getInfocenterleports().equalsIgnoreCase("")){
+                       String time="<b> Information center: </b>"+detailIntroItem.getInfocenterleports();
+                       SpannableString text = new SpannableString(Html.fromHtml(time));
+                       sport_info_center.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       sport_info_center.setVisibility(View.GONE);
+                   }
+                   break;
+               case 80:
+                   stay.setVisibility(View.VISIBLE);
+                   if(detailIntroItem.getAccomcountlodging()!=null && !detailIntroItem.getAccomcountlodging().equalsIgnoreCase("")){
+                       String time="<b> Accomendation capacity: </b>"+detailIntroItem.getAccomcountlodging();
+                       SpannableString text = new SpannableString(Html.fromHtml(time));
+                       accomendation_capacity.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       accomendation_capacity.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getBenikia()!=null && !detailIntroItem.getBenikia().equalsIgnoreCase("") && !detailIntroItem.getBenikia().equalsIgnoreCase("0")){
+                       String time="<b> Benikia: </b>"+detailIntroItem.getAccomcountlodging();
+                       SpannableString text = new SpannableString(Html.fromHtml(time));
+                       benikia.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       benikia.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getCheckintime()!=null && !detailIntroItem.getCheckintime().equalsIgnoreCase("")){
+                       String time="<b> Check in time: </b>"+detailIntroItem.getCheckintime();
+                       SpannableString text = new SpannableString(Html.fromHtml(time));
+                       checkin_time.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       checkin_time.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getCheckouttime()!=null && !detailIntroItem.getCheckouttime().equalsIgnoreCase("")){
+                       String time="<b> Check out time: </b>"+detailIntroItem.getCheckouttime();
+                       SpannableString text = new SpannableString(Html.fromHtml(time));
+                       checkout_time.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       checkout_time.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getChkcooking()!=null && !detailIntroItem.getChkcooking().equalsIgnoreCase("")){
+                       String checkcooking="<b> Cooking available check : </b>"+detailIntroItem.getChkcooking();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                      check_cooking.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       check_cooking.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getFoodplace()!=null && !detailIntroItem.getFoodplace().equalsIgnoreCase("")){
+                       String checkcooking="<b> Food place: </b>"+detailIntroItem.getFoodplace();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       foodplace.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else {
+                       foodplace.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getGoodstay()!=null && !detailIntroItem.getGoodstay().equalsIgnoreCase("") && !detailIntroItem.getGoodstay().equalsIgnoreCase("0")){
+                       String checkcooking="<b> Good stay: </b>"+detailIntroItem.getGoodstay();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       goodstay.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       goodstay.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getHanok()!=null && !detailIntroItem.getHanok().equalsIgnoreCase("") && !detailIntroItem.getHanok().equalsIgnoreCase("0")){
+                       String checkcooking="<b> Hanok: </b>"+detailIntroItem.getHanok();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       hanok.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else {
+                       hanok.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getInfocenterlodging()!=null && !detailIntroItem.getInfocenterlodging().equalsIgnoreCase("")){
+                       String checkcooking="<b> Information center: </b>"+detailIntroItem.getInfocenterlodging();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       infocenterlodging.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       infocenterlodging.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getParkinglodging()!=null && !detailIntroItem.getParkinglodging().equalsIgnoreCase("")){
+                       String checkcooking="<b> Parking facility: </b>"+detailIntroItem.getParkinglodging();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       parkinglodging.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       parkinglodging.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getPickup()!=null && !detailIntroItem.getPickup().equalsIgnoreCase("")){
+                       String checkcooking="<b> Pickup service: </b>"+detailIntroItem.getPickup();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       pickup.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       pickup.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getRoomcount()!=null && !detailIntroItem.getRoomcount().equalsIgnoreCase("")){
+                       String checkcooking="<b> Number of guest room: </b>"+detailIntroItem.getRoomcount();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                      roomcount.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       roomcount.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getReservationlodging()!=null && !detailIntroItem.getReservationlodging().equalsIgnoreCase("")){
+                       String checkcooking="<b> Reservation guide: </b>"+detailIntroItem.getReservationlodging();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       reservationlodging.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       reservationlodging.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getReservationurl()!=null && !detailIntroItem.getReservationurl().equalsIgnoreCase("")){
+                       String checkcooking="<b> Reservartion guide homepage: </b>"+detailIntroItem.getReservationurl();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       reservartion_url.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                      reservartion_url.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getRoomtype()!=null && !detailIntroItem.getRoomtype().equalsIgnoreCase("")){
+                       String checkcooking="<b> Guest room type: </b>"+detailIntroItem.getRoomtype();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       roomtype.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       roomtype.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getScale()!=null && !detailIntroItem.getScale().equalsIgnoreCase("")){
+                       String checkcooking="<b> Scale: </b>"+detailIntroItem.getScale();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       scale.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       scale.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getSubfacility()!=null && !detailIntroItem.getSubfacility().equalsIgnoreCase("")){
+                       String checkcooking="<b> Sub facility: </b>"+detailIntroItem.getSubfacility();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       sub_facility.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       sub_facility.setVisibility(View.GONE);
+                   }
+                   break;
+               case 79:
+                   shopping.setVisibility(View.VISIBLE);
+                   if(detailIntroItem.getFairday()!=null && !detailIntroItem.getFairday().equalsIgnoreCase("")){
+                       String checkcooking="<b> Fair day: </b>"+detailIntroItem.getFairday();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       fairday.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       fairday.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getInfocentershopping()!=null && !detailIntroItem.getInfocentershopping().equalsIgnoreCase("")){
+                       String checkcooking="<b> Information center: </b>"+detailIntroItem.getInfocentershopping();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       infocentershopping.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       infocentershopping.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getOpendateshopping()!=null && !detailIntroItem.getOpendateshopping().equalsIgnoreCase("")){
+                       String checkcooking="<b> Opening day: </b>"+detailIntroItem.getOpendateshopping();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       opendateshopping.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       opendateshopping.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getOpentime()!=null && !detailIntroItem.getOpentime().equalsIgnoreCase("")){
+                       String checkcooking="<b> Business hour: </b>"+detailIntroItem.getOpentime();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       opentime.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       opentime.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getParkingshopping()!=null && !detailIntroItem.getParkingshopping().equalsIgnoreCase("")){
+                       String checkcooking="<b> Parking facility: </b>"+detailIntroItem.getParkingshopping();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       parkingshopping.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       parkingshopping.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getRestdateshopping()!=null && detailIntroItem.getRestdateshopping().equalsIgnoreCase("")){
+                       String checkcooking="<b> Closed day: </b>"+detailIntroItem.getRestdateshopping();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       restdateshopping.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       restdateshopping.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getRestroom()!=null && !detailIntroItem.getRestroom().equalsIgnoreCase("")){
+                       String checkcooking="<b> Rest room information: </b>"+detailIntroItem.getRestroom();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       restroom.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       restroom.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getSaleitem()!=null && !detailIntroItem.getSaleitem().equalsIgnoreCase("")){
+                       String checkcooking="<b> Sale Item: </b>"+detailIntroItem.getRestroom();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       saleitem.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       saleitem.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getScaleshopping()!=null && !detailIntroItem.getScaleshopping().equalsIgnoreCase("")){
+                       String checkcooking="<b> Scale: </b>"+detailIntroItem.getScaleshopping();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       salesshopping.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       salesshopping.setVisibility(View.GONE);
+                   }
+                   if(detailIntroItem.getShopguide()!=null && !detailIntroItem.getShopguide().equalsIgnoreCase("")){
+                       String checkcooking="<b> Store guidance: </b>"+detailIntroItem.getShopguide();
+                       SpannableString text = new SpannableString(Html.fromHtml(checkcooking));
+                       shopguide.setText(text, TextView.BufferType.SPANNABLE);
+                   }
+                   else{
+                       shopguide.setVisibility(View.GONE);
+                   }
                    break;
            }
 

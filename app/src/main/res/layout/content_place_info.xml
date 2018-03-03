@@ -343,14 +343,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_15"
-                    android:layout_margin="@dimen/margin_8"
-                    />
-                <TextView
-                    android:id="@+id/attend_person"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_15"
-                    android:layout_below="@+id/closed_period"
+                    android:layout_below="@+id/available_time_sport"
                     android:layout_margin="@dimen/margin_8"
                     />
                 <TextView
@@ -359,7 +352,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_15"
                     android:layout_margin="@dimen/margin_8"
-                    android:layout_below="@+id/attend_person"
+                    android:layout_below="@+id/reservation_guide"
                     />
                 <TextView
                     android:id="@+id/scale_sport"
@@ -395,10 +388,240 @@
                     />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/stay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/accomendation_capacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_margin="@dimen/margin_8"
+                    />
+                <TextView
+                    android:id="@+id/benikia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/accomendation_capacity"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/checkintime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/benikia"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/checkouttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/checkintime"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/chkcooking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/checkouttime"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/foodplace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/chkcooking"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/goodstay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/foodplace"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/hanok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/goodstay"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/infocenterlodging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/hanok"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/parkinglodging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/infocenterlodging"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/pickup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/parkinglodging"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/roomcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/pickup"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/reservationlodging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/roomcount"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/reservationurl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/reservationlodging"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/roomtype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/reservationurl"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/scalelodging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/roomtype"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/subfacility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/scalelodging"
+                    android:layout_margin="@dimen/margin_8" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/shopping"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/fairday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/infocentershopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/fairday"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/opendateshopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/infocentershopping"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/opentime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/opendateshopping"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/parkingshopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/opentime"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/restdateshopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/parkingshopping"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/restroom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/restdateshopping"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/scaleitem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/restroom"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/saleshopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/scaleitem"
+                    android:layout_margin="@dimen/margin_8" />
+
+                <TextView
+                    android:id="@+id/shopguide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_below="@+id/saleshopping"
+                    android:layout_margin="@dimen/margin_8" />
+
+            </RelativeLayout>
+
         </android.support.v7.widget.CardView>
 
 
     </RelativeLayout>
+
 
 
 </android.support.v4.widget.NestedScrollView>
