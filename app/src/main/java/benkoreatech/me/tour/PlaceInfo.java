@@ -15,17 +15,23 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import benkoreatech.me.tour.interfaces.placeInfoInterface;
 import benkoreatech.me.tour.objects.Constants;
 import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.detailCommonItem;
+import benkoreatech.me.tour.objects.detailImageItem;
 import benkoreatech.me.tour.objects.detailIntroItem;
 import benkoreatech.me.tour.utils.detailCommonVolley;
+import benkoreatech.me.tour.utils.detailImageVolley;
 import benkoreatech.me.tour.utils.detailIntroVolley;
 
 public class PlaceInfo extends AppCompatActivity implements placeInfoInterface {
-ImageView place_image;
 Toolbar toolbar;
 TextView overview,title,direction,telephone,website,information_center,open_date,close_date,park_facility,available_season,available_time,experience_type,experience_age,accomcount;
 TextView used_time_culture,closed_date_culture,parking_facility,parking_fee,usefee,spendtime,scale,admitted_person,info_center;
@@ -35,14 +41,18 @@ TextView parkinglodging,pickup,roomcount,reservationlodging,reservartion_url,roo
 TextView fairday,infocentershopping,opendateshopping,opentime,parkingshopping,restdateshopping,restroom,saleitem,salesshopping,shopguide;
 detailCommonVolley detailCommonVolley;
 detailIntroVolley detailIntroVolley;
+detailImageVolley detailImageVolley;
 detailCommonItem detailCommonItem;
 RelativeLayout tourist,culture,sports,stay,shopping;
 LocationBasedItem locationBasedItem;
+CarouselView carouselView;
+List<detailImageItem> detailImageItems=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_info);
+        carouselView=(CarouselView) findViewById(R.id.carouselView);
         fairday=(TextView) findViewById(R.id.fairday);
         infocentershopping=(TextView) findViewById(R.id.infocentershopping);
         opendateshopping=(TextView) findViewById(R.id.opendateshopping);
@@ -82,7 +92,6 @@ LocationBasedItem locationBasedItem;
         sport_experience_age=(TextView) findViewById(R.id.sport_experience_age);
         sport_persons=(TextView) findViewById(R.id.sport_persons);
         sport_info_center=(TextView) findViewById(R.id.sport_info_center);
-        place_image=(ImageView) findViewById(R.id.backdrop);
         toolbar=(Toolbar) findViewById(R.id.toolbar);
         overview=(TextView) findViewById(R.id.overview);
         title=(TextView) findViewById(R.id.title);
@@ -113,14 +122,13 @@ LocationBasedItem locationBasedItem;
         stay=(RelativeLayout) findViewById(R.id.stay);
         detailCommonVolley=new detailCommonVolley(this,this);
         detailIntroVolley=new detailIntroVolley(this,this);
+        detailImageVolley=new detailImageVolley(this,this);
         String data=getIntent().getStringExtra("data");
+        carouselView.setImageListener(imageListener);
         if(data!=null){
             Gson gson=new Gson();
             locationBasedItem=gson.fromJson(data,LocationBasedItem.class);
             Log.d("HeroJongi","Picture is "+locationBasedItem.getFirstimage());
-            if(locationBasedItem.getFirstimage()!=null && !locationBasedItem.getFirstimage().equalsIgnoreCase("")){
-                Picasso.with(this).load(locationBasedItem.getFirstimage()).resize(350, 300).onlyScaleDown().centerCrop().into(place_image);
-            }
             if(locationBasedItem.getTitle()!=null && !locationBasedItem.getTitle().equalsIgnoreCase("")){
                 toolbar.setTitle(locationBasedItem.getTitle());
             }
@@ -133,6 +141,8 @@ LocationBasedItem locationBasedItem;
             String detailIntroURL="http://api.visitkorea.or.kr/openapi/service/rest/EngService/detailIntro?serviceKey=9opMOuXLGj2h16CybYD9T5qTds4376qAZO4VG9qNuHKrm1d%2FfCPfUoBPDOkfQiZKB%2BidiHynuWwbnVUHgrinJw%3D%3D&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&contentId="+locationBasedItem.getContentid()+"&contentTypeId="+locationBasedItem.getContenttypeid()+"&introYN=Y"+Constants.json;
             Log.d("HeroJongi","DetailIntro URL "+detailIntroURL);
             detailIntroVolley.fetchData(detailIntroURL);
+            String imageUrls="http://api.visitkorea.or.kr/openapi/service/rest/EngService/detailImage?serviceKey=9opMOuXLGj2h16CybYD9T5qTds4376qAZO4VG9qNuHKrm1d%2FfCPfUoBPDOkfQiZKB%2BidiHynuWwbnVUHgrinJw%3D%3D&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&contentId="+locationBasedItem.getContentid()+"&imageYN=Y"+Constants.json;
+            detailImageVolley.fetchData(imageUrls);
         }
 
     }
@@ -660,6 +670,31 @@ LocationBasedItem locationBasedItem;
 
        }
     }
+
+    @Override
+    public void setImages(final List<detailImageItem>detailImageItems) {
+        Log.d("DetailImage"," Array size "+detailImageItems.size());
+        this.detailImageItems=detailImageItems;
+        carouselView.setPageCount(detailImageItems.size());
+
+    //    carouselView.setPageCount(detailImageItems.size());
+//        carouselView.setImageListener(new ImageListener() {
+//            @Override
+//            public void setImageForPosition(int position, ImageView imageView) {
+//                Log.d("DetailImage"," Image "+detailImageItems.get(position).getOriginimgurl());
+//               Picasso.with(PlaceInfo.this).load(detailImageItems.get(position).getOriginimgurl()).into(imageView);
+//            }
+//        });
+    }
+    ImageListener imageListener = new ImageListener() {
+        @Override
+        public void setImageForPosition(int position, ImageView imageView) {
+            Log.d("DetailImage","Here "+detailImageItems.get(position).getOriginimgurl());
+            Picasso.with(getApplicationContext()).load(detailImageItems.get(position).getSmallimageurl()).fit().centerCrop().into(imageView);
+
+            //imageView.setImageResource(sampleImages[position]);
+        }
+    };
 
 
     public String  getType(String value){

@@ -7,7 +7,7 @@ public class detailImageBody implements Serializable {
 
     private String totalCount;
 
-    private Items items;
+    private detailImageItems items;
 
     private String pageNo;
 
@@ -23,13 +23,11 @@ public class detailImageBody implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public Items getItems ()
-    {
+    public detailImageItems getItems() {
         return items;
     }
 
-    public void setItems (Items items)
-    {
+    public void setItems(detailImageItems items) {
         this.items = items;
     }
 
@@ -54,8 +52,12 @@ public class detailImageBody implements Serializable {
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [totalCount = "+totalCount+", items = "+items+", pageNo = "+pageNo+", numOfRows = "+numOfRows+"]";
+    public String toString() {
+        return "detailImageBody{" +
+                "totalCount='" + totalCount + '\'' +
+                ", items=" + items +
+                ", pageNo='" + pageNo + '\'' +
+                ", numOfRows='" + numOfRows + '\'' +
+                '}';
     }
 }

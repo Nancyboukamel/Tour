@@ -1,24 +1,25 @@
 package benkoreatech.me.tour.objects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class detailImageItems implements Serializable {
-    private detailIntroItem[] item;
+    private List<detailImageItem> detailImageItemList=new ArrayList<>();
 
-    public detailIntroItem[] getItem ()
-    {
-        return item;
+    public List<detailImageItem> getDetailImageItemList() {
+        return detailImageItemList;
     }
 
-    public void setItem (detailIntroItem[] item)
-    {
-        this.item = item;
+    public void setDetailImageItemList(List<detailImageItem> detailImageItemList) {
+        this.detailImageItemList = detailImageItemList;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [item = "+item+"]";
+    public String toString() {
+        return "{" +
+                "detailImageItemList=" + detailImageItemList +
+                '}';
     }
 }

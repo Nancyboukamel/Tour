@@ -52,8 +52,12 @@ public class detailImageItem implements Serializable {
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [originimgurl = "+originimgurl+", contentid = "+contentid+", serialnum = "+serialnum+", smallimageurl = "+smallimageurl+"]";
+    public String toString() {
+        return "detailImageItem{" +
+                "originimgurl='" + originimgurl + '\'' +
+                ", contentid='" + contentid + '\'' +
+                ", serialnum='" + serialnum + '\'' +
+                ", smallimageurl='" + smallimageurl + '\'' +
+                '}';
     }
 }
