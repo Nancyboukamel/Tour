@@ -37,6 +37,8 @@ public class areaBasedItem implements Serializable {
 
     private String mapy;
 
+    private String firstimage;
+
     public String getContentid ()
     {
         return contentid;
@@ -207,9 +209,35 @@ public class areaBasedItem implements Serializable {
         this.mapy = mapy;
     }
 
+    public String getFirstimage() {
+        return firstimage;
+    }
+
+    public void setFirstimage(String firstimage) {
+        this.firstimage = firstimage;
+    }
+
     @Override
-    public String toString()
-    {
-        return "[contentid = "+contentid+", zipcode = "+zipcode+", tel = "+tel+", sigungucode = "+sigungucode+", areacode = "+areacode+", contenttypeid = "+contenttypeid+", masterid = "+masterid+", title = "+title+", cat1 = "+cat1+", addr1 = "+addr1+", cat3 = "+cat3+", cat2 = "+cat2+", createdtime = "+createdtime+", modifiedtime = "+modifiedtime+", readcount = "+readcount+", mapx = "+mapx+", mapy = "+mapy+"]";
+    public String toString() {
+        return "{" +
+                "contentid='" + contentid + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                ", tel='" + tel + '\'' +
+                ", sigungucode='" + sigungucode + '\'' +
+                ", areacode='" + areacode + '\'' +
+                ", contenttypeid='" + contenttypeid + '\'' +
+                ", masterid='" + masterid + '\'' +
+                ", title='" + title + '\'' +
+                ", cat1='" + cat1 + '\'' +
+                ", addr1='" + addr1 + '\'' +
+                ", cat3='" + cat3 + '\'' +
+                ", cat2='" + cat2 + '\'' +
+                ", createdtime='" + createdtime + '\'' +
+                ", modifiedtime='" + modifiedtime + '\'' +
+                ", readcount='" + readcount + '\'' +
+                ", mapx='" + mapx + '\'' +
+                ", mapy='" + mapy + '\'' +
+                ", firstimage='" + firstimage + '\'' +
+                '}';
     }
 }

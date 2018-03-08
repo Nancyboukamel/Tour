@@ -16,4 +16,5 @@ public interface categoryInterface {
     public void PlotPins(categoryItem BigItem,categoryItem MediumItem,categoryItem SmallItem,int code);
     public void setPins(List<areaBasedItem> areaBasedItems,int code);
     public void setPinInfo(List<LocationBasedItem>locationBasedItems);
+    public void setListareaBasedItems(List<areaBasedItem>areaBasedItems);
 }

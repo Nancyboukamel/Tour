@@ -5,11 +5,12 @@
     xmlns:slidingLayer="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/activity_controller"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <fragment
             android:id="@+id/map"
@@ -17,7 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/margin_50"/>
 
     <com.wunderlist.slidinglayer.SlidingLayer
         android:id="@+id/rightmenu"

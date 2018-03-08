@@ -41,6 +41,7 @@ public class areaBasedListVolley  implements Response.Listener<JSONObject>,Respo
     public void fetchData(String URL,int code,int status){
         this.code=code;
         this.status=status;
+        Log.d("HeroJongi"," area based item "+URL);
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, URL, null,this,this);
         requestQueue.add(request);
     }
@@ -59,6 +60,7 @@ public class areaBasedListVolley  implements Response.Listener<JSONObject>,Respo
                 List<areaBasedItem> itemListsub = areaBasedList.getResponse().getBody().getItems().getItem();
                 if (categoryInterface != null) {
                     categoryInterface.setPins(itemListsub, code);
+                    categoryInterface.setListareaBasedItems(itemListsub);
                 }
             }
             else if(status==1){
