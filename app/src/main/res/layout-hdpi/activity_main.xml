@@ -25,7 +25,7 @@
             android:textSize="@dimen/text_size_20"
             android:layout_marginTop="@dimen/margin_16"
             android:textStyle="bold|italic"
-            android:textColor="@color/pink"/>
+            android:textColor="@color/white"/>
 
         <RelativeLayout
             android:id="@+id/username_input"
@@ -44,8 +44,9 @@
             android:hint="@string/Email"
             android:textSize="@dimen/text_size_10"
             android:padding="5dp"
+            android:textStyle="bold"
             android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            android:textColorHint="@color/white"/>
 
         </RelativeLayout>
 
@@ -68,7 +69,8 @@
             android:background="@android:color/transparent"
             android:textSize="@dimen/text_size_10"
             android:inputType="textPassword"
-            android:textColorHint="@color/pink"/>
+            android:textStyle="bold"
+            android:textColorHint="@color/white"/>
 
         </RelativeLayout>
 

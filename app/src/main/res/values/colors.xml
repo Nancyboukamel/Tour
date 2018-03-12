@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#7f345a</color>
-    <color name="colorPrimary">#993f6c</color>
-    <color name="colorAccent">#FFFFFF</color>
-    <color name="pink">#8b1a89</color>
-    <color name="black">#000000</color>
-    <color name="blue">#0000ff</color>
-    <color name="tranviolet">#CC993f6c</color>
+    <color name="colorPrimaryDark">#171810</color>
+    <color name="colorPrimary">#123175</color>
+    <color name="colorAccent">#d6dfe0</color>
+    <color name="blue">#F8B195</color>
+    <color name="tranviolet">#CCde8cf0</color>
+    <color name="fushia">#ce2380</color>
+    <color name="white">#FFFFFF</color>
+    <color name="trans">#80171810</color>
+    <color name="edittext">#BF123175</color>
+
 </resources>

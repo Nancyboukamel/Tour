@@ -16,16 +16,16 @@
         android:layout_marginRight="@dimen/margin_30"
         android:background="@drawable/login">
 
-       <TextView
+        <TextView
             android:id="@+id/login_sticker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="@string/login"
+            android:text="Login"
             android:textSize="@dimen/text_size_20"
             android:layout_marginTop="@dimen/margin_16"
             android:textStyle="bold|italic"
-            android:textColor="@color/pink"/>
+            android:textColor="@color/white"/>
 
         <RelativeLayout
             android:id="@+id/username_input"
@@ -37,15 +37,16 @@
             android:layout_marginTop="40dp"
             android:layout_below="@+id/login_sticker">
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/Email"
-            android:textSize="@dimen/text_size_15"
-            android:padding="5dp"
-            android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Email"
+                android:textSize="@dimen/text_size_15"
+                android:padding="@dimen/margin_8"
+                android:textStyle="bold"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/white"/>
 
         </RelativeLayout>
 
@@ -55,20 +56,22 @@
             android:background="@drawable/edittextshape"
             android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginRight="@dimen/margin_16"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/margin_30"
             android:layout_below="@+id/username_input"
             android:padding="5dp"
             android:layout_marginBottom="@dimen/margin_50">
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/Password"
-            android:background="@android:color/transparent"
-            android:textSize="@dimen/text_size_15"
-            android:inputType="textPassword"
-            android:textColorHint="@color/pink"/>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Password"
+                android:background="@android:color/transparent"
+                android:textSize="@dimen/text_size_15"
+                android:inputType="textPassword"
+                android:textStyle="bold"
+                android:padding="@dimen/margin_5"
+                android:textColorHint="@color/white"/>
 
         </RelativeLayout>
 
@@ -81,9 +84,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/circle"
         android:layout_below="@+id/tour_app"
-        android:layout_marginTop="-30dp"
+        android:layout_marginTop="-20dp"
         android:layout_centerHorizontal="true">
-        
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,8 +109,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:textStyle="bold|italic"
         android:textSize="@dimen/text_size_15"
+        android:textStyle="bold|italic"
         android:layout_marginBottom="@dimen/margin_20"
         android:textColor="@color/colorAccent"
         android:text="@string/not_member"/>

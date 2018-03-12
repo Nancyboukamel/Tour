@@ -26,7 +26,7 @@
             android:textSize="@dimen/text_size_20"
             android:layout_marginTop="@dimen/margin_16"
             android:textStyle="bold|italic"
-            android:textColor="@color/pink"/>
+            android:textColor="@color/colorPrimaryDark"/>
 
         <RelativeLayout
             android:id="@+id/username_input"
@@ -46,7 +46,7 @@
             android:hint="@string/Username"
             android:padding="5dp"
             android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            android:textColorHint="@color/colorPrimary"/>
 
         </RelativeLayout>
 
@@ -69,7 +69,7 @@
             android:padding="5dp"
             android:inputType="textPassword"
             android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            android:textColorHint="@color/colorPrimary"/>
 
         </RelativeLayout>
 
@@ -92,7 +92,7 @@
             android:padding="5dp"
             android:inputType="textPassword"
             android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            android:textColorHint="@color/colorPrimary"/>
 
         </RelativeLayout>
 
@@ -115,7 +115,7 @@
                 android:padding="5dp"
                 android:inputType="textEmailAddress"
                 android:hint="@string/Email"
-                android:textColorHint="@color/pink"
+                android:textColorHint="@color/colorPrimary"
                 android:textSize="@dimen/text_size_10" />
 
         </RelativeLayout>

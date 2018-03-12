@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="benkoreatech.me.tour.PlaceInfo"
+    tools:showIn="@layout/activity_place_info">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_30"
+            android:background="@android:color/transparent"
+            app:cardCornerRadius="@dimen/margin_16">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_10"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_15"
+                    android:textStyle="bold"/>
+
+               <TextView
+                   android:id="@+id/overview"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/text_size_12"
+                   android:layout_marginRight="@dimen/margin_10"
+                   android:layout_marginLeft="@dimen/margin_10"
+                   android:layout_below="@+id/title"
+                   android:textStyle="italic"/>
+
+                <TextView
+                    android:id="@+id/telephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/overview"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/website"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/telephone"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/direction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/website"
+                    android:layout_margin="@dimen/margin_10"
+                    android:textSize="@dimen/text_size_12"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="@dimen/margin_16"
+            android:layout_margin="@dimen/margin_16"
+            android:layout_below="@+id/card_view">
+
+            <fragment
+                android:id="@+id/map_location"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_third"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/location"
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@android:color/transparent"
+            app:cardCornerRadius="@dimen/margin_16">
+
+            <RelativeLayout
+                android:id="@+id/whole_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/additional_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/additional_info"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_15"
+                android:layout_margin="@dimen/margin_10"
+                android:textColor="@color/colorPrimary"/>
+
+            <RelativeLayout
+                android:id="@+id/tourist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/additional_information"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/open_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/closed_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/open_date"
+                    android:layout_margin="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/park_facility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/closed_date"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/available_season"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"
+                    android:layout_below="@+id/park_facility"/>
+
+                <TextView
+                    android:id="@+id/available_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_below="@+id/available_season"/>
+
+                <TextView
+                    android:id="@+id/experience_guide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"
+                    android:layout_below="@+id/available_time"/>
+
+                <TextView
+                    android:id="@+id/experience_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/experience_guide"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/accomcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_10"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/experience_age"/>
+
+                <TextView
+                    android:id="@+id/information_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/accomcount"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_10"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/culture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/additional_information"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/used_time_culture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"/>
+
+                <TextView
+                android:id="@+id/closed_date_culture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/used_time_culture"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                />
+
+                <TextView
+                    android:id="@+id/parking_facility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/closed_date_culture"
+                    android:layout_margin="@dimen/margin_10"
+                    />
+
+                <TextView
+                    android:id="@+id/parking_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/parking_facility"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/usefee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/parking_fee"
+                    android:layout_margin="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/spendtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/usefee"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/scale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/spendtime"
+                    android:layout_margin="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/admitted_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/scale"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/info_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/admitted_person"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"
+                    />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/sports"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/additional_information">
+
+                <TextView
+                    android:id="@+id/open_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/closed_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/open_period"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/sport_parking_facility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/closed_period"
+                    android:layout_margin="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/sport_parking_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/sport_parking_facility"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/available_time_sport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"
+                    android:layout_below="@+id/sport_parking_fee"
+                    />
+                <TextView
+                    android:id="@+id/reservation_guide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/available_time_sport"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/admission_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"
+                    android:layout_below="@+id/reservation_guide"
+                    />
+                <TextView
+                    android:id="@+id/scale_sport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/admission_fee"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/sport_experience_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/scale_sport"
+                    android:layout_margin="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/sport_persons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/sport_experience_age"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/sport_info_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"
+                    android:layout_below="@+id/sport_persons"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/stay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_below="@+id/additional_information">
+
+                <TextView
+                    android:id="@+id/accomendation_capacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10"
+                    />
+                <TextView
+                    android:id="@+id/benikia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/accomendation_capacity"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/checkintime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/benikia"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/checkouttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/checkintime"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/chkcooking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/checkouttime"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/foodplace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/chkcooking"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/goodstay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/foodplace"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/hanok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/goodstay"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/infocenterlodging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/hanok"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/parkinglodging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/infocenterlodging"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/pickup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/parkinglodging"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/roomcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/pickup"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/reservationlodging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/roomcount"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/reservationurl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/reservationlodging"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/roomtype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/reservationurl"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/scalelodging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/roomtype"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/subfacility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/scalelodging"
+                    android:layout_margin="@dimen/margin_10" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/shopping"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_below="@+id/additional_information">
+
+                <TextView
+                    android:id="@+id/fairday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/infocentershopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/fairday"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/opendateshopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/infocentershopping"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/opentime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/opendateshopping"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/parkingshopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/opentime"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/restdateshopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/parkingshopping"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/restroom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/restdateshopping"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/scaleitem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/restroom"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"/>
+
+                <TextView
+                    android:id="@+id/saleshopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/scaleitem"
+                    android:layout_margin="@dimen/margin_10" />
+
+                <TextView
+                    android:id="@+id/shopguide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_below="@+id/saleshopping"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_marginBottom="@dimen/margin_10"/>
+
+            </RelativeLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+
+    </RelativeLayout>
+
+
+
+</android.support.v4.widget.NestedScrollView>

@@ -7,10 +7,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/title"
-        android:layout_marginBottom="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_20"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_size_20"
+        android:layout_marginTop="@dimen/margin_30"
         android:layout_centerHorizontal="true"/>
 
 
@@ -23,8 +22,8 @@
         android:layout_below="@+id/mainText"
         android:text="@string/big_category"
         android:textSize="@dimen/text_size_15"
-        android:textColor="@color/black"
-        android:layout_marginTop="@dimen/margin_16"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/margin_30"
         android:textStyle="bold|italic" />
 
 
@@ -46,9 +45,9 @@
         android:layout_alignStart="@+id/spinner"
         android:layout_below="@+id/spinner"
         android:text="@string/medium_category"
-        android:textColor="#000000"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_15"
-        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_30"
         android:textStyle="bold|italic" />
 
 
@@ -68,10 +67,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/mediumspinner"
         android:text="@string/small_category"
-        android:textColor="#000000"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_15"
         android:textStyle="bold|italic"
-        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_30"
         android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginStart="@dimen/margin_16" />
 
@@ -86,18 +85,17 @@
         android:background="@drawable/spinner"/>
 
 
-
     <TextView
         android:id="@+id/go"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/go"
         android:layout_below="@+id/smallspinner"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold|italic"
-        android:layout_marginTop="@dimen/margin_50"
+        android:layout_marginTop="@dimen/margin_30"
+        android:text="@string/go"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_size_15"
-        android:textColor="@color/colorPrimary"/>
+        android:textStyle="bold|italic" />
 
 
 

@@ -26,7 +26,7 @@
             android:textSize="@dimen/text_size_20"
             android:layout_marginTop="@dimen/margin_16"
             android:textStyle="bold|italic"
-            android:textColor="@color/pink"/>
+            android:textColor="@color/white"/>
 
         <RelativeLayout
             android:id="@+id/username_input"
@@ -38,15 +38,16 @@
             android:layout_marginTop="@dimen/margin_30"
             android:layout_below="@+id/login_sticker">
 
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_10"
-            android:hint="@string/Username"
-            android:padding="5dp"
-            android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Username"
+                android:textSize="@dimen/text_size_12"
+                android:padding="@dimen/margin_8"
+                android:textStyle="bold"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/white"/>
 
         </RelativeLayout>
 
@@ -60,16 +61,17 @@
             android:layout_marginRight="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_16">
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/Password"
-            android:textSize="@dimen/text_size_10"
-            android:padding="5dp"
-            android:inputType="textPassword"
-            android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Password"
+                android:textSize="@dimen/text_size_12"
+                android:padding="@dimen/margin_8"
+                android:textStyle="bold"
+                android:inputType="textPassword"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/white"/>
 
         </RelativeLayout>
 
@@ -83,16 +85,17 @@
             android:layout_marginTop="@dimen/margin_16"
             android:layout_below="@+id/password_input">
 
-        <EditText
-            android:id="@+id/confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/confirm_password"
-            android:textSize="@dimen/text_size_10"
-            android:padding="5dp"
-            android:inputType="textPassword"
-            android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            <EditText
+                android:id="@+id/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_password"
+                android:textSize="@dimen/text_size_12"
+                android:padding="@dimen/margin_8"
+                android:textStyle="bold"
+                android:inputType="textPassword"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/white"/>
 
         </RelativeLayout>
 
@@ -112,11 +115,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:padding="5dp"
+                android:textSize="@dimen/text_size_12"
+                android:padding="@dimen/margin_8"
                 android:inputType="textEmailAddress"
                 android:hint="@string/Email"
-                android:textColorHint="@color/pink"
-                android:textSize="@dimen/text_size_10" />
+                android:textStyle="bold"
+                android:textColorHint="@color/white" />
 
         </RelativeLayout>
 

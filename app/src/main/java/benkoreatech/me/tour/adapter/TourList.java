@@ -13,16 +13,20 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import benkoreatech.me.tour.R;
+import benkoreatech.me.tour.interfaces.TourSettings;
 import benkoreatech.me.tour.objects.areaBasedItem;
 
 public class TourList extends RecyclerView.Adapter<TourList.TourView>{
 
+
     List<areaBasedItem> areaBasedItems;
     Context context;
+    TourSettings tourSettings;
 
-    public TourList(List<areaBasedItem> areaBasedItems, Context context) {
+    public TourList(List<areaBasedItem> areaBasedItems, Context context, TourSettings tourSettings) {
         this.areaBasedItems=areaBasedItems;
         this.context = context;
+        this.tourSettings=tourSettings;
     }
 
     @Override
@@ -32,18 +36,19 @@ public class TourList extends RecyclerView.Adapter<TourList.TourView>{
     }
 
     @Override
-    public void onBindViewHolder(TourList.TourView holder, int position) {
-        areaBasedItem areaBasedItem=areaBasedItems.get(position);
+    public void onBindViewHolder(TourList.TourView holder, final int position) {
+        final areaBasedItem areaBasedItem=areaBasedItems.get(position);
         holder.place_name.setText(areaBasedItem.getTitle());
-        holder.address.setText(areaBasedItem.getAddr1());
         holder.date.setText(areaBasedItem.getTel());
         if(areaBasedItem.getFirstimage()!=null) {
-            Picasso.with(context).load(areaBasedItem.getFirstimage()).fit().into(holder.image);
+            Picasso.with(context).load(areaBasedItem.getFirstimage()).fit().centerCrop().into(holder.image);
         }
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+             if(tourSettings!=null){
+                 tourSettings.onListItemClicked(areaBasedItems.get(position));
+             }
             }
         });
     }
@@ -56,14 +61,13 @@ public class TourList extends RecyclerView.Adapter<TourList.TourView>{
 
     public class TourView extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView place_name,address,date;
+        TextView place_name,date;
         View view;
         public TourView(android.view.View view) {
             super(view);
             this.view=view;
             image=(ImageView) view.findViewById(R.id.image);
             place_name=(TextView) view.findViewById(R.id.place_name);
-            address=(TextView) view.findViewById(R.id.address);
             date=(TextView) view.findViewById(R.id.date);
         }
     }

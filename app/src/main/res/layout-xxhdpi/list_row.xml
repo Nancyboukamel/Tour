@@ -6,8 +6,8 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="@dimen/margin_5"
+        android:layout_height="250dp"
+        android:layout_margin="@dimen/margin_10"
         android:background="@android:color/transparent"
         app:cardCornerRadius="@dimen/margin_16">
 
@@ -15,25 +15,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:id="@+id/image_lay"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@color/colorAccent"/>
 
+        </RelativeLayout>
+
             <RelativeLayout
+                android:id="@+id/image_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/image_lay"
                 android:background="@color/colorPrimary">
 
                 <TextView
                     android:id="@+id/place_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="E mark Korea"
                     android:textStyle="bold|italic"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_12"
                     android:textColor="@color/blue"
                     android:layout_margin="@dimen/margin_5"/>
 
@@ -46,12 +53,11 @@
                     android:layout_margin="@dimen/margin_5"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size_10"
-                    android:text="1/2/2018"/>
+                    android:textSize="@dimen/text_size_10"/>
 
             </RelativeLayout>
-        </RelativeLayout>
 
+        </RelativeLayout>
 
 
     </android.support.v7.widget.CardView>

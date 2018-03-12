@@ -2,7 +2,7 @@ package benkoreatech.me.tour.objects;
 
 
 public class Constants {
-    public static final String base_url="http://api.visitkorea.or.kr/openapi/service/rest/EngService/";
+    public static final String base_url="http://api.visitkorea.or.kr/openapi/service/rest/";
     public static final String server_key="9opMOuXLGj2h16CybYD9T5qTds4376qAZO4VG9qNuHKrm1d%2FfCPfUoBPDOkfQiZKB%2BidiHynuWwbnVUHgrinJw%3D%3D";
     public static final String json="&_type=json";
     public static final String areaCode="areaCode";
@@ -10,6 +10,8 @@ public class Constants {
     public static final String searchStay="searchStay";
     public static final String categoryCode="categoryCode";
     public static final String areaBasedList="areaBasedList";
+    public static final String searchKeyword="searchKeyword";
+
     public static final String locationBasedList="locationBasedList";
     public static final String contentTypeId="contentTypeId";
     public static final String register="http://samy.trustworthy.co.kr/register.php";
@@ -17,4 +19,14 @@ public class Constants {
     public static final String goodStay="goodStay";
     public static final String hanok="hanOk";
     public static final String benikia="benikia";
+
+    public static final String english="EngService/";
+    public static final String chinese="ChsService/";
+    public static final String japanese="JpnService/";
+    public static final String deutsch="GerService/";
+    public static final String french="FreService/";
+    public static final String spanish="SpnService/";
+    public static final String russian="RusService/";
+
+
 }

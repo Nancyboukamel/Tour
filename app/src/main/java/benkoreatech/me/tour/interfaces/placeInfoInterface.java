@@ -11,4 +11,5 @@ public interface placeInfoInterface {
     public void details(detailCommonItem detailCommonItem);
     public void detailsIntro(detailIntroItem detailIntroItem);
     public void setImages(List<detailImageItem> detailImageItems);
+    public void setImagesIfNoExist();
 }

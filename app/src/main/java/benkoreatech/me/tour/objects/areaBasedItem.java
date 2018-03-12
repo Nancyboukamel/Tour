@@ -39,6 +39,8 @@ public class areaBasedItem implements Serializable {
 
     private String firstimage;
 
+    private String firstimage2;
+
     public String getContentid ()
     {
         return contentid;
@@ -217,9 +219,17 @@ public class areaBasedItem implements Serializable {
         this.firstimage = firstimage;
     }
 
+    public String getFirstimage2() {
+        return firstimage2;
+    }
+
+    public void setFirstimage2(String firstimage2) {
+        this.firstimage2 = firstimage2;
+    }
+
     @Override
     public String toString() {
-        return "{" +
+        return "areaBasedItem{" +
                 "contentid='" + contentid + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", tel='" + tel + '\'' +
@@ -238,6 +248,7 @@ public class areaBasedItem implements Serializable {
                 ", mapx='" + mapx + '\'' +
                 ", mapy='" + mapy + '\'' +
                 ", firstimage='" + firstimage + '\'' +
+                ", firstimage2='" + firstimage2 + '\'' +
                 '}';
     }
 }

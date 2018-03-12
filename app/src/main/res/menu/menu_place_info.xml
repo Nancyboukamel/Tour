@@ -14,4 +14,11 @@
         android:title="@string/map"
         android:visible="false"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/search"
+        android:icon="@android:drawable/ic_search_category_default"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom"
+        android:title="" />
 </menu>
