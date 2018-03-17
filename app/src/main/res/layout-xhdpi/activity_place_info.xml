@@ -67,7 +67,7 @@
         android:layout_height="@dimen/margin_50"
         android:clickable="true"
         app:srcCompat="@android:drawable/star_big_off"
-        app:backgroundTint="@color/fushia"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:fabSize="normal"
         android:layout_marginRight="@dimen/margin_16"
         app:layout_anchor="@+id/appbar"

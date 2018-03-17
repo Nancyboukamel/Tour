@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/image_lay"
-                android:background="@color/colorPrimary">
+                android:background="@color/colorPrimaryDark">
 
                 <TextView
                     android:id="@+id/place_name"
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold|italic"
                     android:textSize="@dimen/text_size_12"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/bronze"
                     android:layout_margin="@dimen/margin_5"/>
 
                 <TextView

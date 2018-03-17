@@ -17,23 +17,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+            <ImageView
+                android:id="@+id/mylocation"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/mylocation"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="60dp"
+                android:elevation="@dimen/margin_30"
+                android:tint="@color/colorPrimaryDark"
+                android:layout_marginLeft="@dimen/margin_10"/>
 
-        <ImageView
-            android:id="@+id/mylocation"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/mylocation"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="60dp"
-            android:elevation="@dimen/margin_30"
-            android:layout_marginLeft="@dimen/margin_10"/>
 
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -66,14 +66,14 @@
                 android:id="@+id/view"
                 android:layout_width="20dp"
                 android:layout_height="match_parent"
-                android:background="@color/fushia" />
+                android:background="@color/edittext" />
 
             <ExpandableListView
                 android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
-                android:divider="@color/colorPrimaryDark"
+                android:divider="@color/colorPrimary"
                 android:layout_toRightOf="@+id/view"
                 android:layout_toLeftOf="@+id/endview"
                 android:dividerHeight="@dimen/divider_height"
@@ -86,7 +86,7 @@
                 android:layout_width="20dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/edittext"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -118,7 +118,7 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorPrimary"
                 app:tabIndicatorColor="@color/white"
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="scrollable"/>

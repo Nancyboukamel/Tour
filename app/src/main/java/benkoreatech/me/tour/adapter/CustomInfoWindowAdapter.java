@@ -60,8 +60,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             if(data!=null && !data.equalsIgnoreCase("") && context!=null) {
                 LocationBasedItem locationBasedItem = gson.fromJson(data, LocationBasedItem.class);
                 place_name.setText(locationBasedItem.getTitle());
-
-
             }
         }
         return view;

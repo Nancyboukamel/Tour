@@ -21,6 +21,7 @@
         </item>
         <item >
             <bitmap android:gravity="bottom|right"
-                android:src="@drawable/down" />
+                android:src="@drawable/down"
+                android:tint="@color/bronze"/>
         </item>
     </layer-list></item></selector>

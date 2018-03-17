@@ -16,6 +16,7 @@ import benkoreatech.me.tour.objects.Constants;
 import benkoreatech.me.tour.utils.Registration;
 import benkoreatech.me.tour.utils.SigninPreference;
 
+// we implement the interface here and it contain 2 methods
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,RegistrationSuccess {
 
     RelativeLayout tick;

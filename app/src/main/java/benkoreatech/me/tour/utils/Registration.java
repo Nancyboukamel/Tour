@@ -23,7 +23,9 @@ public class Registration implements Response.Listener<String>,Response.ErrorLis
     RegistrationSuccess registrationSuccess;
     String URL;
 
+    // constructor with name of class
     public Registration(RegistrationSuccess registrationSuccess) {
+        // interface declaration
         this.registrationSuccess=registrationSuccess;
     }
 

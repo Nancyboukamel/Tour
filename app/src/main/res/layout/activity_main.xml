@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,6 +16,7 @@
         android:layout_marginRight="@dimen/margin_30"
         android:background="@drawable/login">
 
+
        <TextView
             android:id="@+id/login_sticker"
             android:layout_width="wrap_content"
@@ -25,7 +26,7 @@
             android:textSize="@dimen/text_size_30"
             android:layout_marginTop="@dimen/margin_16"
             android:textStyle="bold|italic"
-            android:textColor="@color/pink"/>
+            android:textColor="@color/colorPrimaryDark"/>
 
         <RelativeLayout
             android:id="@+id/username_input"
@@ -45,7 +46,7 @@
             android:textSize="@dimen/text_size_15"
             android:padding="5dp"
             android:background="@android:color/transparent"
-            android:textColorHint="@color/pink"/>
+            android:textColorHint="@color/colorPrimary"/>
 
         </RelativeLayout>
 
@@ -68,7 +69,7 @@
             android:background="@android:color/transparent"
             android:textSize="@dimen/text_size_15"
             android:inputType="textPassword"
-            android:textColorHint="@color/pink"/>
+            android:textColorHint="@color/colorPrimary"/>
 
         </RelativeLayout>
 

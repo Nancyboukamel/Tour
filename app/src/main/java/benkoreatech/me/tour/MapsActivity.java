@@ -1,26 +1,61 @@
 package benkoreatech.me.tour;
 
+import android.*;
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -28,14 +63,19 @@ import com.wunderlist.slidinglayer.SlidingLayer;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import benkoreatech.me.tour.adapter.CityExpandableListView;
 import benkoreatech.me.tour.adapter.CustomInfoWindowAdapter;
+import benkoreatech.me.tour.adapter.TourList;
 import benkoreatech.me.tour.adapter.ViewPagerAdapter;
 import benkoreatech.me.tour.fragment.ContentType;
 import benkoreatech.me.tour.interfaces.TourSettings;
@@ -47,14 +87,18 @@ import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.StayItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.categoryItem;
+import benkoreatech.me.tour.objects.detailImageItem;
 import benkoreatech.me.tour.utils.CityVolley;
+import benkoreatech.me.tour.utils.LanguageSharedPreference;
 import benkoreatech.me.tour.utils.LocationPreference;
 import benkoreatech.me.tour.utils.VolleyApi;
 import benkoreatech.me.tour.utils.areaBasedListVolley;
 import benkoreatech.me.tour.utils.categortContentParse;
+import benkoreatech.me.tour.utils.detailImageVolley;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,TourSettings,TabLayout.OnTabSelectedListener,categoryInterface{
+public class MapsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,LocationListener,View.OnClickListener,OnMapReadyCallback,TourSettings,TabLayout.OnTabSelectedListener,categoryInterface{
 
+    private static final int PERMISSION_LOCATION_REQUEST_CODE = 100;
     private GoogleMap mMap;
     VolleyApi volleyApi;
     CityVolley cityVolley;
@@ -72,8 +116,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     SlidingLayer slidingLayer2;
     SlidingLayer rightMenu;
     Marker clickedMarker;
+    Menu menu;
+    ImageView myLocation;
+    LanguageSharedPreference languageSharedPreference;
+    RelativeLayout activity_controller;
+    SupportMapFragment mapFragment;
+    RecyclerView list_view;
     categortContentParse categortContentParse;
     areaBasedListVolley areaBasedListVolley;
+    GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private LocationRequest mLocationRequest;
+    LocationListener locationListener = this;
+    public static final int Access_Location = 70;
+    // Location updates intervals in sec
+    float [] Markercolors;
+    private static int UPDATE_INTERVAL = 60 * 1000; // 1min
+
+
+
     private int[] tabIcons = {
             R.drawable.nature,
             R.drawable.culture,
@@ -91,7 +152,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         volleyApi=new VolleyApi(this,tourSettings);
         cityVolley=new CityVolley(this,tourSettings);
@@ -102,16 +163,53 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         viewPager=(ViewPager) findViewById(R.id.viewpager);
         slidingLayer2=(SlidingLayer) findViewById(R.id.slidingLayer2);
         rightMenu=(SlidingLayer) findViewById(R.id.rightmenu);
+        list_view=(RecyclerView) findViewById(R.id.list_view);
+        myLocation=(ImageView) findViewById(R.id.mylocation);
+        activity_controller=(RelativeLayout) findViewById(R.id.activity_controller);
         categortContentParse=new categortContentParse(this,this);
         areaBasedListVolley=new areaBasedListVolley(this,this);
+        languageSharedPreference=new LanguageSharedPreference(this);
+
+        Markercolors=new float[]{BitmapDescriptorFactory.HUE_RED,BitmapDescriptorFactory.HUE_ORANGE,BitmapDescriptorFactory.HUE_YELLOW,BitmapDescriptorFactory.HUE_GREEN,
+        BitmapDescriptorFactory.HUE_CYAN,BitmapDescriptorFactory.HUE_AZURE,BitmapDescriptorFactory.HUE_BLUE,BitmapDescriptorFactory.HUE_VIOLET,BitmapDescriptorFactory.HUE_MAGENTA,
+        BitmapDescriptorFactory.HUE_ROSE};
+
+        android.support.v7.app.ActionBar ab = getSupportActionBar();
+        if(ab!=null) {
+            ab.setTitle("");
+        }
+        String language= Locale.getDefault().getLanguage();
+        languageSharedPreference.save_language(language);
+        myLocation.setOnClickListener(this);
         setupDrawer();
         getCitiesData();
         setupViewPager(viewPager);
         toolbar.setupWithViewPager(viewPager);
         setupTabIcons();
         toolbar.addOnTabSelectedListener(this);
+        buildGoogleApiClient();
+       createLocationRequest();
+        int code=76;
+        String categoryCodeURL = Constants.base_url+languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
+        categortContentParse.fetchData(categoryCodeURL,code,1);
 
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == Access_Location) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                // handle deny case
+            } else {
+                requestLocationUpdate();
+            }
+        }
+
+
+    }
+
 
 
 
@@ -180,33 +278,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
+        }
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
                 InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
                 if(infoWindowData!=null && infoWindowData.getLocationBasedData()!=null) {
                     final String data = infoWindowData.getLocationBasedData();
-                    Intent intent=new Intent(MapsActivity.this,PlaceInfo.class);
-                    intent.putExtra("data",data);
-                    startActivity(intent);
+                    FragmentManager fm = getSupportFragmentManager();
+                    PlaceInfo placeInfo = PlaceInfo.newInstance("Some Title");
+                    placeInfo.setStyle(android.app.DialogFragment.STYLE_NO_TITLE, R.style.MyTheme);
+                    placeInfo.setLocationInfo(data);
+                    placeInfo.show(fm, "activity_place_info");
                 }
 
             }
@@ -215,11 +307,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public boolean onMarkerClick(Marker marker) {
                 clickedMarker=marker;
-                Log.d("HeroJongi","on marker clicked "+marker.getPosition().latitude+"  "+marker.getPosition().longitude+"  ");
-                // make api call by giving long and lat + radius =0
-                // http://api.visitkorea.or.kr/openapi/service/rest/EngService/locationBasedList?serviceKey=9opMOuXLGj2h16CybYD9T5qTds4376qAZO4VG9qNuHKrm1d%2FfCPfUoBPDOkfQiZKB%2BidiHynuWwbnVUHgrinJw%3D%3D&numOfRows=1&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&mapX=129.2164088961&mapY=35.8420930618&radius=0
-                String aSpecificPlace= Constants.base_url+Constants.locationBasedList+"?serviceKey="+Constants.server_key+"&numOfRows=1&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&mapX="+marker.getPosition().longitude+"&mapY="+marker.getPosition().latitude+"&radius=0"+Constants.json;
-                Log.d("HeroJongi"," URL IS "+aSpecificPlace);
+                CameraPosition cameraPosition = new CameraPosition.Builder().bearing(30).zoom(13).target(marker.getPosition()).tilt(60).build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 5000, new GoogleMap.CancelableCallback() {
+                    @Override
+                    public void onFinish() {
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
+                String aSpecificPlace= Constants.base_url+languageSharedPreference.getLanguage()+Constants.locationBasedList+"?serviceKey="+Constants.server_key+"&numOfRows=1&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&mapX="+marker.getPosition().longitude+"&mapY="+marker.getPosition().latitude+"&radius=0"+Constants.json;
                 areaBasedListVolley.fetchData(aSpecificPlace,0,1);
                 return true;
             }
@@ -254,7 +354,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-   private void addCityDrawer() {
+    @Override
+    public void onListItemClicked(areaBasedItem areaBasedItem) {
+        FragmentManager fm = getSupportFragmentManager();
+        PlaceInfo placeInfo = PlaceInfo.newInstance("Some Title");
+        placeInfo.setStyle(android.app.DialogFragment.STYLE_NO_TITLE, R.style.MyTheme);
+        placeInfo.setLocationInfoItem(areaBasedItem);
+        placeInfo.show(fm, "activity_place_info");
+
+    }
+
+    private void addCityDrawer() {
         cityExpandableListView = new CityExpandableListView(this,itemsAreaCode,cityListData);
         mCityList.setAdapter(cityExpandableListView);
         mCityList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -294,7 +404,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void fetchData(Object item){
         if(item instanceof Item) {
             Item _item=(Item) item;
-            String areaCodeURL = Constants.base_url + Constants.areaCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&" + Constants.areaCode + "=" + _item.getCode() + Constants.json;
+            String areaCodeURL = Constants.base_url +languageSharedPreference.getLanguage()+ Constants.areaCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&" + Constants.areaCode + "=" + _item.getCode() + Constants.json;
             cityVolley.fetchData(areaCodeURL, _item);
         }
 
@@ -304,7 +414,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     public void getCitiesData() {
-        String areaCodeURL= Constants.base_url+Constants.areaCode+"?serviceKey="+Constants.server_key+"&numOfRows=17&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest"+Constants.json;
+        String areaCodeURL= Constants.base_url+languageSharedPreference.getLanguage()+Constants.areaCode+"?serviceKey="+Constants.server_key+"&numOfRows=17&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest"+Constants.json;
         volleyApi.fetchData(areaCodeURL,Constants.areaCode,null);
     }
 
@@ -314,34 +424,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int position=tab.getPosition();
         int code=0;
         String categoryCodeURL="";
+        slidingLayer2.openLayer(true);
         switch (position){
             case 0:
                code=76;
-               categoryCodeURL = Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
+               categoryCodeURL = Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 1:
                 code=78;
-                categoryCodeURL= Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
+                categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 2:
                 code=75;
-                categoryCodeURL= Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
+                categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 3:
                 code=79;
-                categoryCodeURL= Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
+                categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 4:
                 code=82;
-                categoryCodeURL= Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
+                categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 5:
                 code=77;
-                categoryCodeURL= Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
+                categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 6:
                 code=80;
-                categoryCodeURL= Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
+                categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
 
         }
@@ -397,7 +508,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onItemBigSelected(categoryItem categoryItem,int code) {
         if(categoryItem!=null && categoryItem.getName()!=null && !categoryItem.getName().equalsIgnoreCase("")){
-            String URLCategoryItems=Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=40&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+"&cat1="+categoryItem.getCode()+Constants.json;
+            String URLCategoryItems=Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=40&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+"&cat1="+categoryItem.getCode()+Constants.json;
             categortContentParse.fetchData(URLCategoryItems,code,2);
         }
     }
@@ -434,7 +545,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onItemMediumSelected(categoryItem categoryItem, int code) {
         if(categoryItem!=null && categoryItem.getName()!=null && !categoryItem.getName().equalsIgnoreCase("")){
-            String URLCategoryItems=Constants.base_url + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=40&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+"&cat1="+categoryItem.getCode().substring(0,3)+"&cat2="+categoryItem.getCode()+Constants.json;
+            String URLCategoryItems=Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=40&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+"&cat1="+categoryItem.getCode().substring(0,3)+"&cat2="+categoryItem.getCode()+Constants.json;
             categortContentParse.fetchData(URLCategoryItems,code,3);
         }
     }
@@ -475,12 +586,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void PlotPins(categoryItem BigItem, categoryItem MediumItem, categoryItem SmallItem, int code) {
-        Log.d("HeroJongi"," HERE ");
         String areaCode = "", SigunguCode = "";
         if (locationPreference != null) {
             areaCode = locationPreference.getAreaCode();
             SigunguCode = locationPreference.getSigungCode();
-            String areabasedList = Constants.base_url + Constants.areaBasedList + "?serviceKey=" + Constants.server_key + "&numOfRows=400&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&";
+            String areabasedList = Constants.base_url +languageSharedPreference.getLanguage()+ Constants.areaBasedList + "?serviceKey=" + Constants.server_key + "&numOfRows=400&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&";
 
             if (areaCode != null && !areaCode.equalsIgnoreCase("")) {
                 areabasedList += Constants.areaCode + "=" + areaCode;
@@ -515,33 +625,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             for(areaBasedItem areaBasedItem:areaBasedItems) {
                 if (areaBasedItem!=null && areaBasedItem.getMapy()!=null && areaBasedItem.getMapx()!=null && !areaBasedItem.getMapx().equalsIgnoreCase("0") && !areaBasedItem.getMapy().equalsIgnoreCase("0")) {
                     LatLng latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()),Double.parseDouble(areaBasedItem.getMapx()));
-                    MarkerOptions markerOpts = new MarkerOptions().position(latLng);
-                    if(code==76) {
-                        markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.nature));
-                    }
-                    else if(code==78){
-                        markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.culture));
-                    }
-                    else if(code==75){
-                        markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.sports));
-                    }
-                    else if(code==80){
-                        markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.home));
-                    }
-                   else if(code==79){
-                        markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.shopping));
-                    }
-                    else if(code==77){
-                        markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.car));
-                    }
-                    else if(code==82){
-                        markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.food));
-                    }
-                    Marker marker=mMap.addMarker(markerOpts);
+                  float color=  Markercolors[new Random().nextInt(Markercolors.length)];
+                    Marker marker=mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .icon(BitmapDescriptorFactory.defaultMarker(color)));
                     builder.include(marker.getPosition());
                 }
+
     }
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 200));
+
+    Log.d("HeroJongi","on loop end");
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
         }
     }
 
@@ -560,5 +654,212 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    @Override
+    public void setListareaBasedItems(List<areaBasedItem> areaBasedItems) {
+        if(areaBasedItems!=null && areaBasedItems.size()>0) {
+            Log.d("HeroJongi"," set List area based items ");
+            TourList tourList = new TourList(areaBasedItems, MapsActivity.this,this);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+            list_view.setLayoutManager(mLayoutManager);
+            list_view.setItemAnimator(new DefaultItemAnimator());
+            list_view.setAdapter(tourList);
+        }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_place_info, menu);
+        this.menu=menu;
+
+
+        MenuItem map = menu.findItem(R.id.action_map);
+        MenuItem list=menu.findItem(R.id.action_list);
+
+        SpannableString s = new SpannableString(map.getTitle());
+        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimaryDark)), 0, s.length(), 0);
+        map.setTitle(s);
+
+        SpannableString sa = new SpannableString(list.getTitle());
+        sa.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimaryDark)), 0, sa.length(), 0);
+        list.setTitle(sa);
+
+        SearchManager searchManager = (SearchManager)
+                getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchMenuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        // Activate the navigation drawer toggle
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        switch (id){
+            case R.id.action_list:
+               list_view.setVisibility(View.VISIBLE);
+                activity_controller.setVisibility(View.GONE);
+                break;
+            case R.id.action_map:
+                list_view.setVisibility(View.GONE);
+                activity_controller.setVisibility(View.VISIBLE);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.mylocation:
+                 ZoomtoMyCurrentLocation();
+                break;
+        }
+    }
+
+    public void ZoomtoMyCurrentLocation() {
+        if (mMap != null && mLastLocation!=null) {
+            LatLng coordinate = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+            CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinate, 15);
+            mMap.animateCamera(location);
+        }
+    }
+
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Resuming the periodic location updates
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            stopLocationUpdates();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    protected void startLocationUpdates() {
+        Log.d("HeroJongi", "Here 1234");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, Access_Location);
+        } else {
+            requestLocationUpdate();
+        }
+
+    }
+
+    public void requestLocationUpdate() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Log.d("HeroJongi ", "requestLocationUpdate");
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, locationListener);
+        }
+
+    }
+
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        // mLocationRequest.setFastestInterval(FATEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        // mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
+    }
+
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        startLocationUpdates();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        try {
+            String keyword = URLEncoder.encode(query, "UTF-8");
+          //  http://api.visitkorea.or.kr/openapi/service/rest/EngService/searchKeyword?serviceKey=[Authentication Key]&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&keyword=%EA%B0%95%EC%9B%90
+            String areaCode = "", SigunguCode = "";
+            if (locationPreference != null) {
+                areaCode = locationPreference.getAreaCode();
+                SigunguCode = locationPreference.getSigungCode();
+
+                String searchKeywordURL= Constants.base_url+languageSharedPreference.getLanguage()+Constants.searchKeyword+"?serviceKey="+Constants.server_key+"&numOfRows=400&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&keyword="+keyword+"&";
+               // areaBasedListVolley.fetchData(searchKeywordURL,0,2);
+
+                if (areaCode != null && !areaCode.equalsIgnoreCase("")) {
+                    searchKeywordURL += Constants.areaCode + "=" + areaCode;
+                }
+                if (SigunguCode != null && !SigunguCode.equalsIgnoreCase("")) {
+                    searchKeywordURL += "&" + Constants.sigunguCode + "=" + SigunguCode;
+                }
+                searchKeywordURL += Constants.json;
+                 areaBasedListVolley.fetchData(searchKeywordURL,0,0);
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }

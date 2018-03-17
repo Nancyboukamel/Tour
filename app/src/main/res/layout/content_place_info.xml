@@ -51,46 +51,13 @@
                    android:layout_marginTop="@dimen/margin_20"
                    android:textStyle="italic"/>
 
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_view_prof"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/card_view"
-            android:layout_marginRight="@dimen/margin_16"
-            android:layout_marginBottom="@dimen/margin_16"
-            android:layout_marginLeft="@dimen/margin_16"
-            android:layout_marginTop="@dimen/margin_16"
-            android:background="@android:color/transparent"
-            app:cardCornerRadius="@dimen/margin_16">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/additional_information"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/additional_info"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_20"
-                android:layout_margin="@dimen/margin_16"
-                android:textColor="@color/colorPrimaryDark"/>
-
-
-
-            <TextView
-                android:id="@+id/telephone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/additional_information"
-                android:textSize="@dimen/text_size_15"
-                android:layout_margin="@dimen/margin_16"/>
+                <TextView
+                    android:id="@+id/telephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/overview"
+                    android:textSize="@dimen/text_size_15"
+                    android:layout_margin="@dimen/margin_16"/>
 
                 <TextView
                     android:id="@+id/website"
@@ -112,17 +79,17 @@
                     android:layout_marginBottom="@dimen/margin_16"
                     android:textSize="@dimen/text_size_15"/>
 
-
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
+
 
         <android.support.v7.widget.CardView
             android:id="@+id/card_view_third"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/card_view_prof"
+            android:layout_below="@+id/card_view"
             android:layout_marginRight="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_16"
             android:layout_marginLeft="@dimen/margin_16"
@@ -131,9 +98,27 @@
             app:cardCornerRadius="@dimen/margin_16">
 
             <RelativeLayout
+                android:id="@+id/whole_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/additional_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/additional_info"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_20"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_16"
+                android:textColor="@color/colorPrimary"/>
+
+            <RelativeLayout
                 android:id="@+id/tourist"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/additional_information"
                 android:visibility="gone">
 
                 <TextView
@@ -213,6 +198,7 @@
                 android:id="@+id/culture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/additional_information"
                 android:visibility="gone">
 
                 <TextView
@@ -290,15 +276,13 @@
                     />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/event"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/sports"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/additional_information">
+
                 <TextView
                     android:id="@+id/open_period"
                     android:layout_width="wrap_content"
@@ -392,7 +376,8 @@
                 android:id="@+id/stay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:layout_below="@+id/additional_information">
 
                 <TextView
                     android:id="@+id/accomendation_capacity"
@@ -534,7 +519,8 @@
                 android:id="@+id/shopping"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:layout_below="@+id/additional_information">
 
                 <TextView
                     android:id="@+id/fairday"
@@ -616,9 +602,8 @@
                     android:layout_margin="@dimen/margin_8" />
 
             </RelativeLayout>
-
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
-
 
     </RelativeLayout>
 

@@ -1,5 +1,6 @@
 package benkoreatech.me.tour.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
@@ -68,6 +69,7 @@ public class ContentType extends Fragment implements View.OnClickListener{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 BigItem=bigItems.get(position);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
                 if(categoryInterface!=null){
                     categoryInterface.onItemBigSelected(BigItem,code);
                 }
@@ -98,6 +100,7 @@ public class ContentType extends Fragment implements View.OnClickListener{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                MediumItem= mediumItems.get(position);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
                 if(categoryInterface!=null){
                     categoryInterface.onItemMediumSelected(MediumItem,code);
                 }
@@ -125,6 +128,7 @@ public class ContentType extends Fragment implements View.OnClickListener{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SmallItem=categoryItems.get(position);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
             }
 
             @Override
