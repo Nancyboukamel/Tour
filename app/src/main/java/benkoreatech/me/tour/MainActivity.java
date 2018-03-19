@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onLoginSuccess() {
         Intent intent=new Intent(this,MapsActivity.class);
         startActivity(intent);
-        signinPreference.isSignin(true);
+        signinPreference.isSignin(true,email.getText().toString());
+
     }
 }

@@ -91,6 +91,7 @@ import benkoreatech.me.tour.objects.detailImageItem;
 import benkoreatech.me.tour.utils.CityVolley;
 import benkoreatech.me.tour.utils.LanguageSharedPreference;
 import benkoreatech.me.tour.utils.LocationPreference;
+import benkoreatech.me.tour.utils.SigninPreference;
 import benkoreatech.me.tour.utils.VolleyApi;
 import benkoreatech.me.tour.utils.areaBasedListVolley;
 import benkoreatech.me.tour.utils.categortContentParse;
@@ -128,6 +129,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
     LocationListener locationListener = this;
+    SigninPreference signinPreference;
     public static final int Access_Location = 70;
     // Location updates intervals in sec
     float [] Markercolors;
@@ -165,6 +167,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         rightMenu=(SlidingLayer) findViewById(R.id.rightmenu);
         list_view=(RecyclerView) findViewById(R.id.list_view);
         myLocation=(ImageView) findViewById(R.id.mylocation);
+        signinPreference=new SigninPreference(this);
         activity_controller=(RelativeLayout) findViewById(R.id.activity_controller);
         categortContentParse=new categortContentParse(this,this);
         areaBasedListVolley=new areaBasedListVolley(this,this);
@@ -674,14 +677,19 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
         MenuItem map = menu.findItem(R.id.action_map);
         MenuItem list=menu.findItem(R.id.action_list);
+        MenuItem signout=menu.findItem(R.id.signout);
 
         SpannableString s = new SpannableString(map.getTitle());
-        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimaryDark)), 0, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)), 0, s.length(), 0);
         map.setTitle(s);
 
         SpannableString sa = new SpannableString(list.getTitle());
-        sa.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimaryDark)), 0, sa.length(), 0);
+        sa.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)), 0, sa.length(), 0);
         list.setTitle(sa);
+
+        SpannableString _signout = new SpannableString(signout.getTitle());
+        _signout.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)), 0, _signout.length(), 0);
+        signout.setTitle(_signout);
 
         SearchManager searchManager = (SearchManager)
                 getSystemService(Context.SEARCH_SERVICE);
@@ -715,6 +723,12 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
             case R.id.action_map:
                 list_view.setVisibility(View.GONE);
                 activity_controller.setVisibility(View.VISIBLE);
+                break;
+            case R.id.signout:
+                signinPreference.isSignin(false,null);
+                Intent intent=new Intent(this,MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -14,8 +14,17 @@ public class Constants {
 
     public static final String locationBasedList="locationBasedList";
     public static final String contentTypeId="contentTypeId";
-    public static final String register="http://samy.trustworthy.co.kr/register.php";
-    public static final String login="http://samy.trustworthy.co.kr/login.php";
+    public static final String register="http://ben.trustworthy.co.kr/k-travel/register.php";
+    public static final String login="http://ben.trustworthy.co.kr/k-travel/login.php";
+
+    public static final String add_to_favorite="http://ben.trustworthy.co.kr/k-travel/add_to_favorite.php";
+    public static final String remove_favorite="http://ben.trustworthy.co.kr/k-travel/remove_favorite.php";
+    public static final String check_if_favorite="http://ben.trustworthy.co.kr/k-travel/check_if_favorite.php";
+    public static final String get_favorite_count="http://ben.trustworthy.co.kr/k-travel/get_favorite_count.php";
+
+    public static final String get_all_comments="http://ben.trustworthy.co.kr/k-travel/get_all_comments.php";
+    public static final String post_comments="http://ben.trustworthy.co.kr/k-travel/post_comment.php";
+
     public static final String goodStay="goodStay";
     public static final String hanok="hanOk";
     public static final String benikia="benikia";

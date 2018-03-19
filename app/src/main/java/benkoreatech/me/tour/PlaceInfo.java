@@ -1,14 +1,18 @@
 package benkoreatech.me.tour;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
@@ -36,8 +40,10 @@ import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import benkoreatech.me.tour.interfaces.placeInfoInterface;
 import benkoreatech.me.tour.objects.Constants;
@@ -46,12 +52,14 @@ import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.detailCommonItem;
 import benkoreatech.me.tour.objects.detailImageItem;
 import benkoreatech.me.tour.objects.detailIntroItem;
+import benkoreatech.me.tour.utils.Favorite_Volley;
 import benkoreatech.me.tour.utils.LanguageSharedPreference;
+import benkoreatech.me.tour.utils.SigninPreference;
 import benkoreatech.me.tour.utils.detailCommonVolley;
 import benkoreatech.me.tour.utils.detailImageVolley;
 import benkoreatech.me.tour.utils.detailIntroVolley;
 
-public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnMapReadyCallback {
+public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnMapReadyCallback,View.OnClickListener {
     Toolbar toolbar;
     TextView overview, title, direction, telephone, website, information_center, open_date, close_date, park_facility, available_season, available_time, experience_type, experience_age, accomcount;
     TextView used_time_culture, closed_date_culture, parking_facility, parking_fee, usefee, spendtime, scale, admitted_person, info_center;
@@ -72,6 +80,11 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     GoogleMap mMap;
     LatLng latLng;
     int code;
+    float [] Markercolors;
+    boolean isFavorite;
+    SigninPreference signinPreference;
+    Favorite_Volley favorite_volley;
+    ImageView favorite;
     LanguageSharedPreference languageSharedPreference;
     List<detailImageItem> detailImageItems = new ArrayList<>();
 
@@ -102,6 +115,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         super.onViewCreated(view, savedInstanceState);
         carouselView = (CarouselView) view.findViewById(R.id.carouselView);
         image = (ImageView) view.findViewById(R.id.image);
+        favorite=(ImageView) view.findViewById(R.id.favorite);
         detailImageVolley = new detailImageVolley(getActivity(), this);
         fairday = (TextView) view.findViewById(R.id.fairday);
         close = (ImageView) view.findViewById(R.id.close);
@@ -173,11 +187,16 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         stay = (RelativeLayout) view.findViewById(R.id.stay);
         mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map_location);
         mapFragment.getMapAsync(this);
+        signinPreference=new SigninPreference(getActivity());
+        favorite_volley=new Favorite_Volley(getActivity(),this);
         detailCommonVolley = new detailCommonVolley(getActivity(), this);
         detailIntroVolley = new detailIntroVolley(getActivity(), this);
         languageSharedPreference = new LanguageSharedPreference(getActivity());
         carouselView.setImageListener(imageListener);
 
+        Markercolors=new float[]{BitmapDescriptorFactory.HUE_RED,BitmapDescriptorFactory.HUE_ORANGE,BitmapDescriptorFactory.HUE_YELLOW,BitmapDescriptorFactory.HUE_GREEN,
+                BitmapDescriptorFactory.HUE_CYAN,BitmapDescriptorFactory.HUE_AZURE,BitmapDescriptorFactory.HUE_BLUE,BitmapDescriptorFactory.HUE_VIOLET,BitmapDescriptorFactory.HUE_MAGENTA,
+                BitmapDescriptorFactory.HUE_ROSE};
 
         String imageUrls = "http://api.visitkorea.or.kr/openapi/service/rest/" + languageSharedPreference.getLanguage() + "detailImage?serviceKey=9opMOuXLGj2h16CybYD9T5qTds4376qAZO4VG9qNuHKrm1d%2FfCPfUoBPDOkfQiZKB%2BidiHynuWwbnVUHgrinJw%3D%3D&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&contentId=";
         String URL = "http://api.visitkorea.or.kr/openapi/service/rest/" + languageSharedPreference.getLanguage() + "detailCommon?serviceKey=9opMOuXLGj2h16CybYD9T5qTds4376qAZO4VG9qNuHKrm1d%2FfCPfUoBPDOkfQiZKB%2BidiHynuWwbnVUHgrinJw%3D%3D&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&contentId=";
@@ -202,12 +221,8 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         detailCommonVolley.fetchData(URL);
         detailIntroVolley.fetchData(detailIntroURL);
 
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        close.setOnClickListener(this);
+        favorite.setOnClickListener(this);
     }
 
     public void setLocationInfo(String data) {
@@ -272,67 +287,77 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 id = areaBasedItem.getContenttypeid();
             }
             int Int_id = Integer.parseInt(id);
+            Log.d("HeroJongi"," Code "+Int_id);
             switch (Int_id) {
                 case 76:
-                    Log.d("HeroJongi", "Infocenter " + detailIntroItem.getInfocenter());
+//                    Log.d("HeroJongi", "Infocenter " + detailIntroItem.getInfocenter()+" open:  "+detailIntroItem.getOpendate()+"  closed "+detailIntroItem.getRestdate()
+//                    +" parking "+detailIntroItem.getParking()+" use "+detailIntroItem.getUseseason()+" use time "+detailIntroItem.getUsetime()+" exp age "+detailIntroItem.getEx);
                     tourist.setVisibility(View.VISIBLE);
-                    if (detailIntroItem.getInfocenter() != null && !detailIntroItem.getInfocenter().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getInfocenter() != null && !detailIntroItem.getInfocenter().equalsIgnoreCase(" ")) {
+                        information_center.setVisibility(View.VISIBLE);
                         String _information_center = "<b> Information Center:</b> <br/> <br/>" + detailIntroItem.getInfocenter();
                         SpannableString text = new SpannableString(Html.fromHtml(_information_center));
                         information_center.setText(text, TextView.BufferType.SPANNABLE);
                     } else {
                         information_center.setVisibility(View.GONE);
                     }
-                    if (detailIntroItem.getOpendate() != null && !detailIntroItem.getOpendate().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getOpendate() != null && !detailIntroItem.getOpendate().equalsIgnoreCase(" ")) {
+                        open_date.setVisibility(View.VISIBLE);
                         String openDate = "<b> Opening day: </b>" + detailIntroItem.getOpendate();
                         SpannableString text = new SpannableString(Html.fromHtml(openDate));
                         open_date.setText(text, TextView.BufferType.SPANNABLE);
                     } else {
                         open_date.setVisibility(View.GONE);
                     }
-                    if (detailIntroItem.getRestdate() != null && !detailIntroItem.getRestdate().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getRestdate() != null && !detailIntroItem.getRestdate().equalsIgnoreCase(" ")) {
+                        close_date.setVisibility(View.VISIBLE);
                         String ClosedDate = "<b> Closed day: </b>" + detailIntroItem.getRestdate();
                         SpannableString text = new SpannableString(Html.fromHtml(ClosedDate));
                         close_date.setText(text, TextView.BufferType.SPANNABLE);
                     } else {
                         close_date.setVisibility(View.GONE);
                     }
-                    if (detailIntroItem.getParking() != null && !detailIntroItem.getParking().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getParking() != null && !detailIntroItem.getParking().equalsIgnoreCase(" ")) {
+                        parking_facility.setVisibility(View.VISIBLE);
                         String ClosedDate = "<b> Parking Facility: </b>" + detailIntroItem.getParking();
                         SpannableString text = new SpannableString(Html.fromHtml(ClosedDate));
                         park_facility.setText(text, TextView.BufferType.SPANNABLE);
                     } else {
                         park_facility.setVisibility(View.GONE);
                     }
-                    if (detailIntroItem.getUseseason() != null && !detailIntroItem.getUseseason().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getUseseason() != null && !detailIntroItem.getUseseason().equalsIgnoreCase(" ")) {
+                        available_season.setVisibility(View.VISIBLE);
                         String availableseason = "<b> Available Season: </b>" + detailIntroItem.getUseseason();
                         SpannableString text = new SpannableString(Html.fromHtml(availableseason));
                         available_season.setText(text, TextView.BufferType.SPANNABLE);
                     } else {
                         available_season.setVisibility(View.GONE);
                     }
-                    if (detailIntroItem.getUsetime() != null && !detailIntroItem.getUsetime().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getUsetime() != null && !detailIntroItem.getUsetime().equalsIgnoreCase(" ")) {
                         String availabletime = "<b> Available Time: </b>" + detailIntroItem.getUsetime();
                         SpannableString text = new SpannableString(Html.fromHtml(availabletime));
                         available_time.setText(text, TextView.BufferType.SPANNABLE);
                     } else {
                         available_time.setVisibility(View.GONE);
                     }
-                    if (detailIntroItem.getExpagerange() != null && !detailIntroItem.getExpagerange().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getExpagerange() != null && !detailIntroItem.getExpagerange().equalsIgnoreCase(" ")) {
+                        experience_age.setVisibility(View.VISIBLE);
                         String experienceage = "<b> Experience age: </b>" + detailIntroItem.getExpagerange();
                         SpannableString text = new SpannableString(Html.fromHtml(experienceage));
                         experience_age.setText(text, TextView.BufferType.SPANNABLE);
                     } else {
                         experience_age.setVisibility(View.GONE);
                     }
-                    if (detailIntroItem.getExpguide() != null && !detailIntroItem.getExpguide().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getExpguide() != null && !detailIntroItem.getExpguide().equalsIgnoreCase(" ")) {
+                        experience_type.setVisibility(View.VISIBLE);
                         String experienceguide = "<b> Experience guide: </b>" + detailIntroItem.getExpguide();
                         SpannableString text = new SpannableString(Html.fromHtml(experienceguide));
                         experience_type.setText(text, TextView.BufferType.SPANNABLE);
                     } else {
                         experience_type.setVisibility(View.GONE);
                     }
-                    if (detailIntroItem.getAccomcount() != null && !detailIntroItem.getAccomcount().equalsIgnoreCase("")) {
+                    if (detailIntroItem.getAccomcount() != null && !detailIntroItem.getAccomcount().equalsIgnoreCase(" ")) {
+                        accomcount.setVisibility(View.VISIBLE);
                         String nbperson = "<b> Number of persons to be admitted: </b>" + detailIntroItem.getAccomcount();
                         SpannableString text = new SpannableString(Html.fromHtml(nbperson));
                         accomcount.setText(text, TextView.BufferType.SPANNABLE);
@@ -714,6 +739,18 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         }
     }
 
+    @Override
+    public void addToFavorite() {
+        isFavorite=true;
+        favorite.setBackgroundResource(R.drawable.starfull);
+    }
+
+    @Override
+    public void RemoveFromFavorite() {
+        isFavorite=false;
+        favorite.setBackgroundResource(R.drawable.star);
+    }
+
     ImageListener imageListener = new ImageListener() {
         @Override
         public void setImageForPosition(int position, ImageView imageView) {
@@ -776,36 +813,11 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
               latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()), Double.parseDouble(areaBasedItem.getMapx()));
               code = Integer.parseInt(areaBasedItem.getContenttypeid());
           }
+        float color=  Markercolors[new Random().nextInt(Markercolors.length)];
 
-           MarkerOptions markerOpts = new MarkerOptions().position(latLng);
-              if(code==76) {
-                  markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.nature));
-              }
-              else if(code==78){
-                  markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.culture));
-              }
-              else if(code==75){
-                  markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.sports));
-              }
-              else if(code==80){
-                  markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.home));
-              }
-              else if(code==79){
-                  markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.shopping));
-              }
-              else if(code==77){
-                  markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.car));
-              }
-              else if(code==82){
-                  markerOpts.icon(BitmapDescriptorFactory.fromResource(R.drawable.food));
-              }
-
-              mMap.addMarker(markerOpts);
-              CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(10).build();
-              //Zoom in and animate the
-              //
-              // camera.
-              mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.defaultMarker(color)));
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(10).build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
 
@@ -819,5 +831,49 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                     .remove(getFragmentManager().findFragmentById(R.id.map_location))
                     .commit();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.favorite:
+                if(!isFavorite) {
+                    String Url = Constants.add_to_favorite + "?name=" + signinPreference.getUserEmail();
+                    if (areaBasedItem != null) {
+                        Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle();
+                    } else if (locationBasedItem != null) {
+                        Url += "&mapX=" + locationBasedItem.getMapx() + "&mapY=" + locationBasedItem.getMapy() + "&contentTypeId=" + locationBasedItem.getContenttypeid() + "&title=" + locationBasedItem.getTitle();
+                    }
+                    Log.d("HeroJongi", "Add To Favorite URL is " + Url);
+                    favorite_volley.fetchData(Url, 0);
+                }
+                else{
+                  String Url=Constants.remove_favorite+"?name="+signinPreference.getUserEmail();
+                  if(areaBasedItem!=null){
+                     Url+="&title="+areaBasedItem.getTitle();
+                  }
+                  else if(locationBasedItem!=null){
+                      Url+="&title="+locationBasedItem.getTitle();
+                  }
+                    Log.d("HeroJongi", "Add To Favorite URL is " + Url);
+                    favorite_volley.fetchData(Url, 1);
+                }
+                break;
+            case R.id.close:
+                dismiss();
+                break;
+        }
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new Dialog(getActivity(), getTheme()){
+            @Override
+            public void onBackPressed() {
+                //do your stuff
+                Log.d("HeroJongi"," on back ");
+                dismiss();
+            }
+        };
     }
 }

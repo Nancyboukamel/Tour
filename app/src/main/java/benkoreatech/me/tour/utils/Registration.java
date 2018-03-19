@@ -38,7 +38,7 @@ public class Registration implements Response.Listener<String>,Response.ErrorLis
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 if(URL.equalsIgnoreCase(Constants.register)) {
-                    params.put("username", name);
+                    params.put("name", name);
                     params.put("email", email);
                     params.put("password", password);
                 }
@@ -54,6 +54,7 @@ public class Registration implements Response.Listener<String>,Response.ErrorLis
 
     @Override
     public void onResponse(String response) {
+        Log.d("HeroJongi"," Response "+response);
        try{
            JSONObject jObj = new JSONObject(response);
            boolean error = jObj.getBoolean("error");

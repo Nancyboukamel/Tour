@@ -25,13 +25,18 @@ public class SigninPreference {
         editor = pref.edit();
     }
 
-    public void isSignin(boolean isLogin){
+    public void isSignin(boolean isLogin,String email){
         editor.putBoolean("login",isLogin);
+        editor.putString("email",email);
         editor.apply();
     }
 
     public boolean getLogin(){
         return pref.getBoolean("login",false);
+    }
+
+    public String getUserEmail(){
+        return pref.getString("email","");
     }
 
 }

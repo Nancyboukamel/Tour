@@ -12,4 +12,6 @@ public interface placeInfoInterface {
     public void detailsIntro(detailIntroItem detailIntroItem);
     public void setImages(List<detailImageItem> detailImageItems);
     public void setImagesIfNoExist();
+    public void addToFavorite();
+    public void RemoveFromFavorite();
 }

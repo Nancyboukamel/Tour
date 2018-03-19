@@ -62,15 +62,27 @@
 
     <include layout="@layout/content_place_info" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="@dimen/margin_50"
-        android:layout_height="@dimen/margin_50"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/star_big_off"
-        app:backgroundTint="@color/colorPrimaryDark"
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@drawable/circle"
         app:fabSize="normal"
-        android:layout_marginRight="@dimen/margin_16"
+        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_anchor="@+id/appbar"
-        app:layout_anchorGravity="bottom|right|end"/>
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_toRightOf="@+id/boy_name"
+        android:layout_toEndOf="@+id/boy_name"
+        android:layout_marginEnd="@dimen/margin_10">
+
+        <ImageView
+            android:id="@+id/favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/star"
+            android:layout_margin="@dimen/fab_margin"
+            />
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
