@@ -46,12 +46,14 @@ import java.util.List;
 import java.util.Random;
 
 import benkoreatech.me.tour.interfaces.placeInfoInterface;
+import benkoreatech.me.tour.objects.Comments;
 import benkoreatech.me.tour.objects.Constants;
 import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.detailCommonItem;
 import benkoreatech.me.tour.objects.detailImageItem;
 import benkoreatech.me.tour.objects.detailIntroItem;
+import benkoreatech.me.tour.utils.CommentVolley;
 import benkoreatech.me.tour.utils.Favorite_Volley;
 import benkoreatech.me.tour.utils.LanguageSharedPreference;
 import benkoreatech.me.tour.utils.SigninPreference;
@@ -80,6 +82,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     GoogleMap mMap;
     LatLng latLng;
     int code;
+    CommentVolley commentVolley;
     float [] Markercolors;
     boolean isFavorite;
     SigninPreference signinPreference;
@@ -221,6 +224,16 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         detailCommonVolley.fetchData(URL);
         detailIntroVolley.fetchData(detailIntroURL);
 
+        commentVolley=new CommentVolley(getActivity(),this);
+        String url=Constants.get_all_comments+"?title=";
+        if(areaBasedItem!=null){
+            url+=areaBasedItem.getTitle();
+        }
+        else if(locationBasedItem!=null){
+            url+=locationBasedItem.getTitle();
+        }
+        commentVolley.fetchData(url);
+
         close.setOnClickListener(this);
         favorite.setOnClickListener(this);
     }
@@ -310,7 +323,8 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                         open_date.setVisibility(View.GONE);
                     }
                     if (detailIntroItem.getRestdate() != null && !detailIntroItem.getRestdate().equalsIgnoreCase(" ")) {
-                        close_date.setVisibility(View.VISIBLE);
+                        close_date
+                                .setVisibility(View.VISIBLE);
                         String ClosedDate = "<b> Closed day: </b>" + detailIntroItem.getRestdate();
                         SpannableString text = new SpannableString(Html.fromHtml(ClosedDate));
                         close_date.setText(text, TextView.BufferType.SPANNABLE);
@@ -749,6 +763,11 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     public void RemoveFromFavorite() {
         isFavorite=false;
         favorite.setBackgroundResource(R.drawable.star);
+    }
+
+    @Override
+    public void setListofComments(List<Comments> comments) {
+
     }
 
     ImageListener imageListener = new ImageListener() {

@@ -3,6 +3,7 @@ package benkoreatech.me.tour.interfaces;
 
 import java.util.List;
 
+import benkoreatech.me.tour.objects.Comments;
 import benkoreatech.me.tour.objects.detailCommonItem;
 import benkoreatech.me.tour.objects.detailImageItem;
 import benkoreatech.me.tour.objects.detailIntroItem;
@@ -14,4 +15,5 @@ public interface placeInfoInterface {
     public void setImagesIfNoExist();
     public void addToFavorite();
     public void RemoveFromFavorite();
+    public void setListofComments(List<Comments> comments);
 }
