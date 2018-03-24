@@ -62,7 +62,12 @@ public class Favorite_Volley implements Response.Listener<JSONArray>,Response.Er
                     placeInfoInterface.RemoveFromFavorite();
                 }
             }
-
+            else if(message.equalsIgnoreCase("exists")){
+                placeInfoInterface.addToFavorite();
+            }
+            else if(message.equalsIgnoreCase("not exists")){
+                placeInfoInterface.RemoveFromFavorite();
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();

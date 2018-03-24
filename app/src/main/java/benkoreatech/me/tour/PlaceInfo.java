@@ -13,6 +13,10 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
@@ -21,7 +25,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.support.v4.app.DialogFragment;
@@ -41,10 +49,18 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import benkoreatech.me.tour.adapter.CommentsAdapter;
 import benkoreatech.me.tour.interfaces.placeInfoInterface;
 import benkoreatech.me.tour.objects.Comments;
 import benkoreatech.me.tour.objects.Constants;
@@ -82,6 +98,11 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     GoogleMap mMap;
     LatLng latLng;
     int code;
+    EditText title_comment,comment;
+    RatingBar ratingBar_comment;
+    Button add_ur_comment;
+    RecyclerView recyclerView_comments;
+    CommentsAdapter commentsAdapter;
     CommentVolley commentVolley;
     float [] Markercolors;
     boolean isFavorite;
@@ -103,6 +124,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_place_info, container, false);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return v;
     }
 
@@ -188,6 +210,11 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         culture = (RelativeLayout) view.findViewById(R.id.culture);
         sports = (RelativeLayout) view.findViewById(R.id.sports);
         stay = (RelativeLayout) view.findViewById(R.id.stay);
+        add_ur_comment=(Button) view.findViewById(R.id.add_your_comment);
+        title_comment=(EditText) view.findViewById(R.id.comment_title);
+        comment=(EditText) view.findViewById(R.id.comment_comment);
+        ratingBar_comment=(RatingBar) view.findViewById(R.id.comment_rating);
+        recyclerView_comments=(RecyclerView) view.findViewById(R.id.comments);
         mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map_location);
         mapFragment.getMapAsync(this);
         signinPreference=new SigninPreference(getActivity());
@@ -196,6 +223,16 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         detailIntroVolley = new detailIntroVolley(getActivity(), this);
         languageSharedPreference = new LanguageSharedPreference(getActivity());
         carouselView.setImageListener(imageListener);
+        // here we are checking if its already added to favorite or not
+        // we prepare url + parameters and send api call (favorite volley)
+        String url_Check_if_favorite="";
+        if(locationBasedItem!=null){
+            url_Check_if_favorite=Constants.check_if_favorite+"?name="+signinPreference.getUserEmail()+"&title="+locationBasedItem.getTitle().trim();
+        }
+        else if(areaBasedItem!=null){
+            url_Check_if_favorite=Constants.check_if_favorite+"?name="+signinPreference.getUserEmail()+"&title="+areaBasedItem.getTitle().trim();
+        }
+        favorite_volley.fetchData(url_Check_if_favorite,3);
 
         Markercolors=new float[]{BitmapDescriptorFactory.HUE_RED,BitmapDescriptorFactory.HUE_ORANGE,BitmapDescriptorFactory.HUE_YELLOW,BitmapDescriptorFactory.HUE_GREEN,
                 BitmapDescriptorFactory.HUE_CYAN,BitmapDescriptorFactory.HUE_AZURE,BitmapDescriptorFactory.HUE_BLUE,BitmapDescriptorFactory.HUE_VIOLET,BitmapDescriptorFactory.HUE_MAGENTA,
@@ -225,18 +262,14 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         detailIntroVolley.fetchData(detailIntroURL);
 
         commentVolley=new CommentVolley(getActivity(),this);
-        String url=Constants.get_all_comments+"?title=";
-        if(areaBasedItem!=null){
-            url+=areaBasedItem.getTitle();
-        }
-        else if(locationBasedItem!=null){
-            url+=locationBasedItem.getTitle();
-        }
-        commentVolley.fetchData(url);
+
+        fetchPlaceComments();
 
         close.setOnClickListener(this);
         favorite.setOnClickListener(this);
+        add_ur_comment.setOnClickListener(this);
     }
+
 
     public void setLocationInfo(String data) {
         if (data != null) {
@@ -767,7 +800,47 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
 
     @Override
     public void setListofComments(List<Comments> comments) {
+        Collections.sort(comments, new Comparator<Comments>() {
+            @Override
+            public int compare(Comments o1, Comments o2) {
+                SimpleDateFormat  format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+                int compare=0;
+                try {
+                    Date date1 = format.parse(o1.getDate());
+                    Date date2=format.parse(o2.getDate());
+                    compare= date2.compareTo(date1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return compare;
+            }
+        });
+        if(commentsAdapter==null) {
+            commentsAdapter = new CommentsAdapter(comments, getActivity());
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), OrientationHelper.VERTICAL, false);
+            recyclerView_comments.setLayoutManager(linearLayoutManager);
+            recyclerView_comments.setItemAnimator(new DefaultItemAnimator());
+            recyclerView_comments.setAdapter(commentsAdapter);
+        }
+        else{
+            commentsAdapter.Refresh(comments);
+        }
+    }
 
+    @Override
+    public void fetchPlaceComments() {
+        String url=Constants.get_all_comments;
+        comment.setText("");
+        title_comment.setText("");
+        ratingBar_comment.setRating(0);
+        if(areaBasedItem!=null){
+            url+="?mapX="+areaBasedItem.getMapx()+"&mapY="+areaBasedItem.getMapy();
+        }
+        else if(locationBasedItem!=null){
+            url+="?mapX="+locationBasedItem.getMapx()+"&mapY="+locationBasedItem.getMapy();
+        }
+        Log.d("HeroJongi"," URL get comments "+url);
+        commentVolley.fetchData(url,1);
     }
 
     ImageListener imageListener = new ImageListener() {
@@ -846,18 +919,35 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         Log.d("HeroJongi"," on stop");
         if(mMap!=null){
             mapFragment.onDestroyView();
-            getFragmentManager().beginTransaction()
-                    .remove(getFragmentManager().findFragmentById(R.id.map_location))
-                    .commit();
         }
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
+            case R.id.add_your_comment:
+                String Comment=comment.getText().toString();
+                String commentTitle=title_comment.getText().toString();
+                String rating=String.valueOf(ratingBar_comment.getRating());
+                Date currentTime = Calendar.getInstance().getTime();
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+                String today = formatter.format(currentTime);
+                String mapX="",mapY="";
+                if(areaBasedItem!=null){
+                    mapX=areaBasedItem.getMapx();
+                    mapY=areaBasedItem.getMapy();
+                }
+                else if(locationBasedItem!=null){
+                    mapX=locationBasedItem.getMapx();
+                    mapY=locationBasedItem.getMapy();
+                }
+                String url=Constants.post_comment+"?name="+signinPreference.getUserEmail()+"&date="+today+"&commentTitle="+commentTitle+"&comment="+Comment+"&rate="+rating+"&mapX="+mapX+"&mapY="+mapY;
+               Log.d("HeroJongi","here url post comment "+url);
+                commentVolley.fetchData(url,2);
+                break;
             case R.id.favorite:
                 if(!isFavorite) {
-                    String Url = Constants.add_to_favorite + "?name=" + signinPreference.getUserEmail();
+                    String Url = Constants.add_to_favorite + "name=" + signinPreference.getUserEmail();
                     if (areaBasedItem != null) {
                         Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle();
                     } else if (locationBasedItem != null) {

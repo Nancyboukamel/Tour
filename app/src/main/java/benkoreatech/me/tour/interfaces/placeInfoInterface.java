@@ -16,4 +16,5 @@ public interface placeInfoInterface {
     public void addToFavorite();
     public void RemoveFromFavorite();
     public void setListofComments(List<Comments> comments);
+    public void fetchPlaceComments();
 }

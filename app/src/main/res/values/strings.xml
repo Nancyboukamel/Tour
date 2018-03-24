@@ -31,4 +31,9 @@
     <string name="title_activity_place_info">PlaceInfo</string>
     <string name="additional_info">Additional Information:</string>
     <string name="signout">Signout</string>
+    <string name="comments">Comments</string>
+    <string name="add_ur_comment">Add your comment</string>
+    <string name="title">Title</string>
+    <string name="review">Write a short review</string>
+    <string name="comment">Tell us what you think...</string>
 </resources>

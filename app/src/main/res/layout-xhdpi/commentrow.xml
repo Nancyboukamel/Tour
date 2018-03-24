@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_size_15"
+        android:textStyle="bold"/>
+
+    <RatingBar
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_5"
+        android:numStars="5"
+        android:layout_below="@+id/username"/>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/rating"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_12"
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_below="@+id/username"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rating"
+        android:layout_margin="@dimen/margin_10"
+        android:textStyle="bold"
+        android:textColor="@color/bronze"
+        android:textSize="@dimen/text_size_15"/>
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:textSize="@dimen/text_size_12"
+        android:textColor="@color/colorPrimary" />
+
+</RelativeLayout>

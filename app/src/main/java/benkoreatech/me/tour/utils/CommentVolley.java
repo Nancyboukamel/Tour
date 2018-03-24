@@ -38,7 +38,8 @@ public class CommentVolley implements Response.Listener<JSONObject>,Response.Err
     }
 
 
-    public void fetchData(final String URL){
+    public void fetchData(final String URL,int status){
+        this.status=status;
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, URL, null,this,this);
         requestQueue.add(request);
 
@@ -53,12 +54,19 @@ public class CommentVolley implements Response.Listener<JSONObject>,Response.Err
     public void onResponse(JSONObject response) {
         Log.d("HeroJongi", " response comments " + response);
         if (response != null) {
+            if(status==1) {
                 Gson gson = new Gson();
                 CommentList commentList = gson.fromJson(String.valueOf(response), CommentList.class);
                 List<Comments> comments = commentList.getItem();
-                if(placeInfoInterface!=null){
+                if (placeInfoInterface != null) {
                     placeInfoInterface.setListofComments(comments);
                 }
+            }
+            else if(status==2){
+              if(placeInfoInterface!=null){
+                  placeInfoInterface.fetchPlaceComments();
+              }
+            }
 
         }
     }
