@@ -3,6 +3,8 @@ package benkoreatech.me.tour;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -17,12 +19,12 @@ import benkoreatech.me.tour.utils.Registration;
 import benkoreatech.me.tour.utils.SigninPreference;
 
 // we implement the interface here and it contain 2 methods
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,RegistrationSuccess {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,RegistrationSuccess,View.OnFocusChangeListener {
 
     RelativeLayout tick;
     EditText email,password;
     String Email,Password;
-    TextView signup;
+    TextView signup,loginfail;
     SigninPreference signinPreference;
 
     @Override
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         email=(EditText) findViewById(R.id.email);
         password=(EditText) findViewById(R.id.password);
         signup=(TextView) findViewById(R.id.signup);
+        loginfail=(TextView) findViewById(R.id.loginfail);
         signinPreference=new SigninPreference(this);
         tick.setOnClickListener(this);
         signup.setOnClickListener(this);
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent=new Intent(this,MapsActivity.class);
             startActivity(intent);
         }
+        email.setOnFocusChangeListener(this);
+        password.setOnFocusChangeListener(this);
+
     }
 
     @Override
@@ -94,9 +100,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLoginSuccess() {
+        loginfail.setVisibility(View.GONE);
         Intent intent=new Intent(this,MapsActivity.class);
         startActivity(intent);
         signinPreference.isSignin(true,email.getText().toString());
 
+    }
+
+    @Override
+    public void onLoginFail() {
+        loginfail.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()){
+            case R.id.email :
+                loginfail.setVisibility(View.GONE);
+                break;
+            case R.id.password:
+                loginfail.setVisibility(View.GONE);
+                break;
+
+        }
     }
 }

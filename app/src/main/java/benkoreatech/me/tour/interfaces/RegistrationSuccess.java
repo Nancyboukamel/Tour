@@ -8,4 +8,7 @@ public interface RegistrationSuccess {
 
     // when you login
     public void onLoginSuccess();
+
+    // when login fail
+    public void onLoginFail();
 }

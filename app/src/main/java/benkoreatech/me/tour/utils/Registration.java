@@ -54,30 +54,30 @@ public class Registration implements Response.Listener<String>,Response.ErrorLis
 
     @Override
     public void onResponse(String response) {
-        Log.d("HeroJongi"," Response "+response);
-       try{
-           JSONObject jObj = new JSONObject(response);
-           boolean error = jObj.getBoolean("error");
-           if (!error) {
-               // registration success
-               if(registrationSuccess!=null){
-                   if(URL.equalsIgnoreCase(Constants.register)) {
-                       registrationSuccess.onRegistrationSuccess();
-                   }
-                   else if(URL.equalsIgnoreCase(Constants.login)){
-                       registrationSuccess.onLoginSuccess();
-                   }
-               }
+        Log.d("HeroJongi", " Response " + response+" "+response.contains("error"));
+            try {
+                JSONObject jObj = new JSONObject(response);
+                boolean error = jObj.getBoolean("error");
+                if (!error) {
+                    // registration success
+                    if (registrationSuccess != null) {
+                        if (URL.equalsIgnoreCase(Constants.register)) {
+                            registrationSuccess.onRegistrationSuccess();
+                        } else if (URL.equalsIgnoreCase(Constants.login)) {
+                            registrationSuccess.onLoginSuccess();
+                        }
+                    }
+                } else {
+           if(registrationSuccess!=null){
+               registrationSuccess.onLoginFail();
            }
-           else{
-               // registration failed
-           }
-       }
-       catch (JSONException exception){
-         Log.d("HeroJongi"," error "+exception.getMessage());
+                }
+            } catch (JSONException exception) {
+                Log.d("HeroJongi", " error " + exception.getMessage());
 
-       }
-    }
+            }
+        }
+
 
     @Override
     public void onErrorResponse(VolleyError error) {

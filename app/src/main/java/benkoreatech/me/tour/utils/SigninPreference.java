@@ -28,6 +28,7 @@ public class SigninPreference {
     public void isSignin(boolean isLogin,String email){
         editor.putBoolean("login",isLogin);
         editor.putString("email",email);
+       // editor.putString("username",username);
         editor.apply();
     }
 
@@ -37,6 +38,10 @@ public class SigninPreference {
 
     public String getUserEmail(){
         return pref.getString("email","");
+    }
+
+    public String getUserName(){
+        return pref.getString("username","");
     }
 
 }
