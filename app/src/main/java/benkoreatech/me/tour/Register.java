@@ -49,10 +49,10 @@ public class Register extends AppCompatActivity implements RegistrationSuccess{
     }
 
     public void signUp(){
-        String Username=username.getText().toString();
-        String Password=password.getText().toString();
-        String Confirm_Password=confirm_password.getText().toString();
-        String Email=email.getText().toString();
+        String Username=username.getText().toString().trim();
+        String Password=password.getText().toString().trim();
+        String Confirm_Password=confirm_password.getText().toString().trim();
+        String Email=email.getText().toString().trim();
         if(VerifySignup(Username,Password,Confirm_Password,Email)){
             // http call to post data then go to sign in page
             Registration registration=new Registration(this);

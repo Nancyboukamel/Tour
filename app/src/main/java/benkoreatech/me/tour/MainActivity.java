@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public boolean CheckSignin(){
-        Email =email.getText().toString();
-        Password=password.getText().toString();
+        Email =email.getText().toString().trim();
+        Password=password.getText().toString().trim();
         if (Email == null || Email.equalsIgnoreCase("")) {
             email.setError(getResources().getString(R.string.enter_email));
             return false;
