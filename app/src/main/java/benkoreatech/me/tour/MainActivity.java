@@ -18,7 +18,6 @@ import benkoreatech.me.tour.objects.Constants;
 import benkoreatech.me.tour.utils.Registration;
 import benkoreatech.me.tour.utils.SigninPreference;
 
-// we implement the interface here and it contain 2 methods
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,RegistrationSuccess,View.OnFocusChangeListener {
 
     RelativeLayout tick;
@@ -31,18 +30,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // any view we need to get it by (findViewById)
         tick=(RelativeLayout) findViewById(R.id.tick);
         email=(EditText) findViewById(R.id.email);
         password=(EditText) findViewById(R.id.password);
         signup=(TextView) findViewById(R.id.signup);
         loginfail=(TextView) findViewById(R.id.loginfail);
+        // Sign in preference storage to save username and email of user and if its login or not ( Shared Preference )
         signinPreference=new SigninPreference(this);
+        // if we click on tick or sign up then go to OnClick
         tick.setOnClickListener(this);
         signup.setOnClickListener(this);
+        // if the user is already login just open Maps activity
         if(signinPreference.getLogin()){
             Intent intent=new Intent(this,MapsActivity.class);
             startActivity(intent);
         }
+        // If we got login error in order to remove the login error text we listen for focus of edit text so it gonna be clear
         email.setOnFocusChangeListener(this);
         password.setOnFocusChangeListener(this);
 
@@ -51,12 +55,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            // when we click on Tick we check if user exist by api call if yes go to maps activity if no just return error
             case R.id.tick:
                 if(CheckSignin()){
+                    // declaration of class
                     Registration registration=new Registration(this);
+                    // passing email password and URl from Constant class
                     registration.register(null,Email,Password, Constants.login);
                 }
                 break;
+            // when we click on sign up open Register activity
             case R.id.signup:
                 Intent intent=new Intent(MainActivity.this,Register.class);
                 startActivity(intent);
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public boolean CheckSignin(){
+        // check if edit text is null or empty. If yes return error else do nothing
         Email =email.getText().toString().trim();
         Password=password.getText().toString().trim();
         if (Email == null || Email.equalsIgnoreCase("")) {
@@ -87,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public static boolean isEmailValid(String email) {
+        // checking if email is valid using regex expression
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
@@ -100,8 +110,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLoginSuccess(String name) {
+        // if user login success then savw email name and is Login boolean true in shared preference
         loginfail.setVisibility(View.GONE);
         signinPreference.isSignin(true,Email,name);
+        // open Maps activity
         Intent intent=new Intent(this,MapsActivity.class);
         startActivity(intent);
 
@@ -115,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()){
+            // when we focus we hide (login error)
             case R.id.email :
                 loginfail.setVisibility(View.GONE);
                 break;

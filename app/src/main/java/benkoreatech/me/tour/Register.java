@@ -18,6 +18,8 @@ import benkoreatech.me.tour.interfaces.RegistrationSuccess;
 import benkoreatech.me.tour.objects.Constants;
 import benkoreatech.me.tour.utils.Registration;
 
+// Sign up activity
+
 public class Register extends AppCompatActivity implements RegistrationSuccess{
     EditText username,password,confirm_password,email;
     RelativeLayout signup;
@@ -26,12 +28,14 @@ public class Register extends AppCompatActivity implements RegistrationSuccess{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
+        // declaration of views
         username=(EditText) findViewById(R.id.username);
         password=(EditText) findViewById(R.id.password);
         confirm_password=(EditText) findViewById(R.id.confirm_password);
         email=(EditText) findViewById(R.id.email);
         signup=(RelativeLayout) findViewById(R.id.signup);
         already_have_account=(TextView) findViewById(R.id.already_have_account);
+        // when we click signup we call sign up method
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +45,7 @@ public class Register extends AppCompatActivity implements RegistrationSuccess{
         already_have_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // if user has already an account then open main activity to login
                 Intent intent=new Intent(Register.this,MainActivity.class);
                 startActivity(intent);
             }
@@ -49,12 +54,14 @@ public class Register extends AppCompatActivity implements RegistrationSuccess{
     }
 
     public void signUp(){
+        // get the values from edit text then check if its null or empty for each value ( Verify Sign Up)
         String Username=username.getText().toString().trim();
         String Password=password.getText().toString().trim();
         String Confirm_Password=confirm_password.getText().toString().trim();
         String Email=email.getText().toString().trim();
         if(VerifySignup(Username,Password,Confirm_Password,Email)){
             // http call to post data then go to sign in page
+            // if everything ok make api call to post these parameter and save in database
             Registration registration=new Registration(this);
             registration.register(Username,Email,Password, Constants.register);
         }
@@ -100,6 +107,7 @@ public class Register extends AppCompatActivity implements RegistrationSuccess{
        return true;
     }
 
+    // if email is valid
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
@@ -107,6 +115,7 @@ public class Register extends AppCompatActivity implements RegistrationSuccess{
         return matcher.matches();
     }
 
+    // on registration success go to main activity
     @Override
     public void onRegistrationSuccess() {
         Intent intent=new Intent(Register.this,MainActivity.class);

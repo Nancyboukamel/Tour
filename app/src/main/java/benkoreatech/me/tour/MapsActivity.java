@@ -824,6 +824,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+        ZoomtoMyCurrentLocation();
     }
 
     @Override
