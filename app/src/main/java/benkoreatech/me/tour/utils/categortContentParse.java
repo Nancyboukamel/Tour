@@ -53,12 +53,15 @@ public class categortContentParse implements Response.Listener<JSONObject>,Respo
             try {
                 categoryCode categoryCode = gson.fromJson(String.valueOf(response), categoryCode.class);
                 List<categoryItem> categoryItems = categoryCode.getResponse().getBody().getItems().getItem();
+                //
                 if(status==1) {
                     categoryInterface.BigCategory(categoryItems, code);
                 }
+                // cat 1  available
                 else if(status==2){
                     categoryInterface.MediumCategory(categoryItems,code);
                 }
+                // cat 1 , cat2 available
                 else if(status==3){
                     categoryInterface.SmallCategory(categoryItems,code);
                 }

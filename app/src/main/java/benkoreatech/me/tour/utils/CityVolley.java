@@ -49,10 +49,12 @@ public class CityVolley implements Response.Listener<JSONObject>,Response.ErrorL
             try {
                 areaCode areaCode = gson.fromJson(String.valueOf(response), areaCode.class);
                 List<Item> itemListsub = areaCode.getResponse().getBody().getItems().getItem();
+                // get sub cities and fill them
                 tourSettings.FillSubCity(itemListsub, item);
             }
             catch (Exception exception){
                 try {
+                    // if an error appear then it may be a json object contain 1 item not json array so fetch it like that
                     JSONObject items=response.getJSONObject("response").getJSONObject("body").getJSONObject("items");
                     JSONObject items1=items.getJSONObject("item");
                     Item _item=gson.fromJson(String.valueOf(items1),Item.class);

@@ -97,46 +97,49 @@ import benkoreatech.me.tour.utils.areaBasedListVolley;
 import benkoreatech.me.tour.utils.categortContentParse;
 import benkoreatech.me.tour.utils.detailImageVolley;
 
+// The map activity
+
 public class MapsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,LocationListener,View.OnClickListener,OnMapReadyCallback,TourSettings,TabLayout.OnTabSelectedListener,categoryInterface{
 
-    private static final int PERMISSION_LOCATION_REQUEST_CODE = 100;
-    private GoogleMap mMap;
-    VolleyApi volleyApi;
-    CityVolley cityVolley;
-    TourSettings tourSettings=this;
-    private DrawerLayout mDrawerLayout;
+
+    private static final int PERMISSION_LOCATION_REQUEST_CODE = 100; // permission integer to differentiate between granted permissions
+    private GoogleMap mMap; // Google map
+    VolleyApi volleyApi;  // volley api is used to fetch area codes
+    CityVolley cityVolley; // city volley to fetch cities of every area code obtained in volley api
+    TourSettings tourSettings=this; // Interface with 3 abstract methods to connect 2 independent class together
+    private DrawerLayout mDrawerLayout; // Drawer layout for right navigation
     private ActionBarDrawerToggle mDrawerToggle;
-    private ExpandableListView mCityList;
-    private CityExpandableListView cityExpandableListView;
-    Map<String, List<Item>> cityListData = new TreeMap<>();
-    List<Item> itemsAreaCode=new ArrayList<>();
-    LocationPreference locationPreference;
+    private ExpandableListView mCityList; // Expandable list view because its 2 levels ex Seoul then when you open seoul you gonna see ( Youngsan, Itaewon...)
+    private CityExpandableListView cityExpandableListView; // BaseExpandableListAdapter for the right menu ( adapter )
+    Map<String, List<Item>> cityListData = new TreeMap<>();  // map with key string ex (seoul) anf List< Item > that is array list of all cities in seoul like youngsan ...
+    List<Item> itemsAreaCode=new ArrayList<>(); // Item is a class with getters and setters method that contain name of area ex : youngsan and code 1123
+    LocationPreference locationPreference; // Shared preference to store which place is picked by user so you wanna query according to the user choice ( example in dong-gu, daegu city --> areaCode=4&sigunguCode=4
     private int lastCityExpandedPosition=-1;
-    TabLayout toolbar;
-    ViewPager viewPager;
-    SlidingLayer slidingLayer2;
-    SlidingLayer rightMenu;
-    Marker clickedMarker;
-    Menu menu;
-    ImageView myLocation;
-    LanguageSharedPreference languageSharedPreference;
-    RelativeLayout activity_controller;
-    SupportMapFragment mapFragment;
-    RecyclerView list_view;
-    categortContentParse categortContentParse;
-    areaBasedListVolley areaBasedListVolley;
-    GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
-    private LocationRequest mLocationRequest;
-    LocationListener locationListener = this;
-    SigninPreference signinPreference;
-    public static final int Access_Location = 70;
+    TabLayout toolbar; // Tab layout ( Bottom menu for choosing : shopping, nature..)
+    ViewPager viewPager; // Viewer pager ( Bottom menu for choosing : shopping, nature ..)
+    SlidingLayer slidingLayer2; // Sliding Layer ( External library for bottom menu
+    SlidingLayer rightMenu;// Sliding Layer ( External library for right menu
+    Marker clickedMarker; // Marker " pin "
+    Menu menu; // Menu where we put search icon and settings ( Sign out/ Map / List ..)
+    ImageView myLocation;//Image View
+    LanguageSharedPreference languageSharedPreference; // Language Shared Preference to save the language of device in order to query according to language
+    RelativeLayout activity_controller; // Relative layout
+    SupportMapFragment mapFragment; // Support map fragment for map
+    RecyclerView list_view; // Recycler View
+    categortContentParse categortContentParse; // Volley class to fetch the list of category codes according to cat 1, cat2 and cat3
+    areaBasedListVolley areaBasedListVolley; // Volley class to get all places according to category code in specific area ( ex: resturant in myeongdong)
+    GoogleApiClient mGoogleApiClient; // Google api client used to get current location and for tracking location ( GPS)
+    private Location mLastLocation; // Last location known
+    private LocationRequest mLocationRequest; // Location request
+    LocationListener locationListener = this; // location listener interface to track location (onLocationchanged ...)
+    SigninPreference signinPreference; // Sign in shared preference that contain user name and email of signed user used for logout and  query Urls according to specific user
+    public static final int Access_Location = 70;  // Acccess location permission type
     // Location updates intervals in sec
-    float [] Markercolors;
-    private static int UPDATE_INTERVAL = 60 * 1000; // 1min
+    float [] Markercolors; // Marker colors array to choose random color for pin
+    private static int UPDATE_INTERVAL = 60 * 1000; // 1min update interval for location change
 
 
-
+    // list of drawables for bottom menu
     private int[] tabIcons = {
             R.drawable.nature,
             R.drawable.culture,
@@ -147,6 +150,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
             R.drawable.home
     };
 
+    // Since we have 7 tabs in bottom menu then we need 7 fragments but since all fragment in this case will handle same code i use single fragment with 7 instances
     ContentType nature,culture,leisure,shopping,cuisine,transportation,accomendation;
 
     @Override
@@ -155,10 +159,14 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        // listener for map to know when its prepared and work
         mapFragment.getMapAsync(this);
+        // declaring volley class by passing context and interface as parameters
         volleyApi=new VolleyApi(this,tourSettings);
         cityVolley=new CityVolley(this,tourSettings);
+        // declaring shared preference
         locationPreference=new LocationPreference(this);
+        // declaring views
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toolbar=(TabLayout) findViewById(R.id.tabs);
         mCityList=(ExpandableListView) findViewById(R.id.city);
@@ -167,32 +175,40 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         rightMenu=(SlidingLayer) findViewById(R.id.rightmenu);
         list_view=(RecyclerView) findViewById(R.id.list_view);
         myLocation=(ImageView) findViewById(R.id.mylocation);
-        signinPreference=new SigninPreference(this);
         activity_controller=(RelativeLayout) findViewById(R.id.activity_controller);
-        categortContentParse=new categortContentParse(this,this);
-        areaBasedListVolley=new areaBasedListVolley(this,this);
-        languageSharedPreference=new LanguageSharedPreference(this);
+        // S ign in shared preference declaration
+        signinPreference=new SigninPreference(this);
+        categortContentParse=new categortContentParse(this,this); // category content parse volley class
+        areaBasedListVolley=new areaBasedListVolley(this,this); // area based list volley declaration
+        languageSharedPreference=new LanguageSharedPreference(this); // language shared preference declaration
 
+        // filling the array of marker colors for random selection
         Markercolors=new float[]{BitmapDescriptorFactory.HUE_RED,BitmapDescriptorFactory.HUE_ORANGE,BitmapDescriptorFactory.HUE_YELLOW,BitmapDescriptorFactory.HUE_GREEN,
         BitmapDescriptorFactory.HUE_CYAN,BitmapDescriptorFactory.HUE_AZURE,BitmapDescriptorFactory.HUE_BLUE,BitmapDescriptorFactory.HUE_VIOLET,BitmapDescriptorFactory.HUE_MAGENTA,
         BitmapDescriptorFactory.HUE_ROSE};
 
+        // get the tool bar
         android.support.v7.app.ActionBar ab = getSupportActionBar();
         if(ab!=null) {
-            ab.setTitle("");
+            ab.setTitle(""); // set tool bar title to empty
         }
+        // get the default language from the phone
         String language= Locale.getDefault().getLanguage();
+        // save this language in shared preference
         languageSharedPreference.save_language(language);
+        // myLocation on click listener to listen for click when we need current location
         myLocation.setOnClickListener(this);
-        setupDrawer();
-        getCitiesData();
-        setupViewPager(viewPager);
-        toolbar.setupWithViewPager(viewPager);
-        setupTabIcons();
-        toolbar.addOnTabSelectedListener(this);
-        buildGoogleApiClient();
-       createLocationRequest();
-        int code=76;
+        setupDrawer(); // set up the drawer of right menu
+        getCitiesData(); // get cities data in order to fill right menu
+        setupViewPager(viewPager); // set up view pager for bottom menu
+        toolbar.setupWithViewPager(viewPager); // set the tab layout with viewer pager
+        setupTabIcons(); // set up the default tab icons
+        toolbar.addOnTabSelectedListener(this); // tab on click listener in bottom menu
+        buildGoogleApiClient(); // build the google api client
+        createLocationRequest();
+        // Here i do api call upon on Create to fill the nature spinner so i will not get empty one
+        int code=76; // nature
+        // I prepare the Url to fetch the nature category code
         String categoryCodeURL = Constants.base_url+languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
         categortContentParse.fetchData(categoryCodeURL,code,1);
 
@@ -206,6 +222,8 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // handle deny case
             } else {
+                // if we already grant the fine location and coarse location permission we call for location update request
+                // note that in Version M and up api 23 and up phone we have to grant or deny permission in phone with smaller version permissions is granted by default
                 requestLocationUpdate();
             }
         }
@@ -215,7 +233,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
 
-
+// set tab icons of bottom menu
     private void setupTabIcons() {
         toolbar.getTabAt(0).setIcon(tabIcons[0]);
         toolbar.getTabAt(1).setIcon(tabIcons[1]);
@@ -226,11 +244,12 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         toolbar.getTabAt(6).setIcon(tabIcons[6]);
     }
 
-
+   // set viewer pager
     private void setupViewPager(ViewPager viewPager) {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+        // declraing the fragments
         nature=new ContentType();
         culture=new ContentType();
         leisure=new ContentType();
@@ -239,6 +258,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
        transportation=new ContentType();
         accomendation=new ContentType();
 
+        // adding the fragments to adapter
         adapter.addFragment(nature, "");
         adapter.addFragment(culture, "");
         adapter.addFragment(leisure, "");
@@ -246,9 +266,11 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         adapter.addFragment(cuisine,"");
         adapter.addFragment(transportation,"");
         adapter.addFragment(accomendation,"");
+        // populating the viewer pager with the adapter
         viewPager.setAdapter(adapter);
     }
 
+    // set up drawer  of left menu ( Areas )
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
 
@@ -267,6 +289,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    // on Drawer Toggle : On drawer close and on Drawer open listerner
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -274,6 +297,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         mDrawerToggle.syncState();
     }
 
+    // on configuration changed
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -281,35 +305,46 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
+    // when the map is ready
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        mMap = googleMap; // we reference mMap to google map in order to user a public variable
+
+        // checking if permission of access fine location and coarse location is granted or not
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            googleMap.setMyLocationEnabled(true);
-            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+            googleMap.setMyLocationEnabled(true); // enable my location
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false); // set my location button to invisible because i dont want to use the default icon
         } else {
+            // if permission not granted then you have to request this permission in M devices.
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
         }
+        // when we click the info window for a marker listener
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
+                // we get the tag of the clicked marker
                 InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
+                // if the tag is not null or its location based data is not null
                 if(infoWindowData!=null && infoWindowData.getLocationBasedData()!=null) {
+                    // we get the string data from this info window and we pass it to the dialog fragment as a parameter to later transform it using gson
                     final String data = infoWindowData.getLocationBasedData();
+                    // Here how we open a dialog fragment from activity
                     FragmentManager fm = getSupportFragmentManager();
                     PlaceInfo placeInfo = PlaceInfo.newInstance("Some Title");
                     placeInfo.setStyle(android.app.DialogFragment.STYLE_NO_TITLE, R.style.MyTheme);
-                    placeInfo.setLocationInfo(data);
+                    placeInfo.setLocationInfo(data); // we pass the data string to Place Info dialog fragment
                     placeInfo.show(fm, "activity_place_info");
                 }
 
             }
         });
+         // when we click on marker on map
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                clickedMarker=marker;
+                clickedMarker=marker; // the clicked marker keep reference to it
+                // animate the camera to this marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().bearing(30).zoom(13).target(marker.getPosition()).tilt(60).build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 5000, new GoogleMap.CancelableCallback() {
                     @Override
@@ -322,6 +357,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
                     }
                 });
+                // api call using latitude and longitude of clicked marker to get information about this marker with radius =0 in order to get info about only this marker
                 String aSpecificPlace= Constants.base_url+languageSharedPreference.getLanguage()+Constants.locationBasedList+"?serviceKey="+Constants.server_key+"&numOfRows=1&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&mapX="+marker.getPosition().longitude+"&mapY="+marker.getPosition().latitude+"&radius=0"+Constants.json;
                 areaBasedListVolley.fetchData(aSpecificPlace,0,1);
                 return true;
@@ -334,22 +370,24 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
     int i=0;
+    // fill the city with list of items
     @Override
     public void FillCity(List<Item> items) {
-        this.itemsAreaCode = items;
-        fetchData(itemsAreaCode.get(0));
+        this.itemsAreaCode = items; // keep reference to list of items
+        fetchData(itemsAreaCode.get(0)); // fetch the data for first item list according to sigungucode
     }
 
     @Override
     public void FillSubCity(List<Item> items,Item item) {
-       for(Item item1:items){
-           Log.d("HeroJongi"," ITEM IS "+item1.getName());
-       }
+        // increment i
         i++;
-        // add seoul to yop of list
+        // ex add seoul to top of list
         items.add(0,item);
+        // all it in map list with key item name (seoul) and value list of items (myeongdong, incheon...)
         cityListData.put(item.getName(),items);
+        // fetch the second data
         fetchData(itemsAreaCode.get(i));
+        // if i is equal to number of cities in area code = num of rows then stop looping and go to add city drawer to display the items
         if(i==itemsAreaCode.size()-1){
             // now we can fill the extandable list view\
           addCityDrawer();
@@ -366,35 +404,45 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         placeInfo.show(fm, "activity_place_info");
 
     }
-
     private void addCityDrawer() {
+        // pass the context, the items area code array list and map city list data to adapter
         cityExpandableListView = new CityExpandableListView(this,itemsAreaCode,cityListData);
+        // set this adapter
         mCityList.setAdapter(cityExpandableListView);
+        // when its expanded ( Listener )
         mCityList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
             public void onGroupExpand(int groupPosition) {
+                // to know when we need to collapse the group if another group is open so if we click on the child item its index not -1 so it gonna collapse
                 if (lastCityExpandedPosition != -1 && groupPosition != lastCityExpandedPosition) {
                     mCityList.collapseGroup(lastCityExpandedPosition);
                 }
                 lastCityExpandedPosition = groupPosition;
             }
         });
+        // when a child is clicked
         mCityList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                // get the city at group position  example seoul
                 Item city = itemsAreaCode.get(groupPosition);
+                // if this city not null and is not empty
                 if (city.getName() != null && !city.getName().equalsIgnoreCase("")) {
+                    // get the code of the child item
                     int provience = cityListData.get(city.getName()).get(childPosition).getCode();
                     if (childPosition == 0) {
+                        // if child position is 0 then save the sigungucode null in shared preference ( example top item is seoul and child item is seoul)
                         locationPreference.saveLocation(String.valueOf(city.getCode()), null);
                     } else {
+                        // if the child position is not 0 then save the city code top item and the child code to shared oreference
                         locationPreference.saveLocation(String.valueOf(city.getCode()), String.valueOf(provience));
                     }
 
                 }
+                // close the righ menu (sliding layer)
                 rightMenu.closeLayer(true);
-//                Log.d("HeroJongi"," Selected Item"+selectedItem);
+                // collapse this group mean close the group
                 mCityList.collapseGroup(groupPosition);
 //                mDrawerLayout.closeDrawer(GravityCompat.END);
                 return false;
@@ -407,6 +455,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     public void fetchData(Object item){
         if(item instanceof Item) {
             Item _item=(Item) item;
+            // prepare url with the area code of the following item to get the sub cities then call again fetch Data
             String areaCodeURL = Constants.base_url +languageSharedPreference.getLanguage()+ Constants.areaCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&" + Constants.areaCode + "=" + _item.getCode() + Constants.json;
             cityVolley.fetchData(areaCodeURL, _item);
         }
@@ -415,13 +464,13 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
 
-
+    // get cities data
     public void getCitiesData() {
         String areaCodeURL= Constants.base_url+languageSharedPreference.getLanguage()+Constants.areaCode+"?serviceKey="+Constants.server_key+"&numOfRows=17&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest"+Constants.json;
         volleyApi.fetchData(areaCodeURL,Constants.areaCode,null);
     }
 
-
+    // on tab selected get the index of this tap and according to it send api call to fetch category code
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int position=tab.getPosition();
@@ -459,6 +508,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
                 break;
 
         }
+        // call the volley class category content parse and fetch the data
         categortContentParse.fetchData(categoryCodeURL,code,1);
     }
 
@@ -477,6 +527,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         if(categoryItems!=null && categoryItems.size()>0){
       switch (code) {
           case 76:
+              // Fill First spinner
               nature.setText("Nature");
               nature.FillBigSpinner(categoryItems, code,this);
               break;
@@ -511,11 +562,14 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public void onItemBigSelected(categoryItem categoryItem,int code) {
         if(categoryItem!=null && categoryItem.getName()!=null && !categoryItem.getName().equalsIgnoreCase("")){
+            // send cat1 and prepare the url
             String URLCategoryItems=Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=40&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+"&cat1="+categoryItem.getCode()+Constants.json;
             categortContentParse.fetchData(URLCategoryItems,code,2);
         }
     }
 
+
+    // same thing as big category you have to full the data in spinner and then on item selected take medium Item and make api call by using cat 1 and cat2 so you gonna get small category
     @Override
     public void MediumCategory(List<categoryItem> categoryItems,int code) {
         if(categoryItems!=null && categoryItems.size()>0){

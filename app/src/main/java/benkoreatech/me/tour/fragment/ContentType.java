@@ -52,6 +52,7 @@ public class ContentType extends Fragment implements View.OnClickListener{
         this.bigItems=categoryItems;
         this.code=code;
         this.categoryInterface=categoryInterface;
+        // here we are populating the array list in the spinner using array adapter of string
         categoryItems.add(0,new categoryItem("","",""));
         final List<String> BIGcategory=new ArrayList<>();
         for(categoryItem categoryItem1:categoryItems){
@@ -65,12 +66,16 @@ public class ContentType extends Fragment implements View.OnClickListener{
 
         // attaching data adapter to spinner
         bigcategory.setAdapter(dataAdapter);
+        // when an item is selected in the big spinner
         bigcategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               // get this big item clicked and keep reference to it
                 BigItem=bigItems.get(position);
+                // set the clicked item color to black
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
                 if(categoryInterface!=null){
+                    // send this big item and the code of category code ex 76 of anture by category interface by method onItem Big Selected to fetch data
                     categoryInterface.onItemBigSelected(BigItem,code);
                 }
             }

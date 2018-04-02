@@ -7,11 +7,12 @@ import java.util.ArrayList;
 public class Item implements Serializable{
     private int code;
 
+    private String name;
+
     public int getCode() { return this.code; }
 
     public void setCode(int code) { this.code = code; }
 
-    private String name;
 
     public String getName() { return this.name; }
 

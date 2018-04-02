@@ -63,20 +63,24 @@ public class areaBasedListVolley  implements Response.Listener<JSONObject>,Respo
                     categoryInterface.setListareaBasedItems(itemListsub);
                 }
             }
+            // fetching response of a specific marker of location
             else if(status==1){
+                // get location based list of a specific marker
                 LocationBasedList locationBasedList=gson.fromJson(String.valueOf(response),LocationBasedList.class);
+                // list of location based item
                 List<LocationBasedItem> locationBasedItems=locationBasedList.getResponse().getBody().getItems().getItem();
                 if(categoryInterface!=null){
+                    // call the interface category Interface and send locationBasedItems to the set Pin Info
                     categoryInterface.setPinInfo(locationBasedItems);
                 }
             }
         }
         catch (Exception exception){
+            // some time the response violets the form of location based item for exanple it contain 1 item and its not json array but json object then we fetch it like that
             try{
+                JSONObject items = response.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONObject("item");
                 if(status==0) {
-                    JSONObject items = response.getJSONObject("response").getJSONObject("body").getJSONObject("items");
-                    JSONObject items1 = items.getJSONObject("item");
-                    areaBasedItem _item = gson.fromJson(String.valueOf(items1), areaBasedItem.class);
+                    areaBasedItem _item = gson.fromJson(String.valueOf(items), areaBasedItem.class);
                     List<areaBasedItem> itemList = new ArrayList<>();
                     itemList.add(_item);
                     if (categoryInterface != null) {
@@ -84,9 +88,7 @@ public class areaBasedListVolley  implements Response.Listener<JSONObject>,Respo
                     }
                 }
                 else{
-                    JSONObject items = response.getJSONObject("response").getJSONObject("body").getJSONObject("items");
-                    JSONObject items1 = items.getJSONObject("item");
-                    LocationBasedItem _item = gson.fromJson(String.valueOf(items1), LocationBasedItem.class);
+                    LocationBasedItem _item = gson.fromJson(String.valueOf(items), LocationBasedItem.class);
                     List<LocationBasedItem> itemList = new ArrayList<>();
                     itemList.add(_item);
                     if (categoryInterface != null) {

@@ -56,39 +56,20 @@ public class VolleyApi implements Response.Listener<JSONObject>,Response.ErrorLi
         Log.d("HeroJongi"," Response volley "+response);
         if(response!=null) {
             Gson gson = new Gson();
-
+               // api call to fetch the area codes
             if (Keyword.equalsIgnoreCase(Constants.areaCode)) {
                 try {
+                    // area code
                     areaCode areaCode = gson.fromJson(String.valueOf(response), areaCode.class);
+                    // list of items for area code
                     List<Item> itemList = areaCode.getResponse().getBody().getItems().getItem();
                     if (tourSettings != null) {
+                        // send this list by interface tour settings using method fill city to maps activity
                         tourSettings.FillCity(itemList);
                     }
                 } catch (Exception exception) {
                 }
             }
-//            if (Keyword.equalsIgnoreCase(Constants.searchStay)) {
-//                try {
-//                    SearchStay searchStay = gson.fromJson(String.valueOf(response), SearchStay.class);
-//                    StayItem[] stayItems = searchStay.getResponse().getBody().getItems().getItem();
-//                    if (tourSettings != null) {
-//                        tourSettings.LoadStay(stayItems);
-//                    }
-//                } catch (Exception exception) {
-//                    try {
-//                        JSONObject items = response.getJSONObject("response").getJSONObject("body").getJSONObject("items");
-//                        JSONObject items1 = items.getJSONObject("item");
-//                        StayItem _item = gson.fromJson(String.valueOf(items1), StayItem.class);
-//                        StayItem[] stayItems = new StayItem[]{_item};
-//                        if (tourSettings != null) {
-//                            tourSettings.LoadStay(stayItems);
-//                        }
-//                    } catch (JSONException e) {
-//                    }
-//
-//                }
-//            }
-
         }
         }
 
