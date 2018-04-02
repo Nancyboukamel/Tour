@@ -24,9 +24,11 @@ public class LocationPreference {
         editor = pref.edit();
     }
 
-    public void saveLocation(String areaCode,String sigungcode){
+    public void saveLocation(String parentName,String childName,String areaCode,String sigungcode){
         editor.putString("areaCode",areaCode);
         editor.putString("sigungCode",sigungcode);
+        editor.putString("parentName",parentName);
+        editor.putString("childName",childName);
         editor.apply();
     }
 
@@ -37,6 +39,10 @@ public class LocationPreference {
     public String getSigungCode(){
         return pref.getString("sigungCode","");
     }
+
+    public String getParentName(){return  pref.getString("parentName","");}
+
+    public String getchildName(){return  pref.getString("childName","");}
 
 
 }

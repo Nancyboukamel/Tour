@@ -137,7 +137,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     // Location updates intervals in sec
     float [] Markercolors; // Marker colors array to choose random color for pin
     private static int UPDATE_INTERVAL = 60 * 1000; // 1min update interval for location change
-
+    public  boolean isFirstTime=true;
 
     // list of drawables for bottom menu
     private int[] tabIcons = {
@@ -188,10 +188,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         BitmapDescriptorFactory.HUE_ROSE};
 
         // get the tool bar
-        android.support.v7.app.ActionBar ab = getSupportActionBar();
-        if(ab!=null) {
-            ab.setTitle(""); // set tool bar title to empty
-        }
+       setLocationinToolbar();
         // get the default language from the phone
         String language= Locale.getDefault().getLanguage();
         // save this language in shared preference
@@ -212,6 +209,26 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         String categoryCodeURL = Constants.base_url+languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
         categortContentParse.fetchData(categoryCodeURL,code,1);
 
+    }
+
+    public void setLocationinToolbar(){
+        android.support.v7.app.ActionBar ab = getSupportActionBar();
+        String parentname=locationPreference.getParentName();
+        String childname=locationPreference.getchildName();
+        if(ab!=null) {
+            if(parentname!=null && !parentname.equalsIgnoreCase("")){
+                if(childname!=null && !childname.equalsIgnoreCase("")){
+                    String place=parentname+","+childname;
+                    ab.setTitle(place);
+                }
+                else {
+                    ab.setTitle(parentname);
+                }
+            }
+            else {
+                ab.setTitle(""); // set tool bar title to empty
+            }
+        }
     }
 
 
@@ -430,14 +447,16 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
                 // if this city not null and is not empty
                 if (city.getName() != null && !city.getName().equalsIgnoreCase("")) {
                     // get the code of the child item
-                    int provience = cityListData.get(city.getName()).get(childPosition).getCode();
+                   Item child= cityListData.get(city.getName()).get(childPosition);
                     if (childPosition == 0) {
                         // if child position is 0 then save the sigungucode null in shared preference ( example top item is seoul and child item is seoul)
-                        locationPreference.saveLocation(String.valueOf(city.getCode()), null);
+                        locationPreference.saveLocation(city.getName(),null,String.valueOf(city.getCode()), null);
                     } else {
                         // if the child position is not 0 then save the city code top item and the child code to shared oreference
-                        locationPreference.saveLocation(String.valueOf(city.getCode()), String.valueOf(provience));
+                        locationPreference.saveLocation(city.getName(),child.getName(),String.valueOf(city.getCode()), String.valueOf(child.getCode()));
+
                     }
+                    setLocationinToolbar();
 
                 }
                 // close the righ menu (sliding layer)
@@ -878,7 +897,10 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
-        ZoomtoMyCurrentLocation();
+        if(isFirstTime){
+            isFirstTime=false;
+            ZoomtoMyCurrentLocation();
+        }
     }
 
     @Override
