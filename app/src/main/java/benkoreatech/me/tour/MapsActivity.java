@@ -725,7 +725,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
                 activity_controller.setVisibility(View.VISIBLE);
                 break;
             case R.id.signout:
-                signinPreference.isSignin(false,null);
+                signinPreference.isSignin(false,null,null);
                 Intent intent=new Intent(this,MainActivity.class);
                 startActivity(intent);
                 finish();

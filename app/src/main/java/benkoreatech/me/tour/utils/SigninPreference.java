@@ -25,10 +25,10 @@ public class SigninPreference {
         editor = pref.edit();
     }
 
-    public void isSignin(boolean isLogin,String email){
+    public void isSignin(boolean isLogin,String email,String name){
         editor.putBoolean("login",isLogin);
         editor.putString("email",email);
-       // editor.putString("username",username);
+        editor.putString("username",name);
         editor.apply();
     }
 
@@ -40,8 +40,6 @@ public class SigninPreference {
         return pref.getString("email","");
     }
 
-    public String getUserName(){
-        return pref.getString("username","");
-    }
+    public String getUsername(){ return  pref.getString("username","");}
 
 }

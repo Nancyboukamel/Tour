@@ -7,7 +7,7 @@ public interface RegistrationSuccess {
     public void onRegistrationSuccess();
 
     // when you login
-    public void onLoginSuccess();
+    public void onLoginSuccess(String name);
 
     // when login fail
     public void onLoginFail();

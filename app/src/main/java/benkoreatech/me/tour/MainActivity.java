@@ -99,11 +99,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onLoginSuccess() {
+    public void onLoginSuccess(String name) {
         loginfail.setVisibility(View.GONE);
+        signinPreference.isSignin(true,Email,name);
         Intent intent=new Intent(this,MapsActivity.class);
         startActivity(intent);
-        signinPreference.isSignin(true,email.getText().toString());
 
     }
 

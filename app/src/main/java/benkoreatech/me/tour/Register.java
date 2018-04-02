@@ -114,7 +114,7 @@ public class Register extends AppCompatActivity implements RegistrationSuccess{
     }
 
     @Override
-    public void onLoginSuccess() {
+    public void onLoginSuccess(String name) {
 
     }
 

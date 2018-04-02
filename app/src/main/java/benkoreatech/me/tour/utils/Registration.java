@@ -64,7 +64,10 @@ public class Registration implements Response.Listener<String>,Response.ErrorLis
                         if (URL.equalsIgnoreCase(Constants.register)) {
                             registrationSuccess.onRegistrationSuccess();
                         } else if (URL.equalsIgnoreCase(Constants.login)) {
-                            registrationSuccess.onLoginSuccess();
+                            String name=jObj.getJSONObject("user").getString("name");
+                            if(name!=null && !name.equalsIgnoreCase("")) {
+                                registrationSuccess.onLoginSuccess(name);
+                            }
                         }
                     }
                 } else {

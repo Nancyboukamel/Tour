@@ -941,13 +941,13 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                     mapX=locationBasedItem.getMapx();
                     mapY=locationBasedItem.getMapy();
                 }
-                String url=Constants.post_comment+"?name="+signinPreference.getUserName()+"&date="+today+"&commentTitle="+commentTitle+"&comment="+Comment+"&rate="+rating+"&mapX="+mapX+"&mapY="+mapY;
+                String url=Constants.post_comment+"?name="+signinPreference.getUsername()+"&date="+today+"&commentTitle="+commentTitle+"&comment="+Comment+"&rate="+rating+"&mapX="+mapX+"&mapY="+mapY;
                Log.d("HeroJongi","here url post comment "+url);
                 commentVolley.fetchData(url,2);
                 break;
             case R.id.favorite:
                 if(!isFavorite) {
-                    String Url = Constants.add_to_favorite + "name=" + signinPreference.getUserEmail();
+                    String Url = Constants.add_to_favorite + "?name=" + signinPreference.getUserEmail();
                     if (areaBasedItem != null) {
                         Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle();
                     } else if (locationBasedItem != null) {
