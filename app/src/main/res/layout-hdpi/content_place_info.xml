@@ -674,6 +674,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_15"
+                    android:maxLength="1"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
                     android:textColor="@color/colorPrimary"
                     android:hint="@string/title" />
 
@@ -685,6 +688,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/comment_title"
                     android:textSize="@dimen/text_size_15"
+                    android:maxLength="1"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
                     android:textColor="@color/colorPrimary"
                     android:hint="@string/comment" />
 

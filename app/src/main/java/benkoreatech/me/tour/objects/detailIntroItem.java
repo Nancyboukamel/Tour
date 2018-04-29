@@ -5,6 +5,11 @@ import java.io.Serializable;
 public class detailIntroItem implements Serializable {
 
     //76
+
+    private String infocenter;
+
+    private String opendate;
+
     private String accomcount;
 
     private String expagerange;
@@ -13,9 +18,7 @@ public class detailIntroItem implements Serializable {
 
     private String heritage1;
 
-    private String infocenter;
 
-    private String opendate;
 
     private String parking;
 

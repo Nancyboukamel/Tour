@@ -11,6 +11,11 @@ public class Constants {
     public static final String categoryCode="categoryCode";
     public static final String areaBasedList="areaBasedList";
     public static final String searchKeyword="searchKeyword";
+    public static final String detailedImage="detailImage";
+    public static final String serviceKey="serviceKey";
+    public static final String detailCommon="detailCommon";
+    public static final String detailIntro="detailIntro";
+    public static final String remain_url="&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&contentId=";
 
     public static final String locationBasedList="locationBasedList";
     public static final String contentTypeId="contentTypeId";

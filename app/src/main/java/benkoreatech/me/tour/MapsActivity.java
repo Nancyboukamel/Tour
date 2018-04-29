@@ -41,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
+import com.bumptech.glide.util.Util;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -92,6 +93,7 @@ import benkoreatech.me.tour.utils.CityVolley;
 import benkoreatech.me.tour.utils.LanguageSharedPreference;
 import benkoreatech.me.tour.utils.LocationPreference;
 import benkoreatech.me.tour.utils.SigninPreference;
+import benkoreatech.me.tour.utils.Utils;
 import benkoreatech.me.tour.utils.VolleyApi;
 import benkoreatech.me.tour.utils.areaBasedListVolley;
 import benkoreatech.me.tour.utils.categortContentParse;
@@ -183,9 +185,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         languageSharedPreference=new LanguageSharedPreference(this); // language shared preference declaration
 
         // filling the array of marker colors for random selection
-        Markercolors=new float[]{BitmapDescriptorFactory.HUE_RED,BitmapDescriptorFactory.HUE_ORANGE,BitmapDescriptorFactory.HUE_YELLOW,BitmapDescriptorFactory.HUE_GREEN,
-        BitmapDescriptorFactory.HUE_CYAN,BitmapDescriptorFactory.HUE_AZURE,BitmapDescriptorFactory.HUE_BLUE,BitmapDescriptorFactory.HUE_VIOLET,BitmapDescriptorFactory.HUE_MAGENTA,
-        BitmapDescriptorFactory.HUE_ROSE};
+        Markercolors= Utils.getMarkerColors();
 
         // get the tool bar
        setLocationinToolbar();
@@ -735,7 +735,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         if(areaBasedItems!=null && areaBasedItems.size()>0) {
             Log.d("HeroJongi"," set List area based items ");
             TourList tourList = new TourList(areaBasedItems, MapsActivity.this,this);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             list_view.setLayoutManager(mLayoutManager);
             list_view.setItemAnimator(new DefaultItemAnimator());
             list_view.setAdapter(tourList);
