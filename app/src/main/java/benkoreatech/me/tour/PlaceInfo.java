@@ -1,7 +1,9 @@
 package benkoreatech.me.tour;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -10,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,9 +24,12 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -75,17 +81,12 @@ import benkoreatech.me.tour.utils.detailIntroVolley;
 
 public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnMapReadyCallback, View.OnClickListener {
     Toolbar toolbar;
-    TextView overview, title, direction, telephone, website, information_center, open_date, close_date, park_facility, available_season, available_time, experience_type, experience_age, accomcount;
-    TextView used_time_culture, closed_date_culture, parking_facility, parking_fee, usefee, spendtime, scale, admitted_person, info_center;
-    TextView open_period, closed_period, sport_parking_facility, sport_parking_fee, available_time_sport, reservation_guide, admission_fee, scale_sport, sport_experience_age, sport_persons, sport_info_center;
-    TextView accomendation_capacity, benikia, checkin_time, checkout_time, check_cooking, foodplace, goodstay, hanok, infocenterlodging;
-    TextView parkinglodging, pickup, roomcount, reservationlodging, reservartion_url, roomtype, scale_lodging, sub_facility;
-    TextView fairday, infocentershopping, opendateshopping, opentime, parkingshopping, restdateshopping, restroom, saleitem, salesshopping, shopguide;
+    TextView overview, title, direction, telephone, website,open_date, close_date;
+    TextView fairday;
     detailCommonVolley detailCommonVolley;
     detailIntroVolley detailIntroVolley;
     detailImageVolley detailImageVolley;
     detailCommonItem detailCommonItem;
-    RelativeLayout tourist, culture, sports, stay, shopping;
     LocationBasedItem locationBasedItem;
     areaBasedItem areaBasedItem;
     CarouselView carouselView;
@@ -106,6 +107,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     Favorite_Volley favorite_volley;
     ImageView favorite;
     CardView card_view_third;
+    NestedScrollView nestedScrollView;
     LanguageSharedPreference languageSharedPreference;
     List<detailImageItem> detailImageItems = new ArrayList<>();
     TextView touristText;
@@ -114,8 +116,6 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         public void setImageForPosition(int position, ImageView imageView) {
             Log.d("DetailImage", "Here " + detailImageItems.get(position).getOriginimgurl());
             Picasso.with(getActivity().getApplicationContext()).load(detailImageItems.get(position).getOriginimgurl()).fit().centerCrop().into(imageView);
-
-            //imageView.setImageResource(sampleImages[position]);
         }
     };
 
@@ -131,7 +131,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_place_info, container, false);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MASK_ADJUST);
         return v;
     }
 
@@ -140,7 +140,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         super.onActivityCreated(arg0);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
     }
-
+    @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -161,62 +161,12 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         close_date = (TextView) view.findViewById(R.id.closed_date);
         touristText = (TextView) view.findViewById(R.id.TouristText);
         card_view_third=(CardView) view.findViewById(R.id.card_view_third);
-
-//        infocentershopping = (TextView) view.findViewById(R.id.infocentershopping);
-//        opendateshopping = (TextView) view.findViewById(R.id.opendateshopping);
-//        opentime = (TextView) view.findViewById(R.id.opentime);
-//        parkingshopping = (TextView) view.findViewById(R.id.parkingshopping);
-//        restdateshopping = (TextView) view.findViewById(R.id.restdateshopping);
-//        restroom = (TextView) view.findViewById(R.id.restroom);
-//        saleitem = (TextView) view.findViewById(R.id.scaleitem);
-//        salesshopping = (TextView) view.findViewById(R.id.saleshopping);
-//        shopguide = (TextView) view.findViewById(R.id.shopguide);
-//        open_period = (TextView) view.findViewById(R.id.open_period);
-//        closed_period = (TextView) view.findViewById(R.id.closed_period);
-//        shopping = (RelativeLayout) view.findViewById(R.id.shopping);
-//        sport_parking_facility = (TextView) view.findViewById(R.id.sport_parking_facility);
-//        sport_parking_fee = (TextView) view.findViewById(R.id.sport_parking_fee);
-//        available_time_sport = (TextView) view.findViewById(R.id.available_time_sport);
-//        reservation_guide = (TextView) view.findViewById(R.id.reservation_guide);
-//        admission_fee = (TextView) view.findViewById(R.id.admission_fee);
-//        scale_sport = (TextView) view.findViewById(R.id.scale_sport);
-//        foodplace = (TextView) view.findViewById(R.id.foodplace);
-//        roomtype = (TextView) view.findViewById(R.id.roomtype);
-//        scale_lodging = (TextView) view.findViewById(R.id.scalelodging);
-//        sub_facility = (TextView) view.findViewById(R.id.subfacility);
-//        goodstay = (TextView) view.findViewById(R.id.goodstay);
-//        hanok = (TextView) view.findViewById(R.id.hanok);
-//        reservartion_url = (TextView) view.findViewById(R.id.reservationurl);
-//        parkinglodging = (TextView) view.findViewById(R.id.parkinglodging);
-//        pickup = (TextView) view.findViewById(R.id.pickup);
-//        roomcount = (TextView) view.findViewById(R.id.roomcount);
-//        reservationlodging = (TextView) view.findViewById(R.id.reservationlodging);
-//        infocenterlodging = (TextView) view.findViewById(R.id.infocenterlodging);
-//        accomendation_capacity = (TextView) view.findViewById(R.id.accomendation_capacity);
-//        benikia = (TextView) view.findViewById(R.id.benikia);
-//        checkin_time = (TextView) view.findViewById(R.id.checkintime);
-//        checkout_time = (TextView) view.findViewById(R.id.checkouttime);
-//        check_cooking = (TextView) view.findViewById(R.id.chkcooking);
-//        sport_experience_age = (TextView) view.findViewById(R.id.sport_experience_age);
-//        sport_persons = (TextView) view.findViewById(R.id.sport_persons);
-//        sport_info_center = (TextView) view.findViewById(R.id.sport_info_center);
-//        used_time_culture = (TextView) view.findViewById(R.id.used_time_culture);
-//        closed_date_culture = (TextView) view.findViewById(R.id.closed_date_culture);
-//        parking_facility = (TextView) view.findViewById(R.id.parking_facility);
-//        parking_fee = (TextView) view.findViewById(R.id.parking_fee);
-//        usefee = (TextView) view.findViewById(R.id.usefee);
-//        spendtime = (TextView) view.findViewById(R.id.spendtime);
-//        scale = (TextView) view.findViewById(R.id.scale);
-//        admitted_person = (TextView) view.findViewById(R.id.admitted_person);
-//        info_center = (TextView) view.findViewById(R.id.info_center);
-//        culture = (RelativeLayout) view.findViewById(R.id.culture);
-//        sports = (RelativeLayout) view.findViewById(R.id.sports);
-//        stay = (RelativeLayout) view.findViewById(R.id.stay);
         add_ur_comment = (Button) view.findViewById(R.id.add_your_comment);
         title_comment = (EditText) view.findViewById(R.id.comment_title);
         comment = (EditText) view.findViewById(R.id.comment_comment);
         ratingBar_comment = (RatingBar) view.findViewById(R.id.comment_rating);
         recyclerView_comments = (RecyclerView) view.findViewById(R.id.comments);
+        nestedScrollView=(NestedScrollView) view.findViewById(R.id.nested);
         mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map_location);
         mapFragment.getMapAsync(this);
         signinPreference = new SigninPreference(getActivity());
@@ -225,8 +175,6 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         detailIntroVolley = new detailIntroVolley(getActivity(), this);
         languageSharedPreference = new LanguageSharedPreference(getActivity());
         carouselView.setImageListener(imageListener);
-        // here we are checking if its already added to favorite or not
-        // we prepare url + parameters and send api call (favorite volley)
         String url_Check_if_favorite = "";
         if (locationBasedItem != null) {
             url_Check_if_favorite = Constants.check_if_favorite + "?name=" + signinPreference.getUserEmail() + "&title=" + locationBasedItem.getTitle().trim();
@@ -238,10 +186,14 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
 
         Markercolors = Utils.getMarkerColors();
 
+        nestedScrollView.scrollTo(0, 0);
+        title_comment.clearFocus();
+
         String imageUrls = Constants.base_url + languageSharedPreference.getLanguage() + Constants.detailedImage + "?" + Constants.serviceKey + "=" + Constants.server_key + Constants.remain_url;
         String URL = Constants.base_url + languageSharedPreference.getLanguage() + Constants.detailCommon + "?" + Constants.serviceKey + "=" + Constants.server_key + Constants.remain_url;
         String detailIntroURL = Constants.base_url + languageSharedPreference.getLanguage() + Constants.detailIntro + "?" + Constants.serviceKey + "=" + Constants.server_key + Constants.remain_url;
 //        Log.d("HeroJongi", "DetailIntro URL " + detailIntroURL);
+
 
 
         if (locationBasedItem != null && locationBasedItem.getTitle() != null && !locationBasedItem.getTitle().equalsIgnoreCase("")) {
@@ -265,10 +217,14 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
 
         fetchPlaceComments();
 
+
+
         close.setOnClickListener(this);
         favorite.setOnClickListener(this);
         add_ur_comment.setOnClickListener(this);
     }
+
+
 
     public void setLocationInfo(String data) {
         if (data != null) {

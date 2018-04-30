@@ -15,6 +15,7 @@ public class Constants {
     public static final String serviceKey="serviceKey";
     public static final String detailCommon="detailCommon";
     public static final String detailIntro="detailIntro";
+    public static final String searchFestival="searchFestival";
     public static final String remain_url="&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&contentId=";
 
     public static final String locationBasedList="locationBasedList";

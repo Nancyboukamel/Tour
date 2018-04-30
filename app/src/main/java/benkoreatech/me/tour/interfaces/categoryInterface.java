@@ -2,6 +2,7 @@ package benkoreatech.me.tour.interfaces;
 
 import java.util.List;
 
+import benkoreatech.me.tour.objects.FestivalItem;
 import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.categoryItem;
@@ -16,5 +17,7 @@ public interface categoryInterface {
     public void PlotPins(categoryItem BigItem,categoryItem MediumItem,categoryItem SmallItem,int code);
     public void setPins(List<areaBasedItem> areaBasedItems,int code);
     public void setPinInfo(List<LocationBasedItem>locationBasedItems);
+    public void setPins(List<FestivalItem> festivalItems);
     public void setListareaBasedItems(List<areaBasedItem>areaBasedItems);
+    public void setStartEndDate(String startDate,String endDate);
 }

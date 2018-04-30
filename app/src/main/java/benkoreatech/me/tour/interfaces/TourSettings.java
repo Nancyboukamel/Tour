@@ -14,4 +14,5 @@ public interface TourSettings {
     public void FillCity(List<Item> itemList);
     public void FillSubCity(List<Item> items,Item item);
     public void onListItemClicked(areaBasedItem areaBasedItem);
+    public void callPlace(String phonenumber);
 }

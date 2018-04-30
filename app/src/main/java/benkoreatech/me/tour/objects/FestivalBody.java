@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class FestivalBody implements Serializable{
     private String totalCount;
 
-    private Items items;
+    private FestivalItems items;
 
     private String pageNo;
 
@@ -22,13 +22,11 @@ public class FestivalBody implements Serializable{
         this.totalCount = totalCount;
     }
 
-    public Items getItems ()
-    {
+    public FestivalItems getItems() {
         return items;
     }
 
-    public void setItems (Items items)
-    {
+    public void setItems(FestivalItems items) {
         this.items = items;
     }
 

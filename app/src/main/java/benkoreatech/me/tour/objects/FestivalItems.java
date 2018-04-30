@@ -1,23 +1,28 @@
 package benkoreatech.me.tour.objects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FestivalItems implements Serializable {
-    private FestivalItem[] item;
+   List<FestivalItem> festivalItemList=new ArrayList<>();
 
-    public FestivalItem[] getItem ()
-    {
-        return item;
+    public FestivalItems(List<FestivalItem> festivalItemList) {
+        this.festivalItemList = festivalItemList;
     }
 
-    public void setItem (FestivalItem[] item)
-    {
-        this.item = item;
+    public List<FestivalItem> getFestivalItemList() {
+        return festivalItemList;
+    }
+
+    public void setFestivalItemList(List<FestivalItem> festivalItemList) {
+        this.festivalItemList = festivalItemList;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [item = "+item+"]";
+    public String toString() {
+        return "FestivalItems{" +
+                "festivalItemList=" + festivalItemList +
+                '}';
     }
 }

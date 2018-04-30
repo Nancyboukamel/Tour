@@ -52,7 +52,7 @@ public class areaBasedListVolley  implements Response.Listener<JSONObject>,Respo
 
     @Override
     public void onResponse(JSONObject response) {
-        Log.d("HeroJongi"," Response "+response);
+        Log.d("SPECA"," Response "+response);
         Gson gson=new Gson();
         try{
             if(status==0) {

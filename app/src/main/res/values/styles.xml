@@ -24,4 +24,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="MyDatePickerSpinnerStyle" parent="@android:style/Widget.DeviceDefault.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:calendarViewShown">false</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:divider">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
 </resources>

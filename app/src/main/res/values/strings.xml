@@ -37,4 +37,7 @@
     <string name="review">Write a short review</string>
     <string name="comment">Tell us what you think...</string>
     <string name="login_fail">Login failed</string>
+    <string name="festival">Festivals/Events/Performance</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
 </resources>

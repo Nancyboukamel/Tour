@@ -79,9 +79,11 @@ import benkoreatech.me.tour.adapter.CustomInfoWindowAdapter;
 import benkoreatech.me.tour.adapter.TourList;
 import benkoreatech.me.tour.adapter.ViewPagerAdapter;
 import benkoreatech.me.tour.fragment.ContentType;
+import benkoreatech.me.tour.fragment.Festival;
 import benkoreatech.me.tour.interfaces.TourSettings;
 import benkoreatech.me.tour.interfaces.categoryInterface;
 import benkoreatech.me.tour.objects.Constants;
+import benkoreatech.me.tour.objects.FestivalItem;
 import benkoreatech.me.tour.objects.InfoWindowData;
 import benkoreatech.me.tour.objects.Item;
 import benkoreatech.me.tour.objects.LocationBasedItem;
@@ -90,6 +92,7 @@ import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.categoryItem;
 import benkoreatech.me.tour.objects.detailImageItem;
 import benkoreatech.me.tour.utils.CityVolley;
+import benkoreatech.me.tour.utils.FestivalVolley;
 import benkoreatech.me.tour.utils.LanguageSharedPreference;
 import benkoreatech.me.tour.utils.LocationPreference;
 import benkoreatech.me.tour.utils.SigninPreference;
@@ -101,22 +104,23 @@ import benkoreatech.me.tour.utils.detailImageVolley;
 
 // The map activity
 
-public class MapsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,LocationListener,View.OnClickListener,OnMapReadyCallback,TourSettings,TabLayout.OnTabSelectedListener,categoryInterface{
+public class MapsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListener, OnMapReadyCallback, TourSettings, TabLayout.OnTabSelectedListener, categoryInterface {
 
 
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 100; // permission integer to differentiate between granted permissions
+    private static final int PERMISSION_PHONE_CALL = 200;
     private GoogleMap mMap; // Google map
     VolleyApi volleyApi;  // volley api is used to fetch area codes
     CityVolley cityVolley; // city volley to fetch cities of every area code obtained in volley api
-    TourSettings tourSettings=this; // Interface with 3 abstract methods to connect 2 independent class together
+    TourSettings tourSettings = this; // Interface with 3 abstract methods to connect 2 independent class together
     private DrawerLayout mDrawerLayout; // Drawer layout for right navigation
     private ActionBarDrawerToggle mDrawerToggle;
     private ExpandableListView mCityList; // Expandable list view because its 2 levels ex Seoul then when you open seoul you gonna see ( Youngsan, Itaewon...)
     private CityExpandableListView cityExpandableListView; // BaseExpandableListAdapter for the right menu ( adapter )
     Map<String, List<Item>> cityListData = new TreeMap<>();  // map with key string ex (seoul) anf List< Item > that is array list of all cities in seoul like youngsan ...
-    List<Item> itemsAreaCode=new ArrayList<>(); // Item is a class with getters and setters method that contain name of area ex : youngsan and code 1123
+    List<Item> itemsAreaCode = new ArrayList<>(); // Item is a class with getters and setters method that contain name of area ex : youngsan and code 1123
     LocationPreference locationPreference; // Shared preference to store which place is picked by user so you wanna query according to the user choice ( example in dong-gu, daegu city --> areaCode=4&sigunguCode=4
-    private int lastCityExpandedPosition=-1;
+    private int lastCityExpandedPosition = -1;
     TabLayout toolbar; // Tab layout ( Bottom menu for choosing : shopping, nature..)
     ViewPager viewPager; // Viewer pager ( Bottom menu for choosing : shopping, nature ..)
     SlidingLayer slidingLayer2; // Sliding Layer ( External library for bottom menu
@@ -137,9 +141,11 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     SigninPreference signinPreference; // Sign in shared preference that contain user name and email of signed user used for logout and  query Urls according to specific user
     public static final int Access_Location = 70;  // Acccess location permission type
     // Location updates intervals in sec
-    float [] Markercolors; // Marker colors array to choose random color for pin
+    float[] Markercolors; // Marker colors array to choose random color for pin
     private static int UPDATE_INTERVAL = 60 * 1000; // 1min update interval for location change
-    public  boolean isFirstTime=true;
+    public boolean isFirstTime = true;
+    String Phone = "";
+    FestivalVolley festivalVolley;
 
     // list of drawables for bottom menu
     private int[] tabIcons = {
@@ -149,11 +155,13 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
             R.drawable.shopping,
             R.drawable.food,
             R.drawable.car,
-            R.drawable.home
+            R.drawable.home,
+            R.drawable.festival
     };
 
     // Since we have 7 tabs in bottom menu then we need 7 fragments but since all fragment in this case will handle same code i use single fragment with 7 instances
-    ContentType nature,culture,leisure,shopping,cuisine,transportation,accomendation;
+    ContentType nature, culture, leisure, shopping, cuisine, transportation, accomendation;
+    Festival festival;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,33 +172,34 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         // listener for map to know when its prepared and work
         mapFragment.getMapAsync(this);
         // declaring volley class by passing context and interface as parameters
-        volleyApi=new VolleyApi(this,tourSettings);
-        cityVolley=new CityVolley(this,tourSettings);
+        volleyApi = new VolleyApi(this, tourSettings);
+        cityVolley = new CityVolley(this, tourSettings);
         // declaring shared preference
-        locationPreference=new LocationPreference(this);
+        locationPreference = new LocationPreference(this);
         // declaring views
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toolbar=(TabLayout) findViewById(R.id.tabs);
-        mCityList=(ExpandableListView) findViewById(R.id.city);
-        viewPager=(ViewPager) findViewById(R.id.viewpager);
-        slidingLayer2=(SlidingLayer) findViewById(R.id.slidingLayer2);
-        rightMenu=(SlidingLayer) findViewById(R.id.rightmenu);
-        list_view=(RecyclerView) findViewById(R.id.list_view);
-        myLocation=(ImageView) findViewById(R.id.mylocation);
-        activity_controller=(RelativeLayout) findViewById(R.id.activity_controller);
+        toolbar = (TabLayout) findViewById(R.id.tabs);
+        mCityList = (ExpandableListView) findViewById(R.id.city);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        slidingLayer2 = (SlidingLayer) findViewById(R.id.slidingLayer2);
+        rightMenu = (SlidingLayer) findViewById(R.id.rightmenu);
+        list_view = (RecyclerView) findViewById(R.id.list_view);
+        myLocation = (ImageView) findViewById(R.id.mylocation);
+        activity_controller = (RelativeLayout) findViewById(R.id.activity_controller);
         // S ign in shared preference declaration
-        signinPreference=new SigninPreference(this);
-        categortContentParse=new categortContentParse(this,this); // category content parse volley class
-        areaBasedListVolley=new areaBasedListVolley(this,this); // area based list volley declaration
-        languageSharedPreference=new LanguageSharedPreference(this); // language shared preference declaration
+        signinPreference = new SigninPreference(this);
+        festivalVolley=new FestivalVolley(this,this);
+        categortContentParse = new categortContentParse(this, this); // category content parse volley class
+        areaBasedListVolley = new areaBasedListVolley(this, this); // area based list volley declaration
+        languageSharedPreference = new LanguageSharedPreference(this); // language shared preference declaration
 
         // filling the array of marker colors for random selection
-        Markercolors= Utils.getMarkerColors();
+        Markercolors = Utils.getMarkerColors();
 
         // get the tool bar
-       setLocationinToolbar();
+        setLocationinToolbar();
         // get the default language from the phone
-        String language= Locale.getDefault().getLanguage();
+        String language = Locale.getDefault().getLanguage();
         // save this language in shared preference
         languageSharedPreference.save_language(language);
         // myLocation on click listener to listen for click when we need current location
@@ -204,28 +213,26 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         buildGoogleApiClient(); // build the google api client
         createLocationRequest();
         // Here i do api call upon on Create to fill the nature spinner so i will not get empty one
-        int code=76; // nature
+        int code = 76; // nature
         // I prepare the Url to fetch the nature category code
-        String categoryCodeURL = Constants.base_url+languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
-        categortContentParse.fetchData(categoryCodeURL,code,1);
+        String categoryCodeURL = Constants.base_url + languageSharedPreference.getLanguage() + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&" + Constants.contentTypeId + "=" + code + Constants.json;
+        categortContentParse.fetchData(categoryCodeURL, code, 1);
 
     }
 
-    public void setLocationinToolbar(){
+    public void setLocationinToolbar() {
         android.support.v7.app.ActionBar ab = getSupportActionBar();
-        String parentname=locationPreference.getParentName();
-        String childname=locationPreference.getchildName();
-        if(ab!=null) {
-            if(parentname!=null && !parentname.equalsIgnoreCase("")){
-                if(childname!=null && !childname.equalsIgnoreCase("")){
-                    String place=parentname+","+childname;
+        String parentname = locationPreference.getParentName();
+        String childname = locationPreference.getchildName();
+        if (ab != null) {
+            if (parentname != null && !parentname.equalsIgnoreCase("")) {
+                if (childname != null && !childname.equalsIgnoreCase("")) {
+                    String place = parentname + "," + childname;
                     ab.setTitle(place);
-                }
-                else {
+                } else {
                     ab.setTitle(parentname);
                 }
-            }
-            else {
+            } else {
                 ab.setTitle(""); // set tool bar title to empty
             }
         }
@@ -243,8 +250,15 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
                 // note that in Version M and up api 23 and up phone we have to grant or deny permission in phone with smaller version permissions is granted by default
                 requestLocationUpdate();
             }
-        }
+        } else if (requestCode == PERMISSION_PHONE_CALL) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Phone));
+                    this.startActivity(intent);
+                }
 
+            }
+        }
 
     }
 
@@ -259,6 +273,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         toolbar.getTabAt(4).setIcon(tabIcons[4]);
         toolbar.getTabAt(5).setIcon(tabIcons[5]);
         toolbar.getTabAt(6).setIcon(tabIcons[6]);
+        toolbar.getTabAt(7).setIcon(tabIcons[7]);
     }
 
    // set viewer pager
@@ -274,6 +289,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         cuisine=new ContentType();
        transportation=new ContentType();
         accomendation=new ContentType();
+        festival=new Festival(this);
 
         // adding the fragments to adapter
         adapter.addFragment(nature, "");
@@ -283,6 +299,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         adapter.addFragment(cuisine,"");
         adapter.addFragment(transportation,"");
         adapter.addFragment(accomendation,"");
+        adapter.addFragment(festival,"");
         // populating the viewer pager with the adapter
         viewPager.setAdapter(adapter);
     }
@@ -421,6 +438,21 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         placeInfo.show(fm, "activity_place_info");
 
     }
+
+    @Override
+    public void callPlace(String phonenumber) {
+        this.Phone=phonenumber;
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                Log.d("Call", " its permission is granted");
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phonenumber));
+                startActivity(intent);
+            } else {
+                Log.d("Call", " its permission is not granted");
+                ActivityCompat.requestPermissions(MapsActivity.this, new String[]{android.Manifest.permission.CALL_PHONE}, PERMISSION_PHONE_CALL);
+            }
+
+    }
+
     private void addCityDrawer() {
         // pass the context, the items area code array list and map city list data to adapter
         cityExpandableListView = new CityExpandableListView(this,itemsAreaCode,cityListData);
@@ -701,7 +733,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
             for(areaBasedItem areaBasedItem:areaBasedItems) {
                 if (areaBasedItem!=null && areaBasedItem.getMapy()!=null && areaBasedItem.getMapx()!=null && !areaBasedItem.getMapx().equalsIgnoreCase("0") && !areaBasedItem.getMapy().equalsIgnoreCase("0")) {
                     LatLng latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()),Double.parseDouble(areaBasedItem.getMapx()));
-                  float color=  Markercolors[new Random().nextInt(Markercolors.length)];
+                    float color=  Markercolors[new Random().nextInt(Markercolors.length)];
                     Marker marker=mMap.addMarker(new MarkerOptions()
                             .position(latLng)
                             .icon(BitmapDescriptorFactory.defaultMarker(color)));
@@ -709,6 +741,8 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
                 }
 
     }
+
+
 
     Log.d("HeroJongi","on loop end");
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
@@ -731,6 +765,25 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @Override
+    public void setPins(List<FestivalItem> festivalItems) {
+        Log.d("HeroJongi"," SIze "+festivalItems.size());
+        if (mMap != null && festivalItems.size() > 0) {
+            mMap.clear();
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (FestivalItem areaBasedItem : festivalItems) {
+                if (areaBasedItem != null && areaBasedItem.getMapy() != null && areaBasedItem.getMapx() != null && !areaBasedItem.getMapx().equalsIgnoreCase("0") && !areaBasedItem.getMapy().equalsIgnoreCase("0")) {
+                    LatLng latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()), Double.parseDouble(areaBasedItem.getMapx()));
+                    float color = Markercolors[new Random().nextInt(Markercolors.length)];
+                    Marker marker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                    builder.include(marker.getPosition());
+                }
+            }
+        }
+    }
+
+    @Override
     public void setListareaBasedItems(List<areaBasedItem> areaBasedItems) {
         if(areaBasedItems!=null && areaBasedItems.size()>0) {
             Log.d("HeroJongi"," set List area based items ");
@@ -740,6 +793,18 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
             list_view.setItemAnimator(new DefaultItemAnimator());
             list_view.setAdapter(tourList);
         }
+    }
+
+    @Override
+    public void setStartEndDate(String startDate, String endDate) {
+        if(startDate!=null && endDate!=null && !startDate.equalsIgnoreCase("") && !endDate.equalsIgnoreCase("")){
+            slidingLayer2.closeLayer(true);
+            String url=Constants.base_url+languageSharedPreference.getLanguage()+Constants.searchFestival+"?"+Constants.serviceKey+"="+Constants.server_key+
+                    "&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&eventStartDate="+startDate+"&eventEndDate="+endDate+Constants.json;
+            festivalVolley.fetchData(url);
+        }
+
+
     }
 
     @Override

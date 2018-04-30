@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/mainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/festival"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_size_20"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/Sdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainText"
+        android:text="@string/start_date"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:textSize="@dimen/text_size_15"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/margin_20"
+        android:textStyle="bold|italic" />
+
+    <DatePicker
+        android:id="@+id/startDate"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:datePickerMode="spinner"
+        android:scaleY="1"
+        android:scaleX="1"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/colorPrimary"
+        android:theme="@style/MyDatePickerSpinnerStyle"
+        android:layout_centerHorizontal="true"
+        android:calendarViewShown="false"
+        android:layout_below="@+id/Sdate" />
+
+    <TextView
+        android:id="@+id/Fdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startDate"
+        android:text="@string/end_date"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:textSize="@dimen/text_size_15"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/margin_10"
+        android:textStyle="bold|italic" />
+
+    <DatePicker
+        android:id="@+id/finishDate"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:datePickerMode="spinner"
+        android:scaleY="1"
+        android:scaleX="1"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/colorPrimary"
+        android:theme="@style/MyDatePickerSpinnerStyle"
+        android:layout_centerHorizontal="true"
+        android:calendarViewShown="false"
+        android:layout_below="@+id/Fdate" />
+
+    <TextView
+        android:id="@+id/go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/finishDate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/go"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_size_15"
+        android:textStyle="bold|italic" />
+
+</RelativeLayout>
