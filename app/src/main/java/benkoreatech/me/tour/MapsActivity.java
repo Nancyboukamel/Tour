@@ -342,13 +342,18 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     // when the map is ready
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap; // we reference mMap to google map in order to user a public variable
-
+        mMap=googleMap;
+        // south korea latitude is 35.907757 and longitude is 35.907757 and longitude is 127.766922
+        LatLngBounds ADELAIDE = new LatLngBounds( new LatLng(33.489011, 126.498302),new LatLng(40.339852, 127.51009299999998));
+        mMap.setLatLngBoundsForCameraTarget(ADELAIDE);
+        CameraUpdate zoom=CameraUpdateFactory.zoomTo(6);
+        mMap.animateCamera(zoom);
         // checking if permission of access fine location and coarse location is granted or not
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true); // enable my location
             googleMap.getUiSettings().setMyLocationButtonEnabled(false); // set my location button to invisible because i dont want to use the default icon
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
         } else {
             // if permission not granted then you have to request this permission in M devices.
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
@@ -379,7 +384,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
             public boolean onMarkerClick(Marker marker) {
                 clickedMarker=marker; // the clicked marker keep reference to it
                 // animate the camera to this marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().bearing(30).zoom(13).target(marker.getPosition()).tilt(60).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().zoom(13).target(marker.getPosition()).build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 5000, new GoogleMap.CancelableCallback() {
                     @Override
                     public void onFinish() {

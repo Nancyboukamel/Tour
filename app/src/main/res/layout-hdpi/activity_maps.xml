@@ -15,7 +15,9 @@
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="50dp"/>
 
 
         <RelativeLayout
@@ -35,7 +37,7 @@
 
 
         </RelativeLayout>
-    </RelativeLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_view"
@@ -141,6 +143,6 @@
 
 
     </com.wunderlist.slidinglayer.SlidingLayer>
-
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>
