@@ -98,4 +98,22 @@
     <string name="shopping">Shopping</string>
     <string name="transportation">Transportation</string>
     <string name="cuisine">Cuisine</string>
+    <string name="age_limit">Age Limit:</string>
+    <string name="booking_place">Booking place:</string>
+    <string name="discount_info">Discount information</string>
+    <string name="event_end_day">Event end date:</string>
+    <string name="event_home_page">Event home page:</string>
+    <string name="event_place">Event place:</string>
+    <string name="event_start_date">Event start date:</string>
+    <string name="festival_class">Festival class:</string>
+    <string name="event_location">Event location:</string>
+    <string name="play_time">Performance time:</string>
+    <string name="program">Event program:</string>
+    <string name="time_required">Time required:</string>
+    <string name="sponser_info">Sponsor information:</string>
+    <string name="sponser_contact_nb">Sponsor contact number:</string>
+    <string name="sponser2">Organizer information:</string>
+    <string name="sponser2tel">Organizer contact information:</string>
+    <string name="sub_event">Sub event:</string>
+
 </resources>

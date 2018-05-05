@@ -525,6 +525,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int position=tab.getPosition();
+        Log.d("position","pos "+position);
         int code=0;
         String categoryCodeURL="";
         slidingLayer2.openLayer(true);
@@ -592,6 +593,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
                 }
                 categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
+
 
         }
         // call the volley class category content parse and fetch the data
@@ -853,10 +855,21 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public void setStartEndDate(String startDate, String endDate) {
-        if(startDate!=null && endDate!=null && !startDate.equalsIgnoreCase("") && !endDate.equalsIgnoreCase("")){
+        if(locationPreference!=null && startDate!=null && endDate!=null && !startDate.equalsIgnoreCase("") && !endDate.equalsIgnoreCase("")){
+           String areaCode = locationPreference.getAreaCode();
+            String SigunguCode = locationPreference.getSigungCode();
+
+
             slidingLayer2.closeLayer(true);
             String url=Constants.base_url+languageSharedPreference.getLanguage()+Constants.searchFestival+"?"+Constants.serviceKey+"="+Constants.server_key+
-                    "&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&eventStartDate="+startDate+"&eventEndDate="+endDate+Constants.json;
+                    "&numOfRows=10&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&listYN=Y&arrange=A&eventStartDate="+startDate+"&eventEndDate="+endDate;
+            if (areaCode != null && !areaCode.equalsIgnoreCase("")) {
+               url +="&"+ Constants.areaCode + "=" + areaCode;
+            }
+            if (SigunguCode != null && !SigunguCode.equalsIgnoreCase("")) {
+                url += "&" + Constants.sigunguCode + "=" + SigunguCode;
+            }
+            url+=Constants.json;
             festivalVolley.fetchData(url);
         }
 

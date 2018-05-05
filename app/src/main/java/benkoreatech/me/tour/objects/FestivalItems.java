@@ -5,24 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FestivalItems implements Serializable {
-   List<FestivalItem> festivalItemList=new ArrayList<>();
+    private List<FestivalItem> item;
 
-    public FestivalItems(List<FestivalItem> festivalItemList) {
-        this.festivalItemList = festivalItemList;
+    public List<FestivalItem> getItem ()
+    {
+        return item;
     }
 
-    public List<FestivalItem> getFestivalItemList() {
-        return festivalItemList;
-    }
-
-    public void setFestivalItemList(List<FestivalItem> festivalItemList) {
-        this.festivalItemList = festivalItemList;
+    public void setItem (List<FestivalItem> item)
+    {
+        this.item = item;
     }
 
     @Override
     public String toString() {
         return "FestivalItems{" +
-                "festivalItemList=" + festivalItemList +
+                "item=" + item +
                 '}';
     }
 }

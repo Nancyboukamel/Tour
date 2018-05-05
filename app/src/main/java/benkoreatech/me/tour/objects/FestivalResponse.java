@@ -9,25 +9,31 @@ public class FestivalResponse implements Serializable {
 
     private FestivalHeader header;
 
-    public FestivalBody getBody() {
+    public FestivalBody getBody ()
+    {
         return body;
     }
 
-    public void setBody(FestivalBody body) {
+    public void setBody (FestivalBody body)
+    {
         this.body = body;
     }
 
-    public FestivalHeader getHeader() {
+    public FestivalHeader getHeader ()
+    {
         return header;
     }
 
-    public void setHeader(FestivalHeader header) {
+    public void setHeader (FestivalHeader header)
+    {
         this.header = header;
     }
 
     @Override
-    public String toString()
-    {
-        return "[body = "+body+", header = "+header+"]";
+    public String toString() {
+        return "FestivalResponse{" +
+                "body=" + body +
+                ", header=" + header +
+                '}';
     }
 }

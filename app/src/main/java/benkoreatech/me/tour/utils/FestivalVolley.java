@@ -36,7 +36,7 @@ public class FestivalVolley   implements Response.Listener<JSONObject>,Response.
     }
 
     public void fetchData(String URL){
-        Log.d("HeroJongi"," area based item "+URL);
+        Log.d("position"," area based item "+URL);
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, URL, null,this,this);
         requestQueue.add(request);
     }
@@ -48,22 +48,28 @@ public class FestivalVolley   implements Response.Listener<JSONObject>,Response.
 
     @Override
     public void onResponse(JSONObject response) {
-        Log.d("HeroJongi"," Response "+response);
+        Log.d("position"," Response "+response);
         Gson gson=new Gson();
         try{
             searchFestival searchFestival = gson.fromJson(String.valueOf(response), searchFestival.class);
-            List<FestivalItem> itemListsub = searchFestival.getResponse().getBody().getItems().getFestivalItemList();
+            Log.d("position"," here "+searchFestival);
+          List<FestivalItem> itemListsub = searchFestival.getResponse().getBody().getItems().getItem();
+
              if(categoryInterface!=null){
                  categoryInterface.setPins(itemListsub);
              }
         }
         catch(Exception exception){
             JSONObject items = null;
+            Log.d("position"," error "+exception.getMessage());
             try {
                 items = response.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONObject("item");
                 FestivalItem _item = gson.fromJson(String.valueOf(items), FestivalItem.class);
                 List<FestivalItem> itemList = new ArrayList<>();
                 itemList.add(_item);
+                for(FestivalItem festivalItem:itemList){
+                    Log.d("position"," Item name2 "+festivalItem.getTitle());
+                }
                 if(categoryInterface!=null){
                     categoryInterface.setPins(itemList);
                 }

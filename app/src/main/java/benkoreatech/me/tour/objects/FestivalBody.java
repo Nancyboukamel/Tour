@@ -22,11 +22,13 @@ public class FestivalBody implements Serializable{
         this.totalCount = totalCount;
     }
 
-    public FestivalItems getItems() {
+    public FestivalItems getItems ()
+    {
         return items;
     }
 
-    public void setItems(FestivalItems items) {
+    public void setItems (FestivalItems items)
+    {
         this.items = items;
     }
 
@@ -51,8 +53,12 @@ public class FestivalBody implements Serializable{
     }
 
     @Override
-    public String toString()
-    {
-        return "[totalCount = "+totalCount+", items = "+items+", pageNo = "+pageNo+", numOfRows = "+numOfRows+"]";
+    public String toString() {
+        return "FestivalBody{" +
+                "totalCount='" + totalCount + '\'' +
+                ", items=" + items +
+                ", pageNo='" + pageNo + '\'' +
+                ", numOfRows='" + numOfRows + '\'' +
+                '}';
     }
 }

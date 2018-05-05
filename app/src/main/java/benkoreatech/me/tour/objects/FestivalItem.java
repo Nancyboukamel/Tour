@@ -5,11 +5,9 @@ import java.io.Serializable;
 
 public class FestivalItem implements Serializable {
 
-    private String contentid;
-
-
     private String eventenddate;
 
+    private String contentid;
 
     private String firstimage;
 
@@ -32,6 +30,8 @@ public class FestivalItem implements Serializable {
     private String addr1;
 
     private String cat3;
+
+    private String addr2;
 
     private String cat2;
 
@@ -177,6 +177,16 @@ public class FestivalItem implements Serializable {
         this.cat3 = cat3;
     }
 
+    public String getAddr2 ()
+    {
+        return addr2;
+    }
+
+    public void setAddr2 (String addr2)
+    {
+        this.addr2 = addr2;
+    }
+
     public String getCat2 ()
     {
         return cat2;
@@ -250,6 +260,6 @@ public class FestivalItem implements Serializable {
     @Override
     public String toString()
     {
-        return "[eventenddate = "+eventenddate+", contentid = "+contentid+", firstimage = "+firstimage+", tel = "+tel+", sigungucode = "+sigungucode+", mlevel = "+mlevel+", areacode = "+areacode+", contenttypeid = "+contenttypeid+", eventstartdate = "+eventstartdate+", title = "+title+", cat1 = "+cat1+", addr1 = "+addr1+", cat3 = "+cat3+", cat2 = "+cat2+", createdtime = "+createdtime+", modifiedtime = "+modifiedtime+", readcount = "+readcount+", mapx = "+mapx+", mapy = "+mapy+", firstimage2 = "+firstimage2+"]";
+        return "ClassPojo [eventenddate = "+eventenddate+", contentid = "+contentid+", firstimage = "+firstimage+", tel = "+tel+", sigungucode = "+sigungucode+", mlevel = "+mlevel+", areacode = "+areacode+", contenttypeid = "+contenttypeid+", eventstartdate = "+eventstartdate+", title = "+title+", cat1 = "+cat1+", addr1 = "+addr1+", cat3 = "+cat3+", addr2 = "+addr2+", cat2 = "+cat2+", createdtime = "+createdtime+", modifiedtime = "+modifiedtime+", readcount = "+readcount+", mapx = "+mapx+", mapy = "+mapy+", firstimage2 = "+firstimage2+"]";
     }
 }

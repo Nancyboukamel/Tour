@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 
 public class FestivalHeader implements Serializable {
-
     private String resultMsg;
 
     private String resultCode;
@@ -30,8 +29,10 @@ public class FestivalHeader implements Serializable {
     }
 
     @Override
-    public String toString()
-    {
-        return "[resultMsg = "+resultMsg+", resultCode = "+resultCode+"]";
+    public String toString() {
+        return "FestivalHeader{" +
+                "resultMsg='" + resultMsg + '\'' +
+                ", resultCode='" + resultCode + '\'' +
+                '}';
     }
 }
