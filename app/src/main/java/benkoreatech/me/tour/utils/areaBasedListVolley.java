@@ -17,14 +17,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import benkoreatech.me.tour.interfaces.TourSettings;
 import benkoreatech.me.tour.interfaces.categoryInterface;
-import benkoreatech.me.tour.objects.Item;
 import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.LocationBasedList;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.areaBasedList;
-import benkoreatech.me.tour.objects.areaCode;
 
 public class areaBasedListVolley  implements Response.Listener<JSONObject>,Response.ErrorListener {
     Context context;

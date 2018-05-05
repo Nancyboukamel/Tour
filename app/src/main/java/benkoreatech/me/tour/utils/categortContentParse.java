@@ -35,6 +35,7 @@ public class categortContentParse implements Response.Listener<JSONObject>,Respo
     }
 
     public void fetchData(String URL, int code,int status) {
+        Log.d("NANCY"," URL IS "+URL);
         this.code=code;
         this.status=status;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, this, this);
@@ -48,6 +49,7 @@ public class categortContentParse implements Response.Listener<JSONObject>,Respo
 
     @Override
     public void onResponse(JSONObject response) {
+        Log.d("NANCY"," Response "+response);
         Gson gson = new Gson();
         if (categoryInterface != null) {
             try {
@@ -55,7 +57,10 @@ public class categortContentParse implements Response.Listener<JSONObject>,Respo
                 List<categoryItem> categoryItems = categoryCode.getResponse().getBody().getItems().getItem();
                 //
                 if(status==1) {
-                    categoryInterface.BigCategory(categoryItems, code);
+                    if(categoryItems.size()>0) {
+                        categoryInterface.BigCategory(categoryItems, code);
+                    }
+
                 }
                 // cat 1  available
                 else if(status==2){

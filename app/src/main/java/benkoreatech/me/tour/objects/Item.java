@@ -2,7 +2,6 @@ package benkoreatech.me.tour.objects;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Item implements Serializable{
     private int code;

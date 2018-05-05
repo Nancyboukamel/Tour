@@ -18,9 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import benkoreatech.me.tour.interfaces.TourSettings;
 import benkoreatech.me.tour.interfaces.placeInfoInterface;
-import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.detailImageItem;
 
 public class detailImageVolley implements Response.Listener<JSONObject>,Response.ErrorListener{

@@ -1,65 +1,74 @@
 package benkoreatech.me.tour.utils;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import benkoreatech.me.tour.objects.Constants;
 
+/**
+ * Created by nancy on 5/5/2018.
+ */
+
 public class LanguageSharedPreference {
-    SharedPreferences pref;
 
-    // Editor for Shared preferences
-    SharedPreferences.Editor editor;
+        SharedPreferences pref;
 
-    // Context
-    Context _context;
+        // Editor for Shared preferences
+        SharedPreferences.Editor editor;
 
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
+        // Context
+        Context _context;
 
-    // Sharedpref file name
-    private static final String PREF_NAME = "My_Location";
+        // Shared pref mode
+        int PRIVATE_MODE = 0;
 
-    public LanguageSharedPreference(Context context) {
-        this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        editor = pref.edit();
-    }
+        // Sharedpref file name
+        private static final String PREF_NAME = "My_Location";
 
-    public void save_language(String lang){
-        String _lang=null;
-        switch (lang){
-            case "en":
-            _lang=Constants.english;
-            break;
-            case "ja":
-            _lang=Constants.japanese;
-            break;
-            case "es":
-                _lang=Constants.spanish;
-                break;
-            case "de":
-                _lang=Constants.deutsch;
-                break;
-            case "zh":
-                _lang=Constants.chinese;
-                break;
-            case "fr":
-                _lang=Constants.french;
-                break;
-            case "ru":
-                _lang=Constants.russian;
-                break;
+        public LanguageSharedPreference(Context context) {
+            this._context = context;
+            pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+            editor = pref.edit();
         }
-        if(_lang==null){
-           _lang= Constants.english;
+
+        public void save_language(String lang){
+            String _lang=null;
+            switch (lang){
+                case "en":
+                    _lang= Constants.english;
+                    break;
+                case "ja":
+                    _lang=Constants.japanese;
+                    break;
+                case "es":
+                    _lang=Constants.spanish;
+                    break;
+                case "de":
+                    _lang=Constants.deutsch;
+                    break;
+                case "zh":
+                    _lang=Constants.chinese;
+                    break;
+                case "fr":
+                    _lang=Constants.french;
+                    break;
+                case "ru":
+                    _lang=Constants.russian;
+                    break;
+                case "ko":
+                    _lang=Constants.korean;
+                    break;
+            }
+            if(_lang==null){
+                _lang= Constants.english;
+            }
+            editor.putString("language",_lang);
+            editor.apply();
         }
-        editor.putString("language",_lang);
-        editor.apply();
+
+        public String getLanguage(){
+            return pref.getString("language","");
+        }
     }
 
-    public String getLanguage(){
-        return pref.getString("language","");
-    }
-}
+

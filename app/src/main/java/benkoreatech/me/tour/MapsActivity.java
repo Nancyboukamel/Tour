@@ -1,6 +1,5 @@
 package benkoreatech.me.tour;
 
-import android.*;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.SearchManager;
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -20,15 +18,12 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -41,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
-import com.bumptech.glide.util.Util;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -56,18 +50,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -87,10 +77,8 @@ import benkoreatech.me.tour.objects.FestivalItem;
 import benkoreatech.me.tour.objects.InfoWindowData;
 import benkoreatech.me.tour.objects.Item;
 import benkoreatech.me.tour.objects.LocationBasedItem;
-import benkoreatech.me.tour.objects.StayItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.categoryItem;
-import benkoreatech.me.tour.objects.detailImageItem;
 import benkoreatech.me.tour.utils.CityVolley;
 import benkoreatech.me.tour.utils.FestivalVolley;
 import benkoreatech.me.tour.utils.LanguageSharedPreference;
@@ -100,7 +88,6 @@ import benkoreatech.me.tour.utils.Utils;
 import benkoreatech.me.tour.utils.VolleyApi;
 import benkoreatech.me.tour.utils.areaBasedListVolley;
 import benkoreatech.me.tour.utils.categortContentParse;
-import benkoreatech.me.tour.utils.detailImageVolley;
 
 // The map activity
 
@@ -144,7 +131,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     float[] Markercolors; // Marker colors array to choose random color for pin
     private static int UPDATE_INTERVAL = 60 * 1000; // 1min update interval for location change
     public boolean isFirstTime = true;
-    String Phone = "";
+    String Phone = "",language;
     FestivalVolley festivalVolley;
 
     // list of drawables for bottom menu
@@ -199,7 +186,8 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         // get the tool bar
         setLocationinToolbar();
         // get the default language from the phone
-        String language = Locale.getDefault().getLanguage();
+        language = Locale.getDefault().getLanguage();
+        Log.d("Language"," lang "+language);
         // save this language in shared preference
         languageSharedPreference.save_language(language);
         // myLocation on click listener to listen for click when we need current location
@@ -209,14 +197,26 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         setupViewPager(viewPager); // set up view pager for bottom menu
         toolbar.setupWithViewPager(viewPager); // set the tab layout with viewer pager
         setupTabIcons(); // set up the default tab icons
-        toolbar.addOnTabSelectedListener(this); // tab on click listener in bottom menu
+        toolbar.addOnTabSelectedListener(this); // tab on/ click listener in bottom menu
         buildGoogleApiClient(); // build the google api client
         createLocationRequest();
         // Here i do api call upon on Create to fill the nature spinner so i will not get empty one
-        int code = 76; // nature
+        if(language!=null){
+        int code ;
+
+        if(language.equalsIgnoreCase("ko")){
+            code=12;
+        }
+        else{
+            code=76;
+        }
         // I prepare the Url to fetch the nature category code
-        String categoryCodeURL = Constants.base_url + languageSharedPreference.getLanguage() + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&" + Constants.contentTypeId + "=" + code + Constants.json;
-        categortContentParse.fetchData(categoryCodeURL, code, 1);
+        if(language!=null) {
+            String categoryCodeURL = Constants.base_url + languageSharedPreference.getLanguage() + Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&" + Constants.contentTypeId + "=" + code + Constants.json;
+            categortContentParse.fetchData(categoryCodeURL, code, 1);
+        }
+
+        }
 
     }
 
@@ -530,31 +530,66 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         slidingLayer2.openLayer(true);
         switch (position){
             case 0:
-               code=76;
+                if(language.equalsIgnoreCase("ko")){
+                    code=12;
+                }
+                else {
+                    code = 76;
+                }
                categoryCodeURL = Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 1:
-                code=78;
+                if(language.equalsIgnoreCase("ko")){
+                 code=14;
+                }
+                else {
+                    code = 78;
+                }
                 categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 2:
-                code=75;
+                if(language.equalsIgnoreCase("ko")){
+                    code=28;
+                }
+                else {
+                    code = 75;
+                }
                 categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 3:
-                code=79;
+                if(language.equalsIgnoreCase("ko")){
+                    code=38;
+                }
+                else{
+                    code=79;
+                }
                 categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 4:
-                code=82;
+                if(language.equalsIgnoreCase("ko")){
+                    code=39;
+                }
+                else {
+                    code = 82;
+                }
                 categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 5:
-                code=77;
+                if(language.equalsIgnoreCase("ko")){
+                    code=25;
+                }
+                else {
+                    code = 77;
+                }
                 categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
             case 6:
-                code=80;
+                if(language.equalsIgnoreCase("ko")){
+                   code=32;
+                }
+                else {
+                    code = 80;
+                }
                 categoryCodeURL= Constants.base_url +languageSharedPreference.getLanguage()+ Constants.categoryCode + "?serviceKey=" + Constants.server_key + "&numOfRows=25&pageSize=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&"+Constants.contentTypeId+"="+code+Constants.json;
                 break;
 
@@ -574,36 +609,43 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @Override
-    public void BigCategory(List<categoryItem> categoryItems,int code) {
+    public void BigCategory(List<categoryItem> categoryItems, int code) {
         if(categoryItems!=null && categoryItems.size()>0){
       switch (code) {
           case 76:
+              case 12:
               // Fill First spinner
-              nature.setText("Nature");
+              nature.setText(getResources().getString(R.string.nature));
               nature.FillBigSpinner(categoryItems, code,this);
               break;
           case 78:
-              culture.setText("Culture/Art/History");
+          case 14:
+              culture.setText(getResources().getString(R.string.culture));
               culture.FillBigSpinner(categoryItems, code,this);
               break;
           case 75:
-              leisure.setText("Leisure/Sports");
+          case 28:
+              leisure.setText(getResources().getString(R.string.leisure));
               leisure.FillBigSpinner(categoryItems, code,this);
               break;
           case 80:
-              accomendation.setText("Accomendation");
+          case 32:
+              accomendation.setText(getResources().getString(R.string.accomendation));
               accomendation.FillBigSpinner(categoryItems, code,this);
               break;
           case 79:
-              shopping.setText("Shopping");
+          case 38:
+              shopping.setText(getResources().getString(R.string.shopping));
               shopping.FillBigSpinner(categoryItems, code,this);
               break;
           case 77:
-              transportation.setText("Transportation");
+          case 25:
+              transportation.setText(getResources().getString(R.string.transportation));
               transportation.FillBigSpinner(categoryItems, code,this);
               break;
           case 82:
-              cuisine.setText("Cuisine");
+          case 39:
+              cuisine.setText(getResources().getString(R.string.cuisine));
               cuisine.FillBigSpinner(categoryItems, code,this);
               break;
       }
@@ -626,24 +668,31 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         if(categoryItems!=null && categoryItems.size()>0){
             switch (code) {
                 case 76:
+                case 12:
                     nature.FillMediumSpinner(categoryItems);
                     break;
                 case 78:
+                case 14:
                     culture.FillMediumSpinner(categoryItems);
                     break;
                 case 75:
+                case 28:
                     leisure.FillMediumSpinner(categoryItems);
                     break;
                 case 80:
+                case 32:
                     accomendation.FillMediumSpinner(categoryItems);
                     break;
                 case 79:
+                case 38:
                     shopping.FillMediumSpinner(categoryItems);
                     break;
                 case 77:
+                    case 25:
                     transportation.FillMediumSpinner(categoryItems);
                     break;
                 case 82:
+                case 39:
                     cuisine.FillMediumSpinner(categoryItems);
                     break;
             }
@@ -663,24 +712,31 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         if(categoryItems!=null && categoryItems.size()>0){
             switch (code) {
                 case 76:
+                case 12:
                     nature.FillSmallSpinner(categoryItems);
                     break;
                 case 78:
+                case 14:
                     culture.FillSmallSpinner(categoryItems);
                     break;
                 case 75:
+                case 28:
                     leisure.FillSmallSpinner(categoryItems);
                     break;
                 case 80:
+                case 32:
                     accomendation.FillSmallSpinner(categoryItems);
                     break;
                 case 79:
+                case 38:
                     shopping.FillSmallSpinner(categoryItems);
                     break;
                 case 77:
+                case 25:
                     transportation.FillSmallSpinner(categoryItems);
                     break;
                 case 82:
+                case 39:
                     cuisine.FillSmallSpinner(categoryItems);
                     break;
             }

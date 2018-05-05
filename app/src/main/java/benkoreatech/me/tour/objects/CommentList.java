@@ -1,7 +1,6 @@
 package benkoreatech.me.tour.objects;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 

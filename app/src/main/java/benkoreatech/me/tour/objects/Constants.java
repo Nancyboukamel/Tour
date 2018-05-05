@@ -43,6 +43,7 @@ public class Constants {
     public static final String french="FreService/";
     public static final String spanish="SpnService/";
     public static final String russian="RusService/";
+    public static final String korean="KorService/";
 
 
 }
