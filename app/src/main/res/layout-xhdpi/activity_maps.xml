@@ -35,6 +35,15 @@
                 android:layout_marginLeft="@dimen/margin_10"/>
 
 
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/favrite"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_above="@+id/mylocation"/>
+
         </RelativeLayout>
 
 
@@ -48,6 +57,8 @@
         android:layout_marginEnd="@dimen/margin_20"
         android:layout_marginBottom="@dimen/margin_50"
         android:layout_marginRight="@dimen/margin_20"/>
+
+
 
     <com.wunderlist.slidinglayer.SlidingLayer
         android:id="@+id/rightmenu"

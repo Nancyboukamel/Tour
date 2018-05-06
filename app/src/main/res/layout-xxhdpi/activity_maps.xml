@@ -34,10 +34,17 @@
                 android:tint="@color/colorPrimaryDark"
                 android:layout_marginLeft="@dimen/margin_10"/>
 
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/favrite"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_above="@+id/mylocation"/>
+
 
         </RelativeLayout>
-
-    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_view"
@@ -47,6 +54,8 @@
         android:layout_marginEnd="@dimen/margin_20"
         android:layout_marginBottom="@dimen/margin_50"
         android:layout_marginRight="@dimen/margin_20"/>
+
+
 
     <com.wunderlist.slidinglayer.SlidingLayer
         android:id="@+id/rightmenu"
@@ -142,6 +151,6 @@
         </RelativeLayout>
 
     </com.wunderlist.slidinglayer.SlidingLayer>
-
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

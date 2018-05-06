@@ -2,6 +2,8 @@ package benkoreatech.me.tour.interfaces;
 
 import java.util.List;
 
+import benkoreatech.me.tour.objects.FavoriteList;
+import benkoreatech.me.tour.objects.Favorites;
 import benkoreatech.me.tour.objects.FestivalItem;
 import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
@@ -20,4 +22,5 @@ public interface categoryInterface {
     public void setPins(List<FestivalItem> festivalItems);
     public void setListareaBasedItems(List<areaBasedItem>areaBasedItems);
     public void setStartEndDate(String startDate,String endDate);
+    public void setFavoritesonMap(List<Favorites>favoritesonMap);
 }

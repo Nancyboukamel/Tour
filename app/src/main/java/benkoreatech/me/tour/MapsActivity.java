@@ -73,6 +73,8 @@ import benkoreatech.me.tour.fragment.Festival;
 import benkoreatech.me.tour.interfaces.TourSettings;
 import benkoreatech.me.tour.interfaces.categoryInterface;
 import benkoreatech.me.tour.objects.Constants;
+import benkoreatech.me.tour.objects.FavoriteList;
+import benkoreatech.me.tour.objects.Favorites;
 import benkoreatech.me.tour.objects.FestivalItem;
 import benkoreatech.me.tour.objects.InfoWindowData;
 import benkoreatech.me.tour.objects.Item;
@@ -80,6 +82,7 @@ import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.categoryItem;
 import benkoreatech.me.tour.utils.CityVolley;
+import benkoreatech.me.tour.utils.FavoritesVolley;
 import benkoreatech.me.tour.utils.FestivalVolley;
 import benkoreatech.me.tour.utils.LanguageSharedPreference;
 import benkoreatech.me.tour.utils.LocationPreference;
@@ -133,6 +136,8 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean isFirstTime = true;
     String Phone = "",language;
     FestivalVolley festivalVolley;
+    ImageView favorite;
+    FavoritesVolley favoritesVolley;
 
     // list of drawables for bottom menu
     private int[] tabIcons = {
@@ -161,6 +166,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         // declaring volley class by passing context and interface as parameters
         volleyApi = new VolleyApi(this, tourSettings);
         cityVolley = new CityVolley(this, tourSettings);
+        favoritesVolley=new FavoritesVolley(this,this);
         // declaring shared preference
         locationPreference = new LocationPreference(this);
         // declaring views
@@ -172,6 +178,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         rightMenu = (SlidingLayer) findViewById(R.id.rightmenu);
         list_view = (RecyclerView) findViewById(R.id.list_view);
         myLocation = (ImageView) findViewById(R.id.mylocation);
+        favorite=(ImageView) findViewById(R.id.favorite);
         activity_controller = (RelativeLayout) findViewById(R.id.activity_controller);
         // S ign in shared preference declaration
         signinPreference = new SigninPreference(this);
@@ -185,6 +192,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
         // get the tool bar
         setLocationinToolbar();
+
         // get the default language from the phone
         language = Locale.getDefault().getLanguage();
         Log.d("Language"," lang "+language);
@@ -192,6 +200,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         languageSharedPreference.save_language(language);
         // myLocation on click listener to listen for click when we need current location
         myLocation.setOnClickListener(this);
+        favorite.setOnClickListener(this);
         setupDrawer(); // set up the drawer of right menu
         getCitiesData(); // get cities data in order to fill right menu
         setupViewPager(viewPager); // set up view pager for bottom menu
@@ -789,7 +798,6 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public void setPins(List<areaBasedItem> areaBasedItems, int code) {
-        Log.d("HeroJongi"," array size "+areaBasedItems.size());
         if(mMap!=null && areaBasedItems.size()>0){
             mMap.clear();
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -816,7 +824,6 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public void setPinInfo(List<LocationBasedItem> locationBasedItems) {
         if(locationBasedItems.size()>0 && mMap!=null && clickedMarker!=null){
-            Log.d("HeroJongi"," on Fetch Info completed "+locationBasedItems.size()+"  "+locationBasedItems.get(0).toString());
             CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(MapsActivity.this,MapsActivity.this);
             mMap.setInfoWindowAdapter(adapter);
             InfoWindowData info = new InfoWindowData();
@@ -830,7 +837,6 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public void setPins(List<FestivalItem> festivalItems) {
-        Log.d("HeroJongi"," SIze "+festivalItems.size());
         if (mMap != null && festivalItems.size() > 0) {
             mMap.clear();
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -850,7 +856,6 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public void setListareaBasedItems(List<areaBasedItem> areaBasedItems) {
         if(areaBasedItems!=null && areaBasedItems.size()>0) {
-            Log.d("HeroJongi"," set List area based items ");
             TourList tourList = new TourList(areaBasedItems, MapsActivity.this,this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             list_view.setLayoutManager(mLayoutManager);
@@ -881,6 +886,27 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
     }
+
+    @Override
+    public void setFavoritesonMap(List<Favorites> favoritesonMap) {
+     if(mMap!=null && favoritesonMap!=null && favoritesonMap.size()>0){
+             mMap.clear();
+             LatLngBounds.Builder builder = new LatLngBounds.Builder();
+             for(Favorites favorites:favoritesonMap)
+                 if (favorites != null && favorites.getMapY() != null && favorites.getMapX() != null && !favorites.getMapX().equalsIgnoreCase("0") && !favorites.getMapY().equalsIgnoreCase("0")) {
+                     LatLng latLng = new LatLng(Double.parseDouble(favorites.getMapY()), Double.parseDouble(favorites.getMapX()));
+                     if(check_is_in_or_out(latLng)) {
+                         float color = Markercolors[new Random().nextInt(Markercolors.length)];
+                         Marker marker = mMap.addMarker(new MarkerOptions()
+                                 .position(latLng)
+                                 .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                         builder.include(marker.getPosition());
+                     }
+                 }
+             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 300));
+         }
+     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -953,6 +979,13 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         switch(v.getId()){
             case R.id.mylocation:
                  ZoomtoMyCurrentLocation();
+                break;
+            case R.id.favorite:
+               String email=signinPreference.getUserEmail();
+               Log.d("Favorites"," email is "+email);
+               if(email!=null && !email.equalsIgnoreCase("")){
+                   favoritesVolley.getFavorites(email,Constants.get_all_favorites);
+               }
                 break;
         }
     }
