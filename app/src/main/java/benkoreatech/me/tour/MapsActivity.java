@@ -793,23 +793,24 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         if(mMap!=null && areaBasedItems.size()>0){
             mMap.clear();
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for(areaBasedItem areaBasedItem:areaBasedItems) {
-                if (areaBasedItem!=null && areaBasedItem.getMapy()!=null && areaBasedItem.getMapx()!=null && !areaBasedItem.getMapx().equalsIgnoreCase("0") && !areaBasedItem.getMapy().equalsIgnoreCase("0")) {
-                    LatLng latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()),Double.parseDouble(areaBasedItem.getMapx()));
-                    float color=  Markercolors[new Random().nextInt(Markercolors.length)];
-                    Marker marker=mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .icon(BitmapDescriptorFactory.defaultMarker(color)));
-                    builder.include(marker.getPosition());
+            for(areaBasedItem areaBasedItem:areaBasedItems)
+                if (areaBasedItem != null && areaBasedItem.getMapy() != null && areaBasedItem.getMapx() != null && !areaBasedItem.getMapx().equalsIgnoreCase("0") && !areaBasedItem.getMapy().equalsIgnoreCase("0")) {
+                    LatLng latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()), Double.parseDouble(areaBasedItem.getMapx()));
+                    if(check_is_in_or_out(latLng)) {
+                        float color = Markercolors[new Random().nextInt(Markercolors.length)];
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                        builder.include(marker.getPosition());
+                    }
                 }
-
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 300));
+        }
     }
 
-
-
-    Log.d("HeroJongi","on loop end");
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
-        }
+    public boolean check_is_in_or_out(LatLng latLng){
+        LatLngBounds ADELAIDE = new LatLngBounds( new LatLng(33.489011, 126.498302),new LatLng(40.339852, 127.51009299999998));
+        return ADELAIDE.contains(latLng);
     }
 
     @Override

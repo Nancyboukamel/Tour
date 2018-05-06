@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -80,6 +82,7 @@ import benkoreatech.me.tour.utils.detailImageVolley;
 import benkoreatech.me.tour.utils.detailIntroVolley;
 
 public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnMapReadyCallback, View.OnClickListener {
+    private static final int PERMISSION_PHONE_CALL = 200;
     Toolbar toolbar;
     TextView overview, title, direction, telephone, website,open_date, close_date;
     TextView fairday;
@@ -244,7 +247,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     }
 
     @Override
-    public void details(detailCommonItem detailCommonItem) {
+    public void details(final detailCommonItem detailCommonItem) {
         if (detailCommonItem != null) {
             this.detailCommonItem = detailCommonItem;
             if (detailCommonItem.getOverview() != null && !detailCommonItem.getOverview().equalsIgnoreCase("'")) {
@@ -257,14 +260,28 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
 
             title.setText(getType(detailCommonItem.getContenttypeid()));
             if (detailCommonItem.getTel() != null && !detailCommonItem.getTel().equalsIgnoreCase("")) {
-                String tel = "<b>"+getResources().getString(R.string.telephone)+"</b>" + detailCommonItem.getTel();
+                String tel = "<b>"+getResources().getString(R.string.telephone)+"</b> " + detailCommonItem.getTel();
                 SpannableString text = new SpannableString(Html.fromHtml(tel));
                 telephone.setText(text, TextView.BufferType.SPANNABLE);
+                telephone.setTextColor(getResources().getColor(R.color.blue));
+                telephone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                            Log.d("Call", " its permission is granted");
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + detailCommonItem.getTel()));
+                            startActivity(intent);
+                        } else {
+                            Log.d("Call", " its permission is not granted");
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.CALL_PHONE}, PERMISSION_PHONE_CALL);
+                        }
+                    }
+                });
             } else {
                 telephone.setVisibility(View.GONE);
             }
             if (detailCommonItem.getHomepage() != null && !detailCommonItem.getHomepage().equalsIgnoreCase("")) {
-                String _website = "<b>"+getResources().getString(R.string.website)+"</b>" + detailCommonItem.getHomepage();
+                String _website = "<b>"+getResources().getString(R.string.website)+"</b> " + detailCommonItem.getHomepage();
                 website.setText(Html.fromHtml(_website));
                 website.setLinkTextColor(Color.BLUE);
                 website.setMovementMethod(LinkMovementMethod.getInstance());
@@ -273,13 +290,28 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 website.setVisibility(View.GONE);
             }
             if (detailCommonItem.getDirections() != null && !detailCommonItem.getDirections().equalsIgnoreCase("")) {
-                String _direction = "<b>"+getResources().getString(R.string.direction)+" </b>" + detailCommonItem.getDirections();
+                String _direction = "<b>"+getResources().getString(R.string.direction)+" </b> " + detailCommonItem.getDirections();
                 SpannableString text = new SpannableString(Html.fromHtml(_direction));
                 direction.setText(text, TextView.BufferType.SPANNABLE);
             } else {
                 direction.setVisibility(View.GONE);
             }
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+         if (requestCode == PERMISSION_PHONE_CALL) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + detailCommonItem.getTel()));
+                    this.startActivity(intent);
+                }
+
+            }
+        }
+
     }
 
     @Override
@@ -312,31 +344,31 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 Log.d("SPECA"," opendate "+openday+" closeday "+closedday+" park "+Park+" useseason "+useseason+" useTime "+useTime+" exppage "+expage+" expguide "+expguide+" accom "+accomaccount);
 
                 if (openday != null && !openday.equalsIgnoreCase("")) {
-                    touristinfo += "<b> "+getResources().getString(R.string.opening_day)+" </b> " + openday+"<br/><br/>";
+                    touristinfo += "<b> "+getResources().getString(R.string.opening_day)+" </b> " + openday+"<br/>";
                 }
                 if (closedday != null && !closedday.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><br/><b>"+getResources().getString(R.string.closed_day)+" </b> " + closedday+"<br/><br/>";
+                    touristinfo += "<br/><br/><b>"+getResources().getString(R.string.closed_day)+" </b> " + closedday+"<br/>";
                 }
                 if (Park != null && !Park.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><br/><b>"+getResources().getString(R.string.parking_facility)+" </b> " + Park+"<br/><br/>";
+                    touristinfo += "<br/><br/><b>"+getResources().getString(R.string.parking_facility)+" </b> " + Park+"<br/>";
                 }
                 if(useseason!=null && !useseason.equalsIgnoreCase("")){
-                    touristinfo=  "<br/><br/><b>"+getResources().getString(R.string.available_season)+" </b> " + useseason+"<br/><br/>";
+                    touristinfo=  "<br/><br/><b>"+getResources().getString(R.string.available_season)+" </b> " + useseason+"<br/>";
                 }
                 if(useTime!=null && !useTime.equalsIgnoreCase("")){
-                    touristinfo="<br/><br/><b>"+getResources().getString(R.string.available_time)+" </b> " + useTime+"<br/><br/>";
+                    touristinfo="<br/><br/><b>"+getResources().getString(R.string.available_time)+" </b> " + useTime+"<br/>";
                 }
                 if(expage!=null && !expage.equalsIgnoreCase("")){
-                    touristinfo+="<br/><br/><b>"+getResources().getString(R.string.experience_age)+"</b> "+expage+"<br/><br/>";
+                    touristinfo+="<br/><br/><b>"+getResources().getString(R.string.experience_age)+"</b> "+expage+"<br/>";
                 }
                 if(expguide!=null && !expguide.equalsIgnoreCase("")){
-                    touristinfo+="<br/><br/><b>"+getResources().getString(R.string.experience_guide)+" </b> "+expguide+"<br/><br/>";
+                    touristinfo+="<br/><br/><b>"+getResources().getString(R.string.experience_guide)+" </b> "+expguide+"<br/>";
                 }
                 if(accomaccount!=null && !accomaccount.equalsIgnoreCase("")){
-                    touristinfo+="<br/><br/><b>"+getResources().getString(R.string.number_of_person_to_be_admitted)+" </b> "+accomaccount+"<br/><br/>";
+                    touristinfo+="<br/><br/><b>"+getResources().getString(R.string.number_of_person_to_be_admitted)+" </b> "+accomaccount+"<br/>";
                 }
                 if (informationcenter != null && !informationcenter.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><br/><b>"+getResources().getString(R.string.information_center)+"</b><br/>" + informationcenter+"<br/><br/>";
+                    touristinfo += "<br/><br/><b>"+getResources().getString(R.string.information_center)+"</b><br/>" + informationcenter+"<br/>";
                 }
             }
             else if(Int_id==78 || Int_id==14){
@@ -353,32 +385,32 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 Log.d("SPECA",useTime+" "+restDay+" "+parkingCulture+" "+parking_Fee+" "+useFee+" "+spendTime+" "+scale+" "+accomculture+" "+infocenter);
 
                 if (useTime!=null && !useTime.equalsIgnoreCase("")) {
-                    touristinfo+= "<b>"+getResources().getString(R.string.available_time)+" </b> " +useTime+"<br/><br/>";
+                    touristinfo+= "<b>"+getResources().getString(R.string.available_time)+" </b> " +useTime+"<br/>";
                 }
                 if (restDay != null && !restDay.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b> "+getResources().getString(R.string.closed_day)+" </b> " + restDay;
+                    touristinfo+= "<br/><b> "+getResources().getString(R.string.closed_day)+" </b> " + restDay+"<br/>";
                 }
                 if (parkingCulture!= null && !parkingCulture.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b> "+getResources().getString(R.string.parking_facility)+"</b> " + parkingCulture+"<br/><br/>";
+                    touristinfo+= "<br/><b> "+getResources().getString(R.string.parking_facility)+"</b> " + parkingCulture+"<br/>";
                 }
                 if (parking_Fee!= null && !parking_Fee.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b> "+getResources().getString(R.string.parking_fee)+" </b> " +parking_Fee+"<br/><br/>";
+                    touristinfo+= "<br/><b> "+getResources().getString(R.string.parking_fee)+" </b> " +parking_Fee+"<br/>";
                 }
                 if (useFee != null && !useFee.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.use_fee)+" </b> " + useFee+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.use_fee)+" </b> " + useFee+"<br/>";
                 }
                 if (spendTime!= null && !spendTime.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b> "+getResources().getString(R.string.spend_time)+" </b> " + detailIntroItem.getSpendtime()+"<br/><br/>";
+                    touristinfo+= "<br/><b> "+getResources().getString(R.string.spend_time)+" </b> " + detailIntroItem.getSpendtime()+"<br/>";
                 }
                 if (scale!= null && !scale.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b> "+getResources().getString(R.string.scale)+" </b> " + scale+"<br/><br/>";
+                    touristinfo+= "<br/><b> "+getResources().getString(R.string.scale)+" </b> " + scale+"<br/>";
 
                 }
                 if (accomculture!= null && !accomculture.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.number_of_person_to_be_admitted)+"</b> " + accomculture+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.number_of_person_to_be_admitted)+"</b> " + accomculture+"<br/>";
                 }
                 if (infocenter!= null && !infocenter.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.information_center)+" </b><br/>" +infocenter+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.information_center)+" </b><br/>" +infocenter+"<br/>";
                 }
             }
             if(Int_id==75 || Int_id==28){
@@ -396,38 +428,38 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
 
 
                 if (openPeriod!= null && !openPeriod.equalsIgnoreCase("")) {
-                    touristinfo += "<b>"+getResources().getString(R.string.open_period)+"</b> " + openPeriod+"<br/><br/>";
+                    touristinfo += "<b>"+getResources().getString(R.string.open_period)+"</b> " + openPeriod+"<br/>";
                 }
                 if (restDate!= null && !restDate.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.closed_period)+"</b> " + restDate+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.closed_period)+"</b> " + restDate+"<br/>";
                 }
                 if (parking != null && !parking.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.parking_facility)+"</b> "  +parking+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.parking_facility)+"</b> "  +parking+"<br/>";
                 }
                 if (parkingFee != null && !parkingFee.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.parking_fee)+"</b> " + parkingFee+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.parking_fee)+"</b> " + parkingFee+"<br/>";
                 }
                 if (useTime!= null && !useTime.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.available_time)+"</b> " + useTime+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.available_time)+"</b> " + useTime+"<br/>";
                 }
                 if (reservation!= null && !reservation.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.reservation_guide)+"</b> " +reservation+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.reservation_guide)+"</b> " +reservation+"<br/>";
 
                 }
                 if (useFee!= null && !useFee.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b> "+getResources().getString(R.string.admission_fee)+"</b> " +useFee+"<br/><br/>";
+                    touristinfo += "<br/><b> "+getResources().getString(R.string.admission_fee)+"</b> " +useFee+"<br/>";
                 }
                 if (scale!= null && !scale.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.scale)+"</b> " + scale+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.scale)+"</b> " + scale+"<br/>";
                 }
                 if (expagerangesports != null && !expagerangesports.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.experience_age)+"</b> " + expagerangesports+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.experience_age)+"</b> " + expagerangesports+"<br/>";
                 }
                 if (accomleports != null && !accomleports.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.number_of_person_to_be_admitted)+"</b> " +accomleports+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.number_of_person_to_be_admitted)+"</b> " +accomleports+"<br/>";
                 }
                 if (infoCenter!= null && !infoCenter.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.information_center)+"</b><br/>" + infoCenter+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.information_center)+"</b><br/>" + infoCenter+"<br/>";
                 }
             }
             if(Int_id==79 || Int_id==38){
@@ -444,34 +476,34 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 String shopGuide=detailIntroItem.getShopguide();
 
                 if (fairDay!= null && !fairDay.equalsIgnoreCase("")) {
-                    touristinfo += "<b>"+getResources().getString(R.string.fair_day)+"</b> " + fairDay+"<br/><br/>";
+                    touristinfo += "<b>"+getResources().getString(R.string.fair_day)+"</b> " + fairDay+"<br/>";
                 }
                 if (checkCooking!= null && !checkCooking.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.information_center)+"</b> " + checkCooking+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.information_center)+"</b> " + checkCooking+"<br/>";
                 }
                 if (opendate!= null && !opendate.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.open_date)+"</b> " + opendate+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.open_date)+"</b> " + opendate+"<br/>";
                 }
                 if (openTime!= null && !openTime.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.business_hour)+"</b> " +openTime+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.business_hour)+"</b> " +openTime+"<br/>";
                 }
                 if (parking != null && !parking.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.parking_facility)+"</b> " + parking+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.parking_facility)+"</b> " + parking+"<br/>";
                 }
                 if (restdate!= null && restdate.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.closed_day)+"" + restdate+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.closed_day)+"" + restdate+"<br/>";
                 }
                 if (restRoom!= null && !restRoom.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.restroom_information)+"</b> " + restRoom+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.restroom_information)+"</b> " + restRoom+"<br/>";
                 }
                 if (saleItem!= null && !saleItem.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.sale_item)+"</b> " + saleItem+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.sale_item)+"</b> " + saleItem+"<br/>";
                 }
                 if (scale!= null && !scale.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.scale)+"</b> " + scale+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.scale)+"</b> " + scale+"<br/>";
                 }
                 if (shopGuide!= null && !shopGuide.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.store_guidance)+"</b><br/>" +shopGuide+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.store_guidance)+"</b><br/>" +shopGuide+"<br/>";
                 }
             }
             if(Int_id==80 || Int_id==32){
@@ -494,55 +526,55 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 String subfacility=detailIntroItem.getSubfacility();
 
                 if (accomCount!= null && !accomCount.equalsIgnoreCase("")) {
-                    touristinfo += "<b>"+getResources().getString(R.string.accommodation_capacity)+"</b> " + accomCount+"<br/><br/>";
+                    touristinfo += "<b>"+getResources().getString(R.string.accommodation_capacity)+"</b> " + accomCount+"<br/>";
                 }
                 if (benikia!= null && !benikia.equalsIgnoreCase("") && !benikia.equalsIgnoreCase("0")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.benikia)+"</b> " + benikia+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.benikia)+"</b> " + benikia+"<br/>";
                 }
                 if (checkInTime!= null && !checkInTime.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.checkin_time)+"</b> " + checkInTime+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.checkin_time)+"</b> " + checkInTime+"<br/>";
                 }
                 if (checkOutTime!= null && !checkOutTime.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.checkout_time)+"</b> " + checkOutTime+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.checkout_time)+"</b> " + checkOutTime+"<br/>";
                 }
                 if (checkcooking!= null && !checkcooking.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.cooking_available_check)+"</b>" + checkcooking+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.cooking_available_check)+"</b>" + checkcooking+"<br/>";
                 }
                 if (foodplace!= null && !foodplace.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.food_place)+"</b> " + foodplace+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.food_place)+"</b> " + foodplace+"<br/>";
                 }
                 if (goodStay!= null && !goodStay.equalsIgnoreCase("")) {
-                    touristinfo+= "<br/><b>"+getResources().getString(R.string.good_stay)+"</b> " + goodStay+"<br/><br/>";
+                    touristinfo+= "<br/><b>"+getResources().getString(R.string.good_stay)+"</b> " + goodStay+"<br/>";
                 }
                 if (hanok!= null && !hanok.equalsIgnoreCase("")) {
                     touristinfo += "<br/><b>"+getResources().getString(R.string.hanok)+"</b> " + hanok+"<br/><br/>";
                 }
                 if (infoCenter!= null && !infoCenter.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.information_center)+"</b> " +infoCenter+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.information_center)+"</b> " +infoCenter+"<br/>";
                 }
                 if (parking!= null && !parking.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.parking_facility)+"</b> " + parking+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.parking_facility)+"</b> " + parking+"<br/>";
                 }
                 if (pickup!= null && !pickup.equalsIgnoreCase("")) {
                     touristinfo += "<br/><b>"+getResources().getString(R.string.pickup_service)+"</b> " + pickup+"<br/>";
                 }
                 if (roomCount!= null && !roomCount.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.number_of_guest_room)+"</b> " + roomCount+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.number_of_guest_room)+"</b> " + roomCount+"<br/>";
                 }
                 if (reservation!= null && !reservation.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.reservation_guide)+"</b> " + reservation+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.reservation_guide)+"</b> " + reservation+"<br/>";
                 }
                 if (reservationURL!= null && !reservationURL.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.reservation_guide_homepage)+"</b> " + reservationURL+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.reservation_guide_homepage)+"</b> " + reservationURL+"<br/>";
                 }
                 if (roomType!= null && !roomType.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.guest_room_type)+"</b> " +roomType+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.guest_room_type)+"</b> " +roomType+"<br/>";
                 }
                 if (scale!= null && !scale.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.scale)+"</b> " + scale+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.scale)+"</b> " + scale+"<br/>";
                 }
                 if (subfacility!= null && !subfacility.equalsIgnoreCase("")) {
-                    touristinfo += "<br/><b>"+getResources().getString(R.string.sub_facility)+"</b> " + subfacility+"<br/><br/>";
+                    touristinfo += "<br/><b>"+getResources().getString(R.string.sub_facility)+"</b> " + subfacility+"<br/>";
                 }
             }
             if(Int_id==82 || Int_id==39){
@@ -559,37 +591,37 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 String treatMenu=detailIntroItem.getTreatmenu();
 
                 if(firstMenu!=null && !firstMenu.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.main_dishes)+"</b> "+firstMenu+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.main_dishes)+"</b> "+firstMenu+"<br/>";
                 }
                 if(openDateFood!=null && !openDateFood.equalsIgnoreCase("")){
-                    touristinfo+="<br/> <br>"+getResources().getString(R.string.open_date)+"</b>"+openDateFood+"<br/><br/>";
+                    touristinfo+="<br/> <br>"+getResources().getString(R.string.open_date)+"</b>"+openDateFood+"<br/>";
                 }
                 if(openTimeFood!=null && !openTimeFood.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.business_hour)+"</b> "+openTimeFood+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.business_hour)+"</b> "+openTimeFood+"<br/>";
                 }
                 if(parkingFood!=null && !parkingFood.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.parking_facility)+"</b> "+parkingFood+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.parking_facility)+"</b> "+parkingFood+"<br/>";
                 }
                 if(reservationFood!=null && !reservationFood.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.reservation_guide)+"</b> "+reservationFood+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.reservation_guide)+"</b> "+reservationFood+"<br/>";
                 }
                 if(restDateFood!=null && !reservationFood.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.closed_day)+"</b> "+restDateFood+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.closed_day)+"</b> "+restDateFood+"<br/>";
                 }
                 if(scaleFood!=null && !scaleFood.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.scale)+"</b> "+scaleFood+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.scale)+"</b> "+scaleFood+"<br/>";
                 }
                 if(seat!=null && !seat.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.seat_number)+"</b> "+seat+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.seat_number)+"</b> "+seat+"<br/>";
                 }
                 if(smoking!=null && !smoking.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.smoking)+"</b> "+smoking+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.smoking)+"</b> "+smoking+"<br/>";
                 }
                 if(treatMenu!=null && !treatMenu.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.treat_menu)+"</b> "+treatMenu+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.treat_menu)+"</b> "+treatMenu+"<br/>";
                 }
                 if(infoCenterFood!=null && !infoCenterFood.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.information_center)+"<b> "+infoCenterFood+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.information_center)+"<b> "+infoCenterFood+"<br/>";
                 }
             }
             if(Int_id==77 || Int_id==25){
@@ -605,34 +637,34 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 String shipInfo=detailIntroItem.getShipinfo();
 
                 if(checkCreditcard!=null && !checkCreditcard.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.credit_card)+"</b>"+checkCreditcard+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.credit_card)+"</b>"+checkCreditcard+"<br/>";
                 }
                 if(conven!=null && !conven.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.facilities)+"</b>"+conven+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.facilities)+"</b>"+conven+"<br/>";
                 }
                 if(disableFacility!=null && !disableFacility.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.disable_facility)+"</b>"+disableFacility+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.disable_facility)+"</b>"+disableFacility+"<br/>";
                 }
                 if(infoCenter!=null && !infoCenter.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.information_center)+"</b>"+infoCenter+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.information_center)+"</b>"+infoCenter+"<br/>";
                 }
                 if(infoCenterTraffic!=null && !infoCenterTraffic.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.contact_us)+"</b>"+infoCenterTraffic+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.contact_us)+"</b>"+infoCenterTraffic+"<br/>";
                 }
                 if(mainRoute!=null && !mainRoute.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.main_route)+"</b>"+mainRoute+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.main_route)+"</b>"+mainRoute+"<br/>";
                 }
                 if(operationTimeTraffic!=null && !operationTimeTraffic.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.operation_time)+" </b>"+operationTimeTraffic+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.operation_time)+" </b>"+operationTimeTraffic+"<br/>";
                 }
                 if(parkingTraffic!=null && !parkingTraffic.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.parking_facility)+"</b>"+parkingTraffic+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.parking_facility)+"</b>"+parkingTraffic+"<br/>";
                 }
                 if(restRoomTrafic!=null && !restRoomTrafic.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.rest_room)+"</b>"+restRoomTrafic+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.rest_room)+"</b>"+restRoomTrafic+"<br/>";
                 }
                 if(shipInfo!=null && !shipInfo.equalsIgnoreCase("")){
-                    touristinfo+="<br/><b>"+getResources().getString(R.string.ship_information)+" </b>"+shipInfo+"<br/><br/>";
+                    touristinfo+="<br/><b>"+getResources().getString(R.string.ship_information)+" </b>"+shipInfo+"<br/>";
                 }
             }
             if(Int_id==85 || Int_id==15){
@@ -656,58 +688,58 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 String useTimeFestival=detailIntroItem.getUsetimefestival();
 
                 if(ageLimit!=null && !ageLimit.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.age_limit)+"</b>"+ageLimit+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.age_limit)+"</b>"+ageLimit+"<br/>";
                 }
                 if(bookingPlace!=null && !bookingPlace.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.booking_place)+"</b>"+bookingPlace+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.booking_place)+"</b>"+bookingPlace+"<br/>";
                 }
                 if(discountinfofestival!=null && !discountinfofestival.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.discount_info)+"</b>"+discountinfofestival+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.discount_info)+"</b>"+discountinfofestival+"<br/>";
                 }
                 if(event_end_day!=null && !event_end_day.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_end_day)+"</b>"+event_end_day+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_end_day)+"</b>"+event_end_day+"<br/>";
                 }
                 if(event_home_page!=null && !event_home_page.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_home_page)+"</b>"+event_home_page+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_home_page)+"</b>"+event_home_page+"<br/>";
                 }
                 if(event_place!=null && !event_place.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_place)+"</b>"+event_place+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_place)+"</b>"+event_place+"<br/>";
                 }
                 if(event_start_date!=null && !event_start_date.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_start_date)+"</b>"+event_start_date+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_start_date)+"</b>"+event_start_date+"<br/>";
                 }
                 if(festival_grade!=null && !festival_grade.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.festival_class)+"</b>"+festival_grade+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.festival_class)+"</b>"+festival_grade+"<br/>";
                 }
                 if(place_info!=null && !place_info.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_location)+"</b>"+place_info+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_location)+"</b>"+place_info+"<br/>";
                 }
                 if(place_time!=null && !place_time.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.play_time)+"</b>"+place_time+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.play_time)+"</b>"+place_time+"<br/>";
                 }
                 if(program!=null && !program.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.program)+"</b>"+program+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.program)+"</b>"+program+"<br/>";
                 }
                 if(spendtimefestival!=null && !spendtimefestival.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.time_required)+"</b>"+spendtimefestival+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.time_required)+"</b>"+spendtimefestival+"<br/>";
                 }
                 if(sponsor1!=null && !sponsor1.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sponser_info)+"</b>"+sponsor1+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sponser_info)+"</b>"+sponsor1+"<br/>";
                 }
                 if(sponsor1Tel!=null && !sponsor1Tel.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sponser_contact_nb)+"</b>"+sponsor1Tel+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sponser_contact_nb)+"</b>"+sponsor1Tel+"<br/>";
                 }
                 if(sponsor2!=null && !sponsor2.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sponser2)+"</b>"+sponsor2+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sponser2)+"</b>"+sponsor2+"<br/>";
                 }
                 if(sponsor2Tel!=null && !sponsor2Tel.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sponser2tel)+"</b>"+sponsor2Tel+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sponser2tel)+"</b>"+sponsor2Tel+"<br/>";
                 }
                 if(subevent!=null && !subevent.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sub_event)+"</b>"+subevent+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sub_event)+"</b>"+subevent+"<br/>";
                 }
                 if(useTimeFestival!=null && !useTimeFestival.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.use_fee)+"</b>"+useTimeFestival+"<br/><br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.use_fee)+"</b>"+useTimeFestival+"<br/>";
                 }
             }
             // to here only
@@ -869,7 +901,12 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         Log.d("HeroJongi", " on stop");
         if (mMap != null) {
             mapFragment.onDestroyView();
-            getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.map_location)).commit();
+            try {
+                getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.map_location)).commit();
+            }
+            catch (Exception e){
+
+            }
         }
     }
 
