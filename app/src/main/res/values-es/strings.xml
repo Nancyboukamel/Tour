@@ -1,0 +1,215 @@
+<resources>
+    <string name="app_name">K-Travel</string>
+    <string name="Username"> Nombre de usuario </ string>
+    <string name="Password"> Contraseña </ string>
+    <string name="Email"> Correo electrónico </ string>
+    <string name="Signin"> Iniciar sesión </ string>
+    <string name="signup"> Registrarse </ string>
+    <string name="already_register"> ¡Ya registrado! Iniciar sesión conmigo. </ String>
+    <string name="confirm_password"> Confirmar contraseña </ string>
+    <string name="not_member"> No es miembro. Regístrese ahora. </ String>
+    <string name="title_activity_home"> Inicio </ string>
+    <string name="login"> Iniciar sesión </ string>
+    <string name="navigation_drawer_open"> Abrir el cajón de navegación </ string>
+    <string name="navigation_drawer_close"> Cerrar el cajón de navegación </ string>
+    <string name="drawer_open"> Abrir </ string>
+    <string name="drawer_close"> Cerrar </ string>
+    <string name="action_settings"> Configuraciones </ string>
+    <string name="title_activity_maps"> Mapa </ string>
+    <string name="map"> Mapa </ string>
+    <string name="list"> Lista </ string>
+
+    <string name="enter_username"> Ingrese su nombre de usuario </ string>
+        
+    <string name="enter_password"> Ingrese su contraseña </ string>
+        
+    <string name="enter_email"> Ingrese su correo electrónico </ string>
+        
+    <string name="enter_confirm_password"> Ingrese su contraseña nuevamente </string>
+        
+    <string name="password_match"> Ingrese la contraseña correcta </string>
+        
+    <string name="email_not_valid"> Ingrese un correo electrónico válido </string>
+        
+    <string name="go"> buscar </ string>
+        
+    <string name="big_category"> Categoría grande </ string>
+        
+    <string name="medium_category"> Categoría media </ string>
+        
+    <string name="small_category"> Categoría pequeña </ string>
+        
+    <string name="title_activity_place_info">colocar información</ string>
+        
+    <string name="additional_info"> Información adicional: </ string>
+        
+    <string name="signout"> Desconectar</string>
+        
+    <string name="comments"> Comentarios </ string>
+        
+    <string name="add_ur_comment"> Agregue su comentario </ string>
+        
+    <string name="title"> Título </ string>
+        
+    <string name="review"> Escribir una breve reseña </ string>
+        
+    <string name="comment"> Cuéntanos lo que piensas</ string>
+        
+    <string name="login_fail"> Error de inicio de sesión </ string>
+        
+    <string name="festival"> Festivales / Eventos / Rendimiento </ string>
+        
+    <string name="start_date"> Fecha de inicio </ string>
+        
+    <string name="end_date"> Fecha de finalización </ string>
+        
+    <string name="web"> Sitio web: </ string>
+        
+    <string name="direction"> Dirección: </ string>
+        
+    <string name="telephone"> Teléfono: </ string>
+
+    <string name="opening_day"> Día de apertura: </ string>
+        
+    <string name="closed_day"> Día cerrado: </ string>
+        
+    <string name="parking_facility"> Facilidad de estacionamiento: </ string>
+        
+    <string name="available_season"> Temporada disponible: </ string>
+        
+    <string name="available_time"> Tiempo disponible: </ string>
+        
+    <string name="experience_age"> Edad de experiencia: </ string>
+        
+    <string name="experience_guide"> Guía de experiencia: </ string>
+        
+    <string name="number_of_person_to_be_admitted"> Número de personas admitidas: </ string>
+        
+    <string name="information_center"> Centro de información: </ string>
+        
+    <string name="parking_fee"> Tarifa de estacionamiento: </ string>
+        
+    <string name="use_fee"> Tarifa de uso: </ string>
+        
+    <string name="spend_time"> Pasar tiempo: </ string>
+        
+    <string name="scale"> Escala: </ string>
+        
+    <string name="open_period"> Período abierto: </ string>
+        
+    <string name="closed_period"> Período cerrado: </ string>
+        
+    <string name="reservation_guide"> Guía de reservas: </ string>
+        
+    <string name="admission_fee"> Tarifa de admisión: </ string>
+        
+    <string name="fair_day"> Día de feria: </ string>
+        
+    <string name="business_hour"> Hora comercial: </ string>
+        
+    <string name="restroom_information"> Información de la sala de descanso: </ string>
+        
+    <string name="sale_item"> Artículo de venta: </ string>
+    <string name="store_guidance"> Guía de la tienda: </ string>
+        
+    <string name="accommodation_capacity"> Capacidad de alojamiento: </ string>
+        
+    <string name="benikia"> Benikia: </ string>
+        
+    <string name="checkin_time"> Check in time: </ string>
+        
+    <string name="checkout_time"> Hora de salida: </ string>
+        
+    <string name="cooking_available_check"> Comprobación de cocción disponible: </ string>
+        
+    <string name="food_place"> Lugar de comida: </ string>
+        
+    <string name="good_stay"> Buena estancia: </ string>
+        
+    <string name="hanok"> Hanok: </ string>
+        
+    <string name="pickup_service"> Servicio de recogida: </ string>
+        
+    <string name="number_of_guest_room"> Número de habitación de invitados: </ string>
+        
+    <string name="reservation_guide_homepage"> Página principal de la guía Reservartion: </ string>
+        
+    <string name="guest_room_type"> Tipo de habitación de invitados: </ string>
+        
+    <string name="sub_facility"> instalación secundaria: </ string>
+        
+    <string name="main_dishes"> Platos principales: </ string>
+        
+    <string name="open_date"> Fecha de apertura: </ string>
+        
+    <string name="seat_number"> Número de asiento: </ string>
+        
+    <string name="smoking"> Fumar: </ string>
+        
+    <string name="treat_menu"> Menú de trato: </ string>
+        
+    <string name="credit_card"> Tarjeta de crédito: </ string>
+        
+    <string name="facilities"> Instalaciones: </ string>
+        
+    <string name="disable_facility"> Deshabilitar instalación: </ string>
+        
+    <string name="contact_us"> Contáctenos: </ string>
+
+    <string name="main_route"> Ruta principal: </ string>
+        
+    <string name="operation_time"> Tiempo de operación: </ string>
+        
+    <string name="rest_room"> Sala de descanso: </ string>
+        
+    <string name="ship_information"> Información del envío: </ string>
+        
+    <string name="nature"> Naturaleza </ string>
+        
+    <string name="culture"> Cultura / Arte / Historia </ string>
+        
+    <string name="leisure"> Ocio / Deportes </ string>
+        
+    <string name="accomendation"> Accomendation </ string>
+        
+    <string name="shopping"> Compras </ string>
+        
+    <string name="transportation"> Transporte </ string>
+        
+    <string name="cuisine"> Cocina </ string>
+        
+    <string name="age_limit"> Límite de edad: </ string>
+        
+    <string name="booking_place"> Lugar de reserva: </ string>
+        
+    <string name="discount_info"> Información de descuento </ string>
+        
+    <string name="event_end_day"> Fecha de finalización del evento: </ string>
+        
+    <string name="event_home_page"> Página de inicio del evento: </ string>
+        
+    <string name="event_place"> Lugar del evento: </ string>
+        
+    <string name="event_start_date"> Fecha de inicio del evento: </ string>
+        
+    <string name="festival_class"> Clase de festival: </ string>
+        
+    <string name="event_location"> Ubicación del evento: </ string>
+        
+    <string name="play_time"> Tiempo de ejecución: </ string>
+        
+    <string name="program"> Programa de evento: </ string>
+        
+    <string name="time_required"> Tiempo requerido: </ string>
+        
+    <string name="sponser_info"> Información del patrocinador: </ string>
+        
+    <string name="sponser_contact_nb"> Número de contacto del patrocinador: </ string>
+        
+    <string name="sponser2"> Información del organizador: </ string>
+        
+    <string name="sponser2tel"> Información de contacto del organizador: </ string>
+        
+    <string name="sub_event"> Sub evento: </ string>
+
+</resources>
