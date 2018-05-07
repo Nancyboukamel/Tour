@@ -24,6 +24,8 @@ public class Favorites implements Serializable {
 
     private String Picture2;
 
+    private String contentId;
+
     public String getMapY ()
     {
         return mapY;
@@ -116,6 +118,14 @@ public class Favorites implements Serializable {
         Picture2 = picture2;
     }
 
+    public String getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(String contentId) {
+        this.contentId = contentId;
+    }
+
     @Override
     public String toString() {
         return "Favorites{" +
@@ -129,6 +139,7 @@ public class Favorites implements Serializable {
                 ", Address='" + Address + '\'' +
                 ", Picture='" + Picture + '\'' +
                 ", Picture2='" + Picture2 + '\'' +
+                ", contentId='" + contentId + '\'' +
                 '}';
     }
 }

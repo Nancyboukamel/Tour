@@ -212,13 +212,10 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         }
         if(favoriteItem!=null && favoriteItem.getTitle()!=null && !favoriteItem.getTitle().equalsIgnoreCase("")){
             toolbar.setTitle(favoriteItem.getTitle());
-            imageUrls += favoriteItem.getContenttypeid() + "&imageYN=Y" + Constants.json;
-            URL += favoriteItem.getContenttypeid()  + "&defaultYN=Y&addrinfoYN=Y&overviewYN=Y&transGuideYN=Y&addrinfoYN=Y" + Constants.json;
-            detailIntroURL += favoriteItem.getContenttypeid()  + "&contentTypeId=" +favoriteItem.getContenttypeid()+ "&introYN=Y" + Constants.json;
+            imageUrls += favoriteItem.getContentId() + "&imageYN=Y" + Constants.json;
+            URL += favoriteItem.getContentId()  + "&defaultYN=Y&addrinfoYN=Y&overviewYN=Y&transGuideYN=Y&addrinfoYN=Y" + Constants.json;
+            detailIntroURL += favoriteItem.getContentId()  + "&contentTypeId=" +favoriteItem.getContenttypeid()+ "&introYN=Y" + Constants.json;
         }
-        Log.d("NANCY"," Image URLS "+imageUrls);
-        Log.d("NANCY"," URLS "+URL);
-        Log.d("NANCY"," detail Intro URL "+detailIntroURL);
         detailImageVolley.fetchData(imageUrls);
         detailCommonVolley.fetchData(URL);
         detailIntroVolley.fetchData(detailIntroURL);
@@ -280,6 +277,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     @Override
     public void details(final detailCommonItem detailCommonItem) {
         if (detailCommonItem != null) {
+            Log.d("FAVORITE"," here2 "+detailCommonItem);
             this.detailCommonItem = detailCommonItem;
             if (detailCommonItem.getOverview() != null && !detailCommonItem.getOverview().equalsIgnoreCase("'")) {
                 String Overview = detailCommonItem.getOverview();
@@ -1001,7 +999,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 if (!isFavorite) {
                     String Url = Constants.add_to_favorite + "?name=" + signinPreference.getUserEmail();
                     if (areaBasedItem != null) {
-                        Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle()+"&Tel="+areaBasedItem.getTel()+"&Address="+areaBasedItem.getAddr1()+"&Picture="+areaBasedItem.getFirstimage();
+                        Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle()+"&Tel="+areaBasedItem.getTel()+"&Address="+areaBasedItem.getAddr1()+"&Picture="+areaBasedItem.getFirstimage()+"&contentId="+areaBasedItem.getContentid();
                         if(areaBasedItem.getFirstimage2()==null){
                             Url+="&Picture2="+areaBasedItem.getFirstimage();
                         }
@@ -1009,7 +1007,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                             Url+="&Picture2="+areaBasedItem.getFirstimage2();
                         }
                     } else if (locationBasedItem != null) {
-                        Url += "&mapX=" + locationBasedItem.getMapx() + "&mapY=" + locationBasedItem.getMapy() + "&contentTypeId=" + locationBasedItem.getContenttypeid() + "&title=" + locationBasedItem.getTitle()+"&Tel="+locationBasedItem.getTel()+"&Address="+locationBasedItem.getAddr1()+"&Picture="+locationBasedItem.getFirstimage();
+                        Url += "&mapX=" + locationBasedItem.getMapx() + "&mapY=" + locationBasedItem.getMapy() + "&contentTypeId=" + locationBasedItem.getContenttypeid() + "&title=" + locationBasedItem.getTitle()+"&Tel="+locationBasedItem.getTel()+"&Address="+locationBasedItem.getAddr1()+"&Picture="+locationBasedItem.getFirstimage()+"&contentId="+locationBasedItem.getContentid();
                         if(locationBasedItem.getFirstimage1()==null){
                             Url+="&Picture2="+locationBasedItem.getFirstimage();
                         }
@@ -1018,7 +1016,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                         }
                     }
                     else if(festivalItem!=null){
-                        Url += "&mapX=" + festivalItem.getMapx() + "&mapY=" + festivalItem.getMapy() + "&contentTypeId=" + festivalItem.getContenttypeid() + "&title=" + festivalItem.getTitle()+"&Tel="+festivalItem.getTel()+"&Address="+festivalItem.getAddr1()+"&Picture="+festivalItem.getFirstimage();
+                        Url += "&mapX=" + festivalItem.getMapx() + "&mapY=" + festivalItem.getMapy() + "&contentTypeId=" + festivalItem.getContenttypeid() + "&title=" + festivalItem.getTitle()+"&Tel="+festivalItem.getTel()+"&Address="+festivalItem.getAddr1()+"&Picture="+festivalItem.getFirstimage()+"&contentId="+festivalItem.getContentid();
                         if(festivalItem.getFirstimage2()==null){
                             Url+="&Picture2="+festivalItem.getFirstimage();
                         }
@@ -1027,7 +1025,7 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                         }
                     }
                     else if(favoriteItem!=null){
-                        Url += "&mapX=" + favoriteItem.getMapX() + "&mapY=" + favoriteItem.getMapY() + "&contentTypeId=" + favoriteItem.getContenttypeid() + "&title=" +favoriteItem.getTitle()+"&Tel="+favoriteItem.getTel()+"&Address="+favoriteItem.getAddress()+"&Picture="+favoriteItem.getPicture();
+                        Url += "&mapX=" + favoriteItem.getMapX() + "&mapY=" + favoriteItem.getMapY() + "&contentTypeId=" + favoriteItem.getContenttypeid() + "&title=" +favoriteItem.getTitle()+"&Tel="+favoriteItem.getTel()+"&Address="+favoriteItem.getAddress()+"&Picture="+favoriteItem.getPicture()+"&contentId="+favoriteItem.getContentId();
                         if(favoriteItem.getPicture2()==null){
                             Url+="&Picture2="+favoriteItem.getPicture();
                         }

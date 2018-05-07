@@ -1,6 +1,7 @@
 package benkoreatech.me.tour.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -52,6 +53,7 @@ public class detailCommonVolley  implements Response.Listener<JSONObject>,Respon
             }
         }
         catch (Exception exception) {
+            Log.d("FAVORITE"," error "+exception.getMessage());
         }
         }
     }
