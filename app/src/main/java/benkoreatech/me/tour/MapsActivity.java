@@ -119,7 +119,7 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     Menu menu; // Menu where we put search icon and settings ( Sign out/ Map / List ..)
     ImageView myLocation;//Image View
     LanguageSharedPreference languageSharedPreference; // Language Shared Preference to save the language of device in order to query according to language
-    RelativeLayout activity_controller; // Relative layout
+    RelativeLayout mapLayout; // Relative layout
     SupportMapFragment mapFragment; // Support map fragment for map
     RecyclerView list_view; // Recycler View
     categortContentParse categortContentParse; // Volley class to fetch the list of category codes according to cat 1, cat2 and cat3
@@ -178,8 +178,8 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         rightMenu = (SlidingLayer) findViewById(R.id.rightmenu);
         list_view = (RecyclerView) findViewById(R.id.list_view);
         myLocation = (ImageView) findViewById(R.id.mylocation);
+        mapLayout=(RelativeLayout) findViewById(R.id.mapLayout);
         favorite=(ImageView) findViewById(R.id.favorite);
-        activity_controller = (RelativeLayout) findViewById(R.id.activity_controller);
         // S ign in shared preference declaration
         signinPreference = new SigninPreference(this);
         festivalVolley=new FestivalVolley(this,this);
@@ -444,11 +444,11 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @Override
-    public void onListItemClicked(areaBasedItem areaBasedItem) {
+    public void onListItemClicked(Object object) {
         FragmentManager fm = getSupportFragmentManager();
         PlaceInfo placeInfo = PlaceInfo.newInstance("Some Title");
         placeInfo.setStyle(android.app.DialogFragment.STYLE_NO_TITLE, R.style.MyTheme);
-        placeInfo.setLocationInfoItem(areaBasedItem);
+        placeInfo.setLocationInfoItem(object);
         placeInfo.show(fm, "activity_place_info");
 
     }
@@ -797,13 +797,29 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @Override
-    public void setPins(List<areaBasedItem> areaBasedItems, int code) {
-        if(mMap!=null && areaBasedItems.size()>0){
+    public void setPinsonMap(List<Object> objects) {
+        if(mMap!=null){
             mMap.clear();
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for(areaBasedItem areaBasedItem:areaBasedItems)
-                if (areaBasedItem != null && areaBasedItem.getMapy() != null && areaBasedItem.getMapx() != null && !areaBasedItem.getMapx().equalsIgnoreCase("0") && !areaBasedItem.getMapy().equalsIgnoreCase("0")) {
-                    LatLng latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()), Double.parseDouble(areaBasedItem.getMapx()));
+            for(Object object:objects){
+                String mapX="",mapY="";
+                if(object instanceof  areaBasedItem){
+                    areaBasedItem areaBasedItem=(areaBasedItem)object;
+                    mapX=areaBasedItem.getMapx();
+                    mapY=areaBasedItem.getMapy();
+                }
+                if(object instanceof  FestivalItem){
+                    FestivalItem festivalItem=(FestivalItem)object;
+                    mapX=festivalItem.getMapx();
+                    mapY=festivalItem.getMapy();
+                }
+                if(object instanceof Favorites){
+                    Favorites favorites=(Favorites)object;
+                    mapX=favorites.getMapX();
+                    mapY=favorites.getMapY();
+                }
+                if (mapY!= null && mapX!= null && !mapX.equalsIgnoreCase("0") && !mapY.equalsIgnoreCase("0")) {
+                    LatLng latLng = new LatLng(Double.parseDouble(mapY), Double.parseDouble(mapX));
                     if(check_is_in_or_out(latLng)) {
                         float color = Markercolors[new Random().nextInt(Markercolors.length)];
                         Marker marker = mMap.addMarker(new MarkerOptions()
@@ -812,9 +828,11 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
                         builder.include(marker.getPosition());
                     }
                 }
+            }
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 300));
         }
     }
+
 
     public boolean check_is_in_or_out(LatLng latLng){
         LatLngBounds ADELAIDE = new LatLngBounds( new LatLng(33.489011, 126.498302),new LatLng(40.339852, 127.51009299999998));
@@ -835,28 +853,11 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    @Override
-    public void setPins(List<FestivalItem> festivalItems) {
-        if (mMap != null && festivalItems.size() > 0) {
-            mMap.clear();
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (FestivalItem areaBasedItem : festivalItems) {
-                if (areaBasedItem != null && areaBasedItem.getMapy() != null && areaBasedItem.getMapx() != null && !areaBasedItem.getMapx().equalsIgnoreCase("0") && !areaBasedItem.getMapy().equalsIgnoreCase("0")) {
-                    LatLng latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()), Double.parseDouble(areaBasedItem.getMapx()));
-                    float color = Markercolors[new Random().nextInt(Markercolors.length)];
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .icon(BitmapDescriptorFactory.defaultMarker(color)));
-                    builder.include(marker.getPosition());
-                }
-            }
-        }
-    }
 
     @Override
-    public void setListareaBasedItems(List<areaBasedItem> areaBasedItems) {
-        if(areaBasedItems!=null && areaBasedItems.size()>0) {
-            TourList tourList = new TourList(areaBasedItems, MapsActivity.this,this);
+    public void setListareaBasedItems(List<Object> objects) {
+        if(objects!=null && objects.size()>0) {
+            TourList tourList = new TourList(objects, MapsActivity.this,this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             list_view.setLayoutManager(mLayoutManager);
             list_view.setItemAnimator(new DefaultItemAnimator());
@@ -887,25 +888,6 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-    @Override
-    public void setFavoritesonMap(List<Favorites> favoritesonMap) {
-     if(mMap!=null && favoritesonMap!=null && favoritesonMap.size()>0){
-             mMap.clear();
-             LatLngBounds.Builder builder = new LatLngBounds.Builder();
-             for(Favorites favorites:favoritesonMap)
-                 if (favorites != null && favorites.getMapY() != null && favorites.getMapX() != null && !favorites.getMapX().equalsIgnoreCase("0") && !favorites.getMapY().equalsIgnoreCase("0")) {
-                     LatLng latLng = new LatLng(Double.parseDouble(favorites.getMapY()), Double.parseDouble(favorites.getMapX()));
-                     if(check_is_in_or_out(latLng)) {
-                         float color = Markercolors[new Random().nextInt(Markercolors.length)];
-                         Marker marker = mMap.addMarker(new MarkerOptions()
-                                 .position(latLng)
-                                 .icon(BitmapDescriptorFactory.defaultMarker(color)));
-                         builder.include(marker.getPosition());
-                     }
-                 }
-             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 300));
-         }
-     }
 
 
     @Override
@@ -957,11 +939,11 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
         switch (id){
             case R.id.action_list:
                list_view.setVisibility(View.VISIBLE);
-                activity_controller.setVisibility(View.GONE);
+               mapLayout.setVisibility(View.GONE);
                 break;
             case R.id.action_map:
                 list_view.setVisibility(View.GONE);
-                activity_controller.setVisibility(View.VISIBLE);
+                mapLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.signout:
                 signinPreference.isSignin(false,null,null);

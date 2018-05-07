@@ -12,7 +12,7 @@
         android:text="@string/festival"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_size_20"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_40"
         android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -30,7 +30,7 @@
     <DatePicker
         android:id="@+id/startDate"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="160dp"
         android:datePickerMode="spinner"
         android:scaleY="1"
         android:scaleX="1"
@@ -56,7 +56,7 @@
     <DatePicker
         android:id="@+id/finishDate"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="160dp"
         android:datePickerMode="spinner"
         android:scaleY="1"
         android:scaleX="1"
@@ -73,10 +73,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/finishDate"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="21dp"
         android:text="@string/go"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/text_size_15"
+        android:textSize="@dimen/text_size_20"
         android:textStyle="bold|italic" />
 
 </RelativeLayout>

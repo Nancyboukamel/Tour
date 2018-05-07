@@ -2,7 +2,7 @@ package benkoreatech.me.tour.objects;
 
 import java.io.Serializable;
 
-public class deatilIntro implements Serializable {
+public class detailIntro implements Serializable {
     private detailIntroResponse response;
 
     public detailIntroResponse getResponse() {

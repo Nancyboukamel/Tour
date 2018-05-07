@@ -55,9 +55,11 @@ public class areaBasedListVolley  implements Response.Listener<JSONObject>,Respo
             if(status==0) {
                 areaBasedList areaBasedList = gson.fromJson(String.valueOf(response), areaBasedList.class);
                 List<areaBasedItem> itemListsub = areaBasedList.getResponse().getBody().getItems().getItem();
+                List<Object> objectList=new ArrayList<>();
+                objectList.addAll(itemListsub);
                 if (categoryInterface != null) {
-                    categoryInterface.setPins(itemListsub, code);
-                    categoryInterface.setListareaBasedItems(itemListsub);
+                    categoryInterface.setPinsonMap(objectList);
+                    categoryInterface.setListareaBasedItems(objectList);
                 }
             }
             // fetching response of a specific marker of location
@@ -80,8 +82,11 @@ public class areaBasedListVolley  implements Response.Listener<JSONObject>,Respo
                     areaBasedItem _item = gson.fromJson(String.valueOf(items), areaBasedItem.class);
                     List<areaBasedItem> itemList = new ArrayList<>();
                     itemList.add(_item);
+                    List<Object> objectList=new ArrayList<>();
+                    objectList.addAll(itemList);
                     if (categoryInterface != null) {
-                        categoryInterface.setPins(itemList, code);
+                        categoryInterface.setPinsonMap(objectList);
+                        categoryInterface.setListareaBasedItems(objectList);
                     }
                 }
                 else{

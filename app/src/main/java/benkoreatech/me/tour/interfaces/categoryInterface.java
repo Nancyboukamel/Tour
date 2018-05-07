@@ -17,10 +17,8 @@ public interface categoryInterface {
     public void SmallCategory(List<categoryItem> categoryItems,int code);
     public void CloseSlider();
     public void PlotPins(categoryItem BigItem,categoryItem MediumItem,categoryItem SmallItem,int code);
-    public void setPins(List<areaBasedItem> areaBasedItems,int code);
+    public void setPinsonMap(List<Object> objects);
     public void setPinInfo(List<LocationBasedItem>locationBasedItems);
-    public void setPins(List<FestivalItem> festivalItems);
-    public void setListareaBasedItems(List<areaBasedItem>areaBasedItems);
+    public void setListareaBasedItems(List<Object>areaBasedItems);
     public void setStartEndDate(String startDate,String endDate);
-    public void setFavoritesonMap(List<Favorites>favoritesonMap);
 }

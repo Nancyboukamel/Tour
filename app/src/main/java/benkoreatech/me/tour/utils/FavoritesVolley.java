@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,8 +61,11 @@ public class FavoritesVolley  implements Response.Listener<JSONObject>,Response.
                     FavoriteList favoriteList = gson.fromJson(String.valueOf(response), FavoriteList.class);
                     // list of items for area code
                    List<Favorites> itemfavList = favoriteList.getItem();
+                   List<Object> objectList=new ArrayList<>();
+                   objectList.addAll(itemfavList);
                     if(categoryInterface!=null && itemfavList.size()>0){
-                        categoryInterface.setFavoritesonMap(itemfavList);
+                        categoryInterface.setPinsonMap(objectList);
+                        categoryInterface.setListareaBasedItems(objectList);
                     }
                 } catch (Exception exception) {
                 }

@@ -14,18 +14,20 @@ import java.util.List;
 
 import benkoreatech.me.tour.R;
 import benkoreatech.me.tour.interfaces.TourSettings;
+import benkoreatech.me.tour.objects.Favorites;
+import benkoreatech.me.tour.objects.FestivalItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TourList extends RecyclerView.Adapter<TourList.TourView>{
 
 
-    List<areaBasedItem> areaBasedItems;
+    List<Object> objects;
     Context context;
     TourSettings tourSettings;
 
-    public TourList(List<areaBasedItem> areaBasedItems, Context context, TourSettings tourSettings) {
-        this.areaBasedItems=areaBasedItems;
+    public TourList(List<Object> objects, Context context, TourSettings tourSettings) {
+        this.objects=objects;
         this.context = context;
         this.tourSettings=tourSettings;
     }
@@ -38,18 +40,59 @@ public class TourList extends RecyclerView.Adapter<TourList.TourView>{
 
     @Override
     public void onBindViewHolder(TourList.TourView holder, final int position) {
-        final areaBasedItem areaBasedItem=areaBasedItems.get(position);
-        holder.title.setText(areaBasedItem.getTitle());
-        holder.address.setText(areaBasedItem.getAddr1());
-        if(areaBasedItem.getFirstimage()!=null) {
-            Picasso.with(context).load(areaBasedItem.getFirstimage2()).fit().centerCrop().into(holder.circleImageView);
+        final Object object=objects.get(position);
+        if(object instanceof areaBasedItem) {
+           final areaBasedItem areaBasedItem=(areaBasedItem)object;
+            holder.title.setText(areaBasedItem.getTitle());
+            holder.address.setText(areaBasedItem.getAddr1());
+            if (areaBasedItem.getFirstimage2() != null) {
+                Picasso.with(context).load(areaBasedItem.getFirstimage2()).fit().centerCrop().into(holder.circleImageView);
+            }
+
         }
-        holder.call.setOnClickListener(new View.OnClickListener(){
+        if(object instanceof FestivalItem){
+            FestivalItem festivalItem=(FestivalItem) object;
+            holder.title.setText(festivalItem.getTitle());
+            holder.address.setText(festivalItem.getAddr1());
+            if (festivalItem.getFirstimage2() != null) {
+                Picasso.with(context).load(festivalItem.getFirstimage2()).fit().centerCrop().into(holder.circleImageView);
+            }
+        }
+        if(object instanceof Favorites){
+            Favorites favorites=(Favorites)object;
+            holder.title.setText(favorites.getTitle());
+            holder.address.setText(favorites.getAddress());
+            if (favorites.getPicture2() != null) {
+                Picasso.with(context).load(favorites.getPicture2()).fit().centerCrop().into(holder.circleImageView);
+            }
+        }
+
+        holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(areaBasedItem.getTel()!=null && !areaBasedItem.getTel().equalsIgnoreCase("")){
-                    if(tourSettings!=null){
-                        tourSettings.callPlace(areaBasedItem.getTel());
+                final Object object=objects.get(position);
+                if(object instanceof areaBasedItem) {
+                    areaBasedItem areaBasedItem=(benkoreatech.me.tour.objects.areaBasedItem)object;
+                    if (areaBasedItem.getTel() != null && !areaBasedItem.getTel().equalsIgnoreCase("")) {
+                        if (tourSettings != null) {
+                            tourSettings.callPlace(areaBasedItem.getTel());
+                        }
+                    }
+                }
+                if(object instanceof FestivalItem){
+                    FestivalItem festivalItem=(FestivalItem) object;
+                    if (festivalItem.getTel() != null && !festivalItem.getTel().equalsIgnoreCase("")) {
+                        if (tourSettings != null) {
+                            tourSettings.callPlace(festivalItem.getTel());
+                        }
+                    }
+                }
+                if(object instanceof Favorites) {
+                    Favorites favorites = (Favorites) object;
+                    if (favorites.getTel() != null && !favorites.getTel().equalsIgnoreCase("")) {
+                        if (tourSettings != null) {
+                            tourSettings.callPlace(favorites.getTel());
+                        }
                     }
                 }
             }
@@ -58,16 +101,28 @@ public class TourList extends RecyclerView.Adapter<TourList.TourView>{
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             if(tourSettings!=null){
-                 tourSettings.onListItemClicked(areaBasedItems.get(position));
-             }
+                if (tourSettings != null) {
+                    final Object object=objects.get(position);
+                    if(object instanceof areaBasedItem) {
+                        final areaBasedItem areaBasedItem = (areaBasedItem) object;
+                        tourSettings.onListItemClicked(areaBasedItem);
+                    }
+                    if(object instanceof FestivalItem){
+                        final FestivalItem festivalItem=(FestivalItem)object;
+                        tourSettings.onListItemClicked(festivalItem);
+                    }
+                    if(object instanceof Favorites){
+                        final Favorites favorites=(Favorites) object;
+                        tourSettings.onListItemClicked(favorites);
+                    }
+                }
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return areaBasedItems.size();
+        return objects.size();
     }
 
 

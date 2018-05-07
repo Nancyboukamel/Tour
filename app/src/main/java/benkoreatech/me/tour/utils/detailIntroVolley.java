@@ -17,8 +17,11 @@ import org.json.JSONObject;
 import benkoreatech.me.tour.interfaces.TourSettings;
 import benkoreatech.me.tour.interfaces.placeInfoInterface;
 import benkoreatech.me.tour.objects.Item;
+import benkoreatech.me.tour.objects.areaBasedList;
 import benkoreatech.me.tour.objects.detailCommonItem;
+import benkoreatech.me.tour.objects.detailIntro;
 import benkoreatech.me.tour.objects.detailIntroItem;
+import benkoreatech.me.tour.objects.detailIntroItems;
 
 public class detailIntroVolley implements Response.Listener<JSONObject>,Response.ErrorListener{
 
@@ -40,23 +43,21 @@ public class detailIntroVolley implements Response.Listener<JSONObject>,Response
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.d("HeroJongi"," failure "+error.getMessage());
     }
 
     @Override
     public void onResponse(JSONObject response) {
-        Log.d("HeroJongi"," detailIntro "+response);
         Gson gson=new Gson();
         try {
-            JSONObject items=response.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONObject("item");
-            detailIntroItem _item=gson.fromJson(String.valueOf(items),detailIntroItem.class);
-            Log.d("HeroJongi","Text is "+_item.toString());
+            detailIntro detailIntro = gson.fromJson(String.valueOf(response), detailIntro.class);
+            detailIntroItems detailIntroItems= detailIntro.getResponse().getBody().getItems();
+            detailIntroItem detailIntroItem=detailIntroItems.getItem();
             if(placeInfoInterface!=null) {
-                placeInfoInterface.detailsIntro(_item);
+                placeInfoInterface.detailsIntro(detailIntroItem);
             }
         }
         catch (Exception exception) {
-            Log.d("HeroJongi","deatilIntro fail"+exception.getMessage());
+
         }
     }
 }

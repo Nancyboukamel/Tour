@@ -16,6 +16,14 @@ public class Favorites implements Serializable {
 
     private String contenttypeid;
 
+    private String Tel;
+
+    private String Address;
+
+    private String Picture;
+
+    private String Picture2;
+
     public String getMapY ()
     {
         return mapY;
@@ -76,6 +84,38 @@ public class Favorites implements Serializable {
         this.contenttypeid = contenttypeid;
     }
 
+    public String getTel() {
+        return Tel;
+    }
+
+    public void setTel(String tel) {
+        Tel = tel;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public String getPicture() {
+        return Picture;
+    }
+
+    public void setPicture(String picture) {
+        Picture = picture;
+    }
+
+    public String getPicture2() {
+        return Picture2;
+    }
+
+    public void setPicture2(String picture2) {
+        Picture2 = picture2;
+    }
+
     @Override
     public String toString() {
         return "Favorites{" +
@@ -85,6 +125,10 @@ public class Favorites implements Serializable {
                 ", title='" + title + '\'' +
                 ", name='" + name + '\'' +
                 ", contenttypeid='" + contenttypeid + '\'' +
+                ", Tel='" + Tel + '\'' +
+                ", Address='" + Address + '\'' +
+                ", Picture='" + Picture + '\'' +
+                ", Picture2='" + Picture2 + '\'' +
                 '}';
     }
 }

@@ -54,9 +54,11 @@ public class FestivalVolley   implements Response.Listener<JSONObject>,Response.
             searchFestival searchFestival = gson.fromJson(String.valueOf(response), searchFestival.class);
             Log.d("position"," here "+searchFestival);
           List<FestivalItem> itemListsub = searchFestival.getResponse().getBody().getItems().getItem();
-
+            List<Object> objectList=new ArrayList<>();
+            objectList.addAll(itemListsub);
              if(categoryInterface!=null){
-                 categoryInterface.setPins(itemListsub);
+                 categoryInterface.setPinsonMap(objectList);
+                 categoryInterface.setListareaBasedItems(objectList);
              }
         }
         catch(Exception exception){
@@ -67,11 +69,11 @@ public class FestivalVolley   implements Response.Listener<JSONObject>,Response.
                 FestivalItem _item = gson.fromJson(String.valueOf(items), FestivalItem.class);
                 List<FestivalItem> itemList = new ArrayList<>();
                 itemList.add(_item);
-                for(FestivalItem festivalItem:itemList){
-                    Log.d("position"," Item name2 "+festivalItem.getTitle());
-                }
+                List<Object> objectList=new ArrayList<>();
+                objectList.addAll(itemList);
                 if(categoryInterface!=null){
-                    categoryInterface.setPins(itemList);
+                    categoryInterface.setPinsonMap(objectList);
+                    categoryInterface.setListareaBasedItems(objectList);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

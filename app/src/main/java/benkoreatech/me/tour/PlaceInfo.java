@@ -52,6 +52,7 @@ import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,6 +68,8 @@ import benkoreatech.me.tour.adapter.CommentsAdapter;
 import benkoreatech.me.tour.interfaces.placeInfoInterface;
 import benkoreatech.me.tour.objects.Comments;
 import benkoreatech.me.tour.objects.Constants;
+import benkoreatech.me.tour.objects.Favorites;
+import benkoreatech.me.tour.objects.FestivalItem;
 import benkoreatech.me.tour.objects.LocationBasedItem;
 import benkoreatech.me.tour.objects.areaBasedItem;
 import benkoreatech.me.tour.objects.detailCommonItem;
@@ -92,6 +95,8 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
     detailCommonItem detailCommonItem;
     LocationBasedItem locationBasedItem;
     areaBasedItem areaBasedItem;
+    FestivalItem festivalItem;
+    Favorites favoriteItem;
     CarouselView carouselView;
     SupportMapFragment mapFragment;
     ImageView close, image;
@@ -183,7 +188,6 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         String imageUrls = Constants.base_url + languageSharedPreference.getLanguage() + Constants.detailedImage + "?" + Constants.serviceKey + "=" + Constants.server_key + Constants.remain_url;
         String URL = Constants.base_url + languageSharedPreference.getLanguage() + Constants.detailCommon + "?" + Constants.serviceKey + "=" + Constants.server_key + Constants.remain_url;
         String detailIntroURL = Constants.base_url + languageSharedPreference.getLanguage() + Constants.detailIntro + "?" + Constants.serviceKey + "=" + Constants.server_key + Constants.remain_url;
-//        Log.d("HeroJongi", "DetailIntro URL " + detailIntroURL);
 
 
 
@@ -200,6 +204,18 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
             URL += areaBasedItem.getContentid() + "&defaultYN=Y&addrinfoYN=Y&overviewYN=Y&transGuideYN=Y&addrinfoYN=Y" + Constants.json;
             detailIntroURL += areaBasedItem.getContentid() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&introYN=Y" + Constants.json;
         }
+        if(festivalItem!=null && festivalItem.getTitle()!=null && !festivalItem.getTitle().equalsIgnoreCase("")){
+            toolbar.setTitle(festivalItem.getTitle());
+            imageUrls += festivalItem.getContentid() + "&imageYN=Y" + Constants.json;
+            URL += festivalItem.getContentid() + "&defaultYN=Y&addrinfoYN=Y&overviewYN=Y&transGuideYN=Y&addrinfoYN=Y" + Constants.json;
+            detailIntroURL += festivalItem.getContentid() + "&contentTypeId=" + festivalItem.getContenttypeid() + "&introYN=Y" + Constants.json;
+        }
+        if(favoriteItem!=null && favoriteItem.getTitle()!=null && !favoriteItem.getTitle().equalsIgnoreCase("")){
+            toolbar.setTitle(favoriteItem.getTitle());
+            imageUrls += favoriteItem.getContenttypeid() + "&imageYN=Y" + Constants.json;
+            URL += favoriteItem.getContenttypeid()  + "&defaultYN=Y&addrinfoYN=Y&overviewYN=Y&transGuideYN=Y&addrinfoYN=Y" + Constants.json;
+            detailIntroURL += favoriteItem.getContenttypeid()  + "&contentTypeId=" +favoriteItem.getContenttypeid()+ "&introYN=Y" + Constants.json;
+        }
         Log.d("NANCY"," Image URLS "+imageUrls);
         Log.d("NANCY"," URLS "+URL);
         Log.d("NANCY"," detail Intro URL "+detailIntroURL);
@@ -212,6 +228,12 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
             url_Check_if_favorite = Constants.check_if_favorite + "?name=" + signinPreference.getUserEmail() + "&title=" + locationBasedItem.getTitle().trim();
         } else if (areaBasedItem != null) {
             url_Check_if_favorite = Constants.check_if_favorite + "?name=" + signinPreference.getUserEmail() + "&title=" + areaBasedItem.getTitle().trim();
+        }
+        if(festivalItem!=null){
+            url_Check_if_favorite = Constants.check_if_favorite + "?name=" + signinPreference.getUserEmail() + "&title=" + festivalItem.getTitle().trim();
+        }
+        if(favoriteItem!=null){
+            url_Check_if_favorite = Constants.check_if_favorite + "?name=" + signinPreference.getUserEmail() + "&title=" + favoriteItem.getTitle().trim();
         }
         favorite_volley.fetchData(url_Check_if_favorite, 3);
 
@@ -242,8 +264,17 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
 
     }
 
-    public void setLocationInfoItem(areaBasedItem areaBasedItem) {
-        this.areaBasedItem = areaBasedItem;
+    public void setLocationInfoItem(Object object) {
+        if(object instanceof areaBasedItem) {
+            this.areaBasedItem = (areaBasedItem) object;
+        }
+        if(object instanceof FestivalItem){
+            this.festivalItem=(FestivalItem)object;
+        }
+        if(object instanceof Favorites){
+            this.favoriteItem=(Favorites)object;
+        }
+
     }
 
     @Override
@@ -316,7 +347,6 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
 
     @Override
     public void detailsIntro(detailIntroItem detailIntroItem) {
-        Log.d("SPECA", " DetialIntro " + detailIntroItem.toString());
         if (detailIntroItem != null) {
             String id = "";
             if (locationBasedItem != null) {
@@ -324,6 +354,12 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
             }
             if (areaBasedItem != null) {
                 id = areaBasedItem.getContenttypeid();
+            }
+            if(festivalItem!=null){
+                id=festivalItem.getContenttypeid();
+            }
+            if(favoriteItem!=null){
+                id=favoriteItem.getContenttypeid();
             }
             // 79 80 75 78
             String touristinfo = "";
@@ -771,6 +807,12 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         } else if (areaBasedItem != null) {
             imageUrl = areaBasedItem.getFirstimage();
         }
+        else if(festivalItem!=null){
+            imageUrl=festivalItem.getFirstimage();
+        }
+        else if(favoriteItem!=null){
+            imageUrl=favoriteItem.getPicture();
+        }
         Log.d("HeroJongi", " image " + imageUrl);
         image.setVisibility(View.VISIBLE);
         carouselView.setVisibility(View.GONE);
@@ -830,6 +872,12 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
         } else if (locationBasedItem != null) {
             url += "?mapX=" + locationBasedItem.getMapx() + "&mapY=" + locationBasedItem.getMapy();
         }
+        else if(festivalItem!=null){
+            url += "?mapX=" + festivalItem.getMapx() + "&mapY=" +festivalItem.getMapy();
+        }
+        else if(favoriteItem!=null){
+            url += "?mapX=" + favoriteItem.getMapX()+ "&mapY=" + favoriteItem.getMapY();
+        }
         Log.d("HeroJongi", " URL get comments " + url);
         commentVolley.fetchData(url, 1);
     }
@@ -887,6 +935,14 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
             latLng = new LatLng(Double.parseDouble(areaBasedItem.getMapy()), Double.parseDouble(areaBasedItem.getMapx()));
             code = Integer.parseInt(areaBasedItem.getContenttypeid());
         }
+        else if(festivalItem!=null){
+            latLng = new LatLng(Double.parseDouble(festivalItem.getMapy()), Double.parseDouble(festivalItem.getMapx()));
+            code = Integer.parseInt(festivalItem.getContenttypeid());
+        }
+        else if(favoriteItem!=null){
+            latLng = new LatLng(Double.parseDouble(favoriteItem.getMapY()), Double.parseDouble(favoriteItem.getMapX()));
+            code = Integer.parseInt(favoriteItem.getContenttypeid());
+        }
         float color = Markercolors[new Random().nextInt(Markercolors.length)];
 
         mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.defaultMarker(color)));
@@ -929,6 +985,14 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                     mapX = locationBasedItem.getMapx();
                     mapY = locationBasedItem.getMapy();
                 }
+                if(festivalItem!=null){
+                    mapX=festivalItem.getMapx();
+                    mapY=festivalItem.getMapy();
+                }
+                if(favoriteItem!=null){
+                    mapX=favoriteItem.getMapX();
+                    mapY=favoriteItem.getMapY();
+                }
                 String url = Constants.post_comment + "?name=" + signinPreference.getUsername() + "&date=" + today + "&commentTitle=" + commentTitle + "&comment=" + Comment + "&rate=" + rating + "&mapX=" + mapX + "&mapY=" + mapY;
                 Log.d("HeroJongi", "here url post comment " + url);
                 commentVolley.fetchData(url, 2);
@@ -937,9 +1001,39 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 if (!isFavorite) {
                     String Url = Constants.add_to_favorite + "?name=" + signinPreference.getUserEmail();
                     if (areaBasedItem != null) {
-                        Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle();
+                        Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle()+"&Tel="+areaBasedItem.getTel()+"&Address="+areaBasedItem.getAddr1()+"&Picture="+areaBasedItem.getFirstimage();
+                        if(areaBasedItem.getFirstimage2()==null){
+                            Url+="&Picture2="+areaBasedItem.getFirstimage();
+                        }
+                        else{
+                            Url+="&Picture2="+areaBasedItem.getFirstimage2();
+                        }
                     } else if (locationBasedItem != null) {
-                        Url += "&mapX=" + locationBasedItem.getMapx() + "&mapY=" + locationBasedItem.getMapy() + "&contentTypeId=" + locationBasedItem.getContenttypeid() + "&title=" + locationBasedItem.getTitle();
+                        Url += "&mapX=" + locationBasedItem.getMapx() + "&mapY=" + locationBasedItem.getMapy() + "&contentTypeId=" + locationBasedItem.getContenttypeid() + "&title=" + locationBasedItem.getTitle()+"&Tel="+locationBasedItem.getTel()+"&Address="+locationBasedItem.getAddr1()+"&Picture="+locationBasedItem.getFirstimage();
+                        if(locationBasedItem.getFirstimage1()==null){
+                            Url+="&Picture2="+locationBasedItem.getFirstimage();
+                        }
+                        else{
+                            Url+="&Picture2="+locationBasedItem.getFirstimage1();
+                        }
+                    }
+                    else if(festivalItem!=null){
+                        Url += "&mapX=" + festivalItem.getMapx() + "&mapY=" + festivalItem.getMapy() + "&contentTypeId=" + festivalItem.getContenttypeid() + "&title=" + festivalItem.getTitle()+"&Tel="+festivalItem.getTel()+"&Address="+festivalItem.getAddr1()+"&Picture="+festivalItem.getFirstimage();
+                        if(festivalItem.getFirstimage2()==null){
+                            Url+="&Picture2="+festivalItem.getFirstimage();
+                        }
+                        else{
+                            Url+="&Picture2="+festivalItem.getFirstimage2();
+                        }
+                    }
+                    else if(favoriteItem!=null){
+                        Url += "&mapX=" + favoriteItem.getMapX() + "&mapY=" + favoriteItem.getMapY() + "&contentTypeId=" + favoriteItem.getContenttypeid() + "&title=" +favoriteItem.getTitle()+"&Tel="+favoriteItem.getTel()+"&Address="+favoriteItem.getAddress()+"&Picture="+favoriteItem.getPicture();
+                        if(favoriteItem.getPicture2()==null){
+                            Url+="&Picture2="+favoriteItem.getPicture();
+                        }
+                        else{
+                            Url+="&Picture2="+favoriteItem.getPicture2();
+                        }
                     }
                     Log.d("HeroJongi", "Add To Favorite URL is " + Url);
                     favorite_volley.fetchData(Url, 0);
@@ -949,6 +1043,12 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                         Url += "&title=" + areaBasedItem.getTitle();
                     } else if (locationBasedItem != null) {
                         Url += "&title=" + locationBasedItem.getTitle();
+                    }
+                    else if(festivalItem!=null){
+                        Url += "&title=" + festivalItem.getTitle();
+                    }
+                    else if(favoriteItem!=null){
+                        Url += "&title=" + favoriteItem.getTitle();
                     }
                     Log.d("HeroJongi", "Add To Favorite URL is " + Url);
                     favorite_volley.fetchData(Url, 1);
