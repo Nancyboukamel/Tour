@@ -2,6 +2,7 @@ package benkoreatech.me.tour.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,9 @@ public class TourList extends RecyclerView.Adapter<TourList.TourView>{
             if (areaBasedItem.getFirstimage2() != null) {
                 Picasso.with(context).load(areaBasedItem.getFirstimage2()).fit().centerCrop().into(holder.circleImageView);
             }
+            if(areaBasedItem.getTel()==null || areaBasedItem.getTel().equalsIgnoreCase("")){
+                holder.call.setVisibility(View.GONE);
+            }
 
         }
         if(object instanceof FestivalItem){
@@ -57,6 +61,9 @@ public class TourList extends RecyclerView.Adapter<TourList.TourView>{
             if (festivalItem.getFirstimage2() != null) {
                 Picasso.with(context).load(festivalItem.getFirstimage2()).fit().centerCrop().into(holder.circleImageView);
             }
+            if(festivalItem.getTel()==null || festivalItem.getTel().equalsIgnoreCase("")){
+                holder.call.setVisibility(View.GONE);
+            }
         }
         if(object instanceof Favorites){
             Favorites favorites=(Favorites)object;
@@ -64,6 +71,10 @@ public class TourList extends RecyclerView.Adapter<TourList.TourView>{
             holder.address.setText(favorites.getAddress());
             if (favorites.getPicture2() != null) {
                 Picasso.with(context).load(favorites.getPicture2()).fit().centerCrop().into(holder.circleImageView);
+            }
+            Log.d("Phone","Phone"+favorites.getTel());
+            if(favorites.getTel()==null || favorites.getTel().equalsIgnoreCase("")){
+                holder.call.setVisibility(View.GONE);
             }
         }
 

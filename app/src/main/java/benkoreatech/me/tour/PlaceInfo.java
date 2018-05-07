@@ -999,38 +999,86 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 if (!isFavorite) {
                     String Url = Constants.add_to_favorite + "?name=" + signinPreference.getUserEmail();
                     if (areaBasedItem != null) {
-                        Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle()+"&Tel="+areaBasedItem.getTel()+"&Address="+areaBasedItem.getAddr1()+"&Picture="+areaBasedItem.getFirstimage()+"&contentId="+areaBasedItem.getContentid();
-                        if(areaBasedItem.getFirstimage2()==null){
-                            Url+="&Picture2="+areaBasedItem.getFirstimage();
+                        Url += "&mapX=" + areaBasedItem.getMapx() + "&mapY=" + areaBasedItem.getMapy() + "&contentTypeId=" + areaBasedItem.getContenttypeid() + "&title=" + areaBasedItem.getTitle()+"&Tel="+areaBasedItem.getTel()+"&Address="+areaBasedItem.getAddr1()+"&contentId="+areaBasedItem.getContentid();
+                        if(areaBasedItem.getFirstimage()!=null) {
+                            Url+="&Picture="+areaBasedItem.getFirstimage();
+                            if(areaBasedItem.getFirstimage2()!=null) {
+                                Url+="&Picture2="+areaBasedItem.getFirstimage2();
+                            }
+                            else {
+                                Url+="&Picture2="+areaBasedItem.getFirstimage();
+                            }
                         }
-                        else{
-                            Url+="&Picture2="+areaBasedItem.getFirstimage2();
+                        else {
+                            if(detailImageItems.size()>0){
+                               detailImageItem detailImageItem=detailImageItems.get(0);
+                               String pic=detailImageItem.getOriginimgurl();
+                               String pic2=detailImageItem.getSmallimageurl();
+                                Url+="&Picture="+pic;
+                                Url+="&Picture2="+pic2;
+                            }
                         }
                     } else if (locationBasedItem != null) {
-                        Url += "&mapX=" + locationBasedItem.getMapx() + "&mapY=" + locationBasedItem.getMapy() + "&contentTypeId=" + locationBasedItem.getContenttypeid() + "&title=" + locationBasedItem.getTitle()+"&Tel="+locationBasedItem.getTel()+"&Address="+locationBasedItem.getAddr1()+"&Picture="+locationBasedItem.getFirstimage()+"&contentId="+locationBasedItem.getContentid();
-                        if(locationBasedItem.getFirstimage1()==null){
-                            Url+="&Picture2="+locationBasedItem.getFirstimage();
+                        Url += "&mapX=" + locationBasedItem.getMapx() + "&mapY=" + locationBasedItem.getMapy() + "&contentTypeId=" + locationBasedItem.getContenttypeid() + "&title=" + locationBasedItem.getTitle()+"&Tel="+locationBasedItem.getTel()+"&Address="+locationBasedItem.getAddr1()+"&contentId="+locationBasedItem.getContentid();
+                        if(locationBasedItem.getFirstimage()!=null) {
+                            Url+="&Picture="+locationBasedItem.getFirstimage();
+                            if(locationBasedItem.getFirstimage1()!=null) {
+                                Url+="&Picture2="+locationBasedItem.getFirstimage1();
+                            }
+                            else {
+                                Url+="&Picture2="+locationBasedItem.getFirstimage();
+                            }
                         }
-                        else{
-                            Url+="&Picture2="+locationBasedItem.getFirstimage1();
+                        else {
+                            if(detailImageItems.size()>0){
+                                detailImageItem detailImageItem=detailImageItems.get(0);
+                                String pic=detailImageItem.getOriginimgurl();
+                                String pic2=detailImageItem.getSmallimageurl();
+                                Url+="&Picture="+pic;
+                                Url+="&Picture2="+pic2;
+                            }
                         }
                     }
                     else if(festivalItem!=null){
-                        Url += "&mapX=" + festivalItem.getMapx() + "&mapY=" + festivalItem.getMapy() + "&contentTypeId=" + festivalItem.getContenttypeid() + "&title=" + festivalItem.getTitle()+"&Tel="+festivalItem.getTel()+"&Address="+festivalItem.getAddr1()+"&Picture="+festivalItem.getFirstimage()+"&contentId="+festivalItem.getContentid();
-                        if(festivalItem.getFirstimage2()==null){
-                            Url+="&Picture2="+festivalItem.getFirstimage();
+                        Url += "&mapX=" + festivalItem.getMapx() + "&mapY=" + festivalItem.getMapy() + "&contentTypeId=" + festivalItem.getContenttypeid() + "&title=" + festivalItem.getTitle()+"&Tel="+festivalItem.getTel()+"&Address="+festivalItem.getAddr1()+"&contentId="+festivalItem.getContentid();
+                        if(festivalItem.getFirstimage()!=null) {
+                            Url+="&Picture="+festivalItem.getFirstimage();
+                            if(festivalItem.getFirstimage2()!=null) {
+                                Url+="&Picture2="+festivalItem.getFirstimage2();
+                            }
+                            else {
+                                Url+="&Picture2="+festivalItem.getFirstimage();
+                            }
                         }
-                        else{
-                            Url+="&Picture2="+festivalItem.getFirstimage2();
+                        else {
+                            if(detailImageItems.size()>0){
+                                detailImageItem detailImageItem=detailImageItems.get(0);
+                                String pic=detailImageItem.getOriginimgurl();
+                                String pic2=detailImageItem.getSmallimageurl();
+                                Url+="&Picture="+pic;
+                                Url+="&Picture2="+pic2;
+                            }
                         }
                     }
                     else if(favoriteItem!=null){
-                        Url += "&mapX=" + favoriteItem.getMapX() + "&mapY=" + favoriteItem.getMapY() + "&contentTypeId=" + favoriteItem.getContenttypeid() + "&title=" +favoriteItem.getTitle()+"&Tel="+favoriteItem.getTel()+"&Address="+favoriteItem.getAddress()+"&Picture="+favoriteItem.getPicture()+"&contentId="+favoriteItem.getContentId();
-                        if(favoriteItem.getPicture2()==null){
-                            Url+="&Picture2="+favoriteItem.getPicture();
+                        Url += "&mapX=" + favoriteItem.getMapX() + "&mapY=" + favoriteItem.getMapY() + "&contentTypeId=" + favoriteItem.getContenttypeid() + "&title=" +favoriteItem.getTitle()+"&Tel="+favoriteItem.getTel()+"&Address="+favoriteItem.getAddress()+"&contentId="+favoriteItem.getContentId();
+                        if(favoriteItem.getPicture()!=null) {
+                            Url+="&Picture="+favoriteItem.getPicture();
+                            if(favoriteItem.getPicture2()!=null) {
+                                Url+="&Picture2="+favoriteItem.getPicture2();
+                            }
+                            else {
+                                Url+="&Picture2="+favoriteItem.getPicture();
+                            }
                         }
-                        else{
-                            Url+="&Picture2="+favoriteItem.getPicture2();
+                        else {
+                            if(detailImageItems.size()>0){
+                                detailImageItem detailImageItem=detailImageItems.get(0);
+                                String pic=detailImageItem.getOriginimgurl();
+                                String pic2=detailImageItem.getSmallimageurl();
+                                Url+="&Picture="+pic;
+                                Url+="&Picture2="+pic2;
+                            }
                         }
                     }
                     Log.d("HeroJongi", "Add To Favorite URL is " + Url);
