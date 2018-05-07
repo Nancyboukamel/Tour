@@ -34,165 +34,165 @@
     <string name="comments">コメント</string>
     <string name="add_ur_comment">コメントを追加する</string>
      
-    <string name="title">タイトル</ string>
+    <string name="title">タイトル</string>
         
-    <string name="review">レビューを書く</ string>
+    <string name="review">レビューを書く</string>
         
-    <string name="comment">あなたの考えを教えてください</ string>
+    <string name="comment">あなたの考えを教えてください</string>
         
-    <string name="login_fail">ログインに失敗しました</ string>
+    <string name="login_fail">ログインに失敗しました</string>
         
-    <string name="festival">フェスティバル/イベント/パフォーマンス</ string>
+    <string name="festival">フェスティバル/イベント/パフォーマンス</string>
         
-    <string name="start_date">開始日</ string>
+    <string name="start_date">開始日</string>
         
-    <string name="end_date">終了日</ string>
+    <string name="end_date">終了日</string>
         
-    <string name="website">ウェブサイト：</ string>
+    <string name="website">ウェブサイト：</string>
         
-    <string name="direction">方向：</ string>
+    <string name="direction">方向：</string>
         
-    <string name="telephone">電話：</ string>
-    <string name="opening_day">開始日：</ string>
+    <string name="telephone">電話：</string>
+    <string name="opening_day">開始日：</string>
         
-    <string name="closed_day">休業日：</ string>
+    <string name="closed_day">休業日：</string>
         
-    <string name="parking_facility">駐車場：</ string>
+    <string name="parking_facility">駐車場：</string>
         
-    <string name="available_season">利用可能なシーズン：</ string>
+    <string name="available_season">利用可能なシーズン：</string>
         
-    <string name="available_time">利用可能時間：</ string>
+    <string name="available_time">利用可能時間：</string>
         
-    <string name="experience_age">体験年齢：</ string>
+    <string name="experience_age">体験年齢：</string>
         
-    <string name="experience_guide">体験ガイド：</ string>
+    <string name="experience_guide">体験ガイド：</string>
         
-    <string name="number_of_person_to_be_admitted">入室可能人数：</ string>
+    <string name="number_of_person_to_be_admitted">入室可能人数：</string>
         
-    <string name="information_center">インフォメーション・センター：</ string>
+    <string name="information_center">インフォメーション・センター：</string>
         
-    <string name="parking_fee">駐車料金：</ string>
+    <string name="parking_fee">駐車料金：</string>
         
-    <string name="use_fee">使用料：</ string>
+    <string name="use_fee">使用料：</string>
         
-    <string name="spend_time">時間を費やす：</ string>
+    <string name="spend_time">時間を費やす：</string>
         
-    <string name="scale">スケール：</ string>
+    <string name="scale">スケール：</string>
         
-    <string name="open_period">期間を開く：</ string>
+    <string name="open_period">期間を開く：</string>
         
-    <string name="closed_period">閉期：</ string>
-    <string name="reservation_guide">予約ガイド：</ string>
+    <string name="closed_period">閉期：</string>
+    <string name="reservation_guide">予約ガイド：</string>
         
-    <string name="admission_fee">入場料：</ string>
+    <string name="admission_fee">入場料：</string>
         
-    <string name="fair_day">公平日：</ string>
+    <string name="fair_day">公平日：</string>
         
-    <string name="business_hour">営業時間：</ string>
+    <string name="business_hour">営業時間：</string>
         
-    <string name="restroom_information">トイレ情報：</ string>
+    <string name="restroom_information">トイレ情報：</string>
         
-    <string name="sale_item">セールアイテム：</ string>
+    <string name="sale_item">セールアイテム：</string>
         
-    <string name="store_guidance">店舗案内：</ string>
+    <string name="store_guidance">店舗案内：</string>
         
-    <string name="accommodation_capacity">受講可能容量：</ string>
+    <string name="accommodation_capacity">受講可能容量：</string>
         
-    <string name="benikia"> Benikia：</ string>
+    <string name="benikia"> Benikia：</string>
         
-    <string name="checkin_time">チェックイン時間：</ string>
+    <string name="checkin_time">チェックイン時間：</string>
         
-    <string name="checkout_time">チェックアウト時間：</ string>
+    <string name="checkout_time">チェックアウト時間：</string>
         
-    <string name="cooking_available_check">調理可能なチェック：</ string>
+    <string name="cooking_available_check">調理可能なチェック：</string>
         
-    <string name="food_place">食べ物の場所：</ string>
+    <string name="food_place">食べ物の場所：</string>
         
-    <string name="good_stay">良い滞在：</ string>
+    <string name="good_stay">良い滞在：</string>
         
-    <string name="hanok"> 韓屋 </ string>
+    <string name="hanok"> 韓屋 </string>
         
-    <string name="pickup_service">ピックアップサービス：</ string>
+    <string name="pickup_service">ピックアップサービス：</string>
         
-    <string name="number_of_guest_room">客室数：</ string>
+    <string name="number_of_guest_room">客室数：</string>
         
-    <string name="reservation_guide_homepage">予約ガイドのホームページ：</ string>
+    <string name="reservation_guide_homepage">予約ガイドのホームページ：</string>
         
-    <string name="guest_room_type">客室タイプ：</ string>
+    <string name="guest_room_type">客室タイプ：</string>
         
-    <string name="sub_facility">サブファシリティ：</ string>
+    <string name="sub_facility">サブファシリティ：</string>
         
-    <string name="main_dishes">メインディッシュ：</ string>
+    <string name="main_dishes">メインディッシュ：</string>
         
-    <string name="open_date">公開日：</ string>
+    <string name="open_date">公開日：</string>
         
-    <string name="seat_number">座席番号：</ string>
+    <string name="seat_number">座席番号：</string>
         
-    <string name="smoking">喫煙：</ string>
+    <string name="smoking">喫煙：</string>
         
-    <string name="treat_menu">メニューの処理：</ string>
+    <string name="treat_menu">メニューの処理：</string>
         
-    <string name="credit_card">クレジットカード：</ string>
+    <string name="credit_card">クレジットカード：</string>
         
-    <string name="facilities">施設：</ string>
+    <string name="facilities">施設：</string>
         
-    <string name="disable_facility">機能を無効にする：</ string>
+    <string name="disable_facility">機能を無効にする：</string>
         
-    <string name="contact_us">お問い合わせ：</ string>
+    <string name="contact_us">お問い合わせ：</string>
         
-    <string name="main_route">メインルート：</ string>
+    <string name="main_route">メインルート：</string>
         
-    <string name="operation_time">操作時間：</ string>
+    <string name="operation_time">操作時間：</string>
         
-    <string name="rest_room">休憩室：</ string>
+    <string name="rest_room">休憩室：</string>
         
-    <string name="ship_information">船舶情報：</ string>
+    <string name="ship_information">船舶情報：</string>
         
-    <string name="nature">自然</ string>
+    <string name="nature">自然</string>
         
-    <string name="culture">文化/芸術/歴史</ string>
+    <string name="culture">文化/芸術/歴史</string>
         
-    <string name="leisure">レジャー/スポーツ</ string>
+    <string name="leisure">レジャー/スポーツ</string>
         
-    <string name="accomendation"> Accomendation </ string>
+    <string name="accomendation"> Accomendation </string>
         
-    <string name="shopping">ショッピング</ string>
+    <string name="shopping">ショッピング</string>
 
-    <string name="transportation">交通機関</ string>
+    <string name="transportation">交通機関</string>
         
-    <string name="cuisine">料理</ string>
+    <string name="cuisine">料理</string>
         
-    <string name="age_limit">年齢制限：</ string>
+    <string name="age_limit">年齢制限：</string>
         
-    <string name="booking_place">予約場所：</ string>
+    <string name="booking_place">予約場所：</string>
         
-    <string name="discount_info">ディスカウント情報</ string>
+    <string name="discount_info">ディスカウント情報</string>
         
-    <string name="event_end_day">イベントの終了日：</ string>
+    <string name="event_end_day">イベントの終了日：</string>
         
-    <string name="event_home_page">イベントのホームページ：</ string>
+    <string name="event_home_page">イベントのホームページ：</string>
         
-    <string name="event_place">イベントの場所：</ string>
+    <string name="event_place">イベントの場所：</string>
         
-    <string name="event_start_date">イベント開始日：</ string>
+    <string name="event_start_date">イベント開始日：</string>
         
-    <string name="festival_class">フェスティバルクラス：</ string>
+    <string name="festival_class">フェスティバルクラス：</string>
         
-    <string name="event_location">イベントの場所：</ string>
+    <string name="event_location">イベントの場所：</string>
         
-    <string name="play_time">演奏時間：</ string>
+    <string name="play_time">演奏時間：</string>
         
-    <string name="program">イベントプログラム：</ string>
+    <string name="program">イベントプログラム：</string>
         
-    <string name="time_required">所要時間：</ string>
+    <string name="time_required">所要時間：</string>
         
-    <string name="sponser_info">スポンサー情報：</ string>
+    <string name="sponser_info">スポンサー情報：</string>
         
-    <string name="sponser_contact_nb">スポンサーの連絡先：</ string>
+    <string name="sponser_contact_nb">スポンサーの連絡先：</string>
         
-    <string name="sponser2">主催者情報：</ string>
+    <string name="sponser2">主催者情報：</string>
         
-    <string name="sponser2tel">主催者の連絡先情報：</ string>
+    <string name="sponser2tel">主催者の連絡先情報：</string>
         
-    <string name="sub_event">サブイベント：</ string>
+    <string name="sub_event">サブイベント：</string>
 </resources>
