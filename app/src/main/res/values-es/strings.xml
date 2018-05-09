@@ -1,215 +1,118 @@
 <resources>
-    <string name="app_name">K-Travel</string>
-    <string name="Username"> Nombre de usuario </string>
-    <string name="Password"> Contraseña </string>
-    <string name="Email"> Correo electrónico </string>
-    <string name="Signin"> Iniciar sesión </string>
-    <string name="signup"> Registrarse </string>
-    <string name="already_register"> ¡Ya registrado! Iniciar sesión conmigo. </string>
-    <string name="confirm_password"> Confirmar contraseña </string>
-    <string name="not_member"> No es miembro. Regístrese ahora. </string>
-    <string name="title_activity_home"> Inicio </string>
-    <string name="login"> Iniciar sesión </string>
-    <string name="navigation_drawer_open"> Abrir el cajón de navegación </string>
-    <string name="navigation_drawer_close"> Cerrar el cajón de navegación </string>
-    <string name="drawer_open"> Abrir </string>
-    <string name="drawer_close"> Cerrar </string>
-    <string name="action_settings"> Configuraciones </string>
-    <string name="title_activity_maps"> Mapa </string>
-    <string name="map"> Mapa </string>
-    <string name="list"> Lista </string>
-
-    <string name="enter_username"> Ingrese su nombre de usuario </string>
-        
-    <string name="enter_password"> Ingrese su contraseña </string>
-        
-    <string name="enter_email"> Ingrese su correo electrónico </string>
-        
-    <string name="enter_confirm_password"> Ingrese su contraseña nuevamente </string>
-        
-    <string name="password_match"> Ingrese la contraseña correcta </string>
-        
-    <string name="email_not_valid"> Ingrese un correo electrónico válido </string>
-        
-    <string name="go"> buscar </string>
-        
-    <string name="big_category"> Categoría grande </string>
-        
-    <string name="medium_category"> Categoría media </string>
-        
-    <string name="small_category"> Categoría pequeña </string>
-        
-    <string name="title_activity_place_info">colocar información</string>
-        
-    <string name="additional_info"> Información adicional </string>
-        
-    <string name="signout"> Desconectar</string>
-        
-    <string name="comments"> Comentarios </string>
-        
-    <string name="add_ur_comment"> Agregue su comentario </string>
-        
-    <string name="title"> Título </string>
-        
-    <string name="review"> Escribir una breve reseña </string>
-        
-    <string name="comment"> Cuéntanos lo que piensas</string>
-        
-    <string name="login_fail"> Error de inicio de sesión </string>
-        
-    <string name="festival"> Festivales / Eventos / Rendimiento </string>
-        
-    <string name="start_date"> Fecha de inicio </string>
-        
-    <string name="end_date"> Fecha de finalización </string>
-        
-    <string name="web"> Sitio web: </string>
-        
-    <string name="direction"> Dirección: </string>
-        
-    <string name="telephone"> Teléfono: </string>
-
-    <string name="opening_day"> Día de apertura: </string>
-        
-    <string name="closed_day"> Día cerrado: </string>
-        
-    <string name="parking_facility"> Facilidad de estacionamiento: </string>
-        
-    <string name="available_season"> Temporada disponible: </string>
-        
-    <string name="available_time"> Tiempo disponible: </string>
-        
-    <string name="experience_age"> Edad de experiencia: </string>
-        
-    <string name="experience_guide"> Guía de experiencia: </string>
-        
-    <string name="number_of_person_to_be_admitted"> Número de personas admitidas: </string>
-        
-    <string name="information_center"> Centro de información: </string>
-        
-    <string name="parking_fee"> Tarifa de estacionamiento: </string>
-        
-    <string name="use_fee"> Tarifa de uso: </string>
-        
-    <string name="spend_time"> Pasar tiempo: </string>
-        
-    <string name="scale"> Escala: </string>
-        
-    <string name="open_period"> Período abierto: </string>
-        
-    <string name="closed_period"> Período cerrado: </string>
-        
-    <string name="reservation_guide"> Guía de reservas: </string>
-        
-    <string name="admission_fee"> Tarifa de admisión: </string>
-        
-    <string name="fair_day"> Día de feria: </string>
-        
-    <string name="business_hour"> Hora comercial: </string>
-        
-    <string name="restroom_information"> Información de la sala de descanso: </string>
-        
-    <string name="sale_item"> Artículo de venta: </string>
-    <string name="store_guidance"> Guía de la tienda: </string>
-        
-    <string name="accommodation_capacity"> Capacidad de alojamiento: </string>
-        
-    <string name="benikia"> Benikia: </string>
-        
-    <string name="checkin_time"> Check in time: </string>
-        
-    <string name="checkout_time"> Hora de salida: </string>
-        
-    <string name="cooking_available_check"> Comprobación de cocción disponible: </string>
-        
-    <string name="food_place"> Lugar de comida: </string>
-        
-    <string name="good_stay"> Buena estancia: </string>
-        
-    <string name="hanok"> Hanok: </string>
-        
-    <string name="pickup_service"> Servicio de recogida: </string>
-        
-    <string name="number_of_guest_room"> Número de habitación de invitados: </string>
-        
-    <string name="reservation_guide_homepage"> Página principal de la guía Reservartion: </string>
-        
-    <string name="guest_room_type"> Tipo de habitación de invitados: </string>
-        
-    <string name="sub_facility"> instalación secundaria: </string>
-        
-    <string name="main_dishes"> Platos principales: </string>
-        
-    <string name="open_date"> Fecha de apertura: </string>
-        
-    <string name="seat_number"> Número de asiento: </string>
-        
-    <string name="smoking"> Fumar: </string>
-        
-    <string name="treat_menu"> Menú de trato: </string>
-        
-    <string name="credit_card"> Tarjeta de crédito: </string>
-        
-    <string name="facilities"> Instalaciones: </string>
-        
-    <string name="disable_facility"> Deshabilitar instalación: </string>
-        
-    <string name="contact_us"> Contáctenos: </string>
-
-    <string name="main_route"> Ruta principal: </string>
-        
-    <string name="operation_time"> Tiempo de operación: </string>
-        
-    <string name="rest_room"> Sala de descanso: </string>
-        
-    <string name="ship_information"> Información del envío: </string>
-        
-    <string name="nature"> Naturaleza </string>
-        
-    <string name="culture"> Cultura / Arte / Historia </string>
-        
-    <string name="leisure"> Ocio / Deportes </string>
-        
-    <string name="accomendation"> Accomendation </string>
-        
-    <string name="shopping"> Compras </string>
-        
-    <string name="transportation"> Transporte </string>
-        
-    <string name="cuisine"> Cocina </string>
-        
-    <string name="age_limit"> Límite de edad: </string>
-        
-    <string name="booking_place"> Lugar de reserva: </string>
-        
-    <string name="discount_info"> Información de descuento </string>
-        
-    <string name="event_end_day"> Fecha de finalización del evento: </string>
-        
-    <string name="event_home_page"> Página de inicio del evento: </string>
-        
-    <string name="event_place"> Lugar del evento: </string>
-        
-    <string name="event_start_date"> Fecha de inicio del evento: </string>
-        
-    <string name="festival_class"> Clase de festival: </string>
-        
-    <string name="event_location"> Ubicación del evento: </string>
-        
-    <string name="play_time"> Tiempo de ejecución: </string>
-        
-    <string name="program"> Programa de evento: </string>
-        
-    <string name="time_required"> Tiempo requerido: </string>
-        
-    <string name="sponser_info"> Información del patrocinador: </string>
-        
-    <string name="sponser_contact_nb"> Número de contacto del patrocinador: </string>
-        
-    <string name="sponser2"> Información del organizador: </string>
-        
-    <string name="sponser2tel"> Información de contacto del organizador: </string>
-        
-    <string name="sub_event"> Sub evento: </string>
-
+	<string name="app_name">K-Travel </string>
+	<string name="Username">Plantilla : ireum usuario </string>
+	<string name="Password">Cifra </string>
+	<string name="Email">Correo electrónico </string>
+	<string name="Signin">Firmar </string>
+	<string name="signup">Registrar </string>
+	<string name="already_register">¡Ya está registrado! Se ha. </string>
+	<string name="confirm_password">Contraseña </string>
+	<string name="not_member">No son miembros de la organización. Seyo se ahora </string>
+	<string name="title_activity_home">Es una casa. </string>
+	<string name="login">Rogeu. </string>
+	<string name="navigation_drawer_open">El dialecto de la navegación. </string>
+	<string name="navigation_drawer_close">Se cierra el pecho de la rueda de Ptolomeo. </string>
+	<string name="drawer_open">Ábrela. </string>
+	<string name="drawer_close">Más cercano. </string>
+	<string name="action_settings">Establecimiento </string>
+	<string name="title_activity_maps">Dirección </string>
+	<string name="map">Dirección </string>
+	<string name="list">La lista. </string>
+	<string name="enter_username">Introduzca el nombre de usuario. </string>
+	<string name="enter_password">Introduzca su contraseña. </string>
+	<string name="enter_email">Introduzca un correo electrónico. </string>
+	<string name="enter_confirm_password">Introduzca la contraseña otra vez. </string>
+	<string name="password_match">Introduzca la contraseña correcta. </string>
+	<string name="email_not_valid">Introduzca el correo electrónico correcto. </string>
+	<string name="go">Muévanse. </string>
+	<string name="big_category">Big data </string>
+	<string name="medium_category">Categoría media </string>
+	<string name="small_category">Plantilla : Ficha de grupo pequeño </string>
+	<string name="title_activity_place_info">PlaceInfo. </string>
+	<string name="additional_info">Plantilla : Ficha de adicional </string>
+	<string name="signout">Sigeuna uteu </string>
+	<string name="comments">La cuestión. </string>
+	<string name="add_ur_comment">Unidad de pareceres </string>
+	<string name="title">Título </string>
+	<string name="review">Y escribió una breve introducción. </string>
+	<string name="comment">Dime lo que piensas. </string>
+	<string name="login_fail">Rogeuin silpae </string>
+	<string name="festival">Resultado de los eventos del festival </string>
+	<string name="start_date">Plantilla : naljja </string>
+	<string name="end_date">Término final </string>
+	<string name="website">Sitios web </string>
+	<string name="direction">Perfume </string>
+	<string name="telephone">Teléfono </string>
+	<string name="opening_day">Día de apertura </string>
+	<string name="closed_day">Fecha límite </string>
+	<string name="parking_facility">Instalaciones de aparcamiento </string>
+	<string name="available_season">Temporada disponible </string>
+	<string name="available_time">Tiempo disponible </string>
+	<string name="experience_age">Edad de carrera </string>
+	<string name="experience_guide">Guía de experiencia </string>
+	<string name="number_of_person_to_be_admitted">Número de personas </string>
+	<string name="information_center">Centro de información </string>
+	<string name="parking_fee">Gastos de aparcamiento </string>
+	<string name="use_fee">Precio de utilización </string>
+	<string name="spend_time">Pasar el tiempo </string>
+	<string name="scale">La escala. </string>
+	<string name="open_period">Período abierto </string>
+	<string name="closed_period">Término de cierre </string>
+	<string name="reservation_guide">Guía de reserva </string>
+	<string name="admission_fee">Derechos de entrada </string>
+	<string name="fair_day">Fair day:Día claro </string>
+	<string name="business_hour">Horario comercial </string>
+	<string name="restroom_information">Plantilla : Ficha de sala de descanso  </string>
+	<string name="sale_item">Renglón de venta </string>
+	<string name="store_guidance">Guía de tienda </string>
+	<string name="accommodation_capacity">Capacidad de aposentamiento </string>
+	<string name="benikia">Benikia </string>
+	<string name="checkin_time">Horas de recepción </string>
+	<string name="checkout_time">Hora de salida </string>
+	<string name="cooking_available_check">Plantilla : Ficha de receta de cocina </string>
+	<string name="food_place">Restaurante </string>
+	<string name="good_stay">Cuídate. </string>
+	<string name="hanok">Tradicional coreano </string>
+	<string name="pickup_service">Servicio de recogida de manos </string>
+	<string name="number_of_guest_room">Número de habitaciones </string>
+	<string name="reservation_guide_homepage">Guía y guías de reserva </string>
+	<string name="guest_room_type">Tipos de cuarto </string>
+	<string name="sub_facility">Instalaciones militares </string>
+	<string name="main_dishes">Plato principal </string>
+	<string name="open_date">Fecha abierta </string>
+	<string name="seat_number">Número de asiento </string>
+	<string name="smoking">Deme un asiento de fumadores. </string>
+	<string name="treat_menu">Menú de tratamiento </string>
+	<string name="credit_card">Tarjeta de crédito </string>
+	<string name="facilities">Las instalaciones. </string>
+	<string name="disable_facility">Gineung sayong an ha m </string>
+	<string name="contact_us">Póngase en contacto con nosotros </string>
+	<string name="main_route">Ruta </string>
+	<string name="operation_time">Horas de trabajo </string>
+	<string name="rest_room">Servicio </string>
+	<string name="ship_information">Plantilla : Ficha de buque </string>
+	<string name="nature">Naturaleza. </string>
+	<string name="culture">Yeokssa / Art / Art </string>
+	<string name="leisure">Deporte deportivo </string>
+	<string name="accomendation">Aposentamiento </string>
+	<string name="shopping">Compra </string>
+	<string name="transportation">El tráfico. </string>
+	<string name="cuisine">Cocinar. </string>
+	<string name="age_limit">Límite de edad </string>
+	<string name="booking_place">Lugar reservado </string>
+	<string name="discount_info">Plantilla : Ficha de descuento </string>
+	<string name="event_end_day">Fecha límite para eventos </string>
+	<string name="event_home_page">Página de un evento </string>
+	<string name="event_place">Lugar de eventos </string>
+	<string name="event_start_date">Día de fiesta </string>
+	<string name="festival_class">Yeongeukppan </string>
+	<string name="event_location">Lugar de eventos </string>
+	<string name="play_time">Hora de examen </string>
+	<string name="program">Programa de eventos </string>
+	<string name="time_required">Hora de sobra </string>
+	<string name="sponser_info">Plantilla : Ficha de patrón </string>
+	<string name="sponser_contact_nb">Lista de patrocinadores </string>
+	<string name="sponser2">Plantilla : Ficha de anfitrión </string>
+	<string name="sponser2tel">Plantilla : Ficha de contacto telefónico </string>
+	<string name="sub_event">Hawi ibenteu </string>
 </resources>
