@@ -14,9 +14,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<manifest
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wunderlist.slidinglayer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="2"
     android:versionName="1.2.5" >
 
