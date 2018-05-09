@@ -114,5 +114,5 @@
 	<string name="sponser_contact_nb">Numéro de contact du sponsor </string>
 	<string name="sponser2">Informations sur l`organisateur </string>
 	<string name="sponser2tel">Les coordonnées de l`organisateur </string>
-	<string name="sub_event">Sous-événement </string>
+	<string name="sub_event">Sous-événement </string> //test
 </resources>
