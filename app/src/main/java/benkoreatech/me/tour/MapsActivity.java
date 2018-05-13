@@ -900,8 +900,8 @@ public class MapsActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         MenuItem map = menu.findItem(R.id.action_map);
-        MenuItem list=menu.findItem(R.id.action_list);
-        MenuItem signout=menu.findItem(R.id.signout);
+        MenuItem list= menu.findItem(R.id.action_list);
+        MenuItem signout= menu.findItem(R.id.signout);
 
         SpannableString s = new SpannableString(map.getTitle());
         s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)), 0, s.length(), 0);

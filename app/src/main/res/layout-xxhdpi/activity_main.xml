@@ -126,5 +126,12 @@
         android:textColor="@color/colorAccent"
         android:text="@string/not_member"/>
 
+    <ImageView
+        android:id="@+id/k-travel-login"
+        android:layout_width="168dp"
+        android:layout_height="124dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/ktravel" />
 
 </RelativeLayout>

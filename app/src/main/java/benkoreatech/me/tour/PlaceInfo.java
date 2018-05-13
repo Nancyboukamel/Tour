@@ -722,58 +722,58 @@ public class PlaceInfo extends DialogFragment implements placeInfoInterface, OnM
                 String useTimeFestival=detailIntroItem.getUsetimefestival();
 
                 if(ageLimit!=null && !ageLimit.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.age_limit)+"</b>"+ageLimit+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.age_limit)+" </b>"+ageLimit+"<br/>";
                 }
                 if(bookingPlace!=null && !bookingPlace.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.booking_place)+"</b>"+bookingPlace+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.booking_place)+" </b>"+bookingPlace+"<br/>";
                 }
                 if(discountinfofestival!=null && !discountinfofestival.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.discount_info)+"</b>"+discountinfofestival+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.discount_info)+" </b>"+discountinfofestival+"<br/>";
                 }
                 if(event_end_day!=null && !event_end_day.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_end_day)+"</b>"+event_end_day+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_end_day)+" </b>"+event_end_day+"<br/>";
                 }
                 if(event_home_page!=null && !event_home_page.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_home_page)+"</b>"+event_home_page+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_home_page)+" </b>"+event_home_page+"<br/>";
                 }
                 if(event_place!=null && !event_place.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_place)+"</b>"+event_place+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_place)+" </b>"+event_place+"<br/>";
                 }
                 if(event_start_date!=null && !event_start_date.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_start_date)+"</b>"+event_start_date+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_start_date)+" </b>"+event_start_date+"<br/>";
                 }
                 if(festival_grade!=null && !festival_grade.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.festival_class)+"</b>"+festival_grade+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.festival_class)+" </b>"+festival_grade+"<br/>";
                 }
                 if(place_info!=null && !place_info.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.event_location)+"</b>"+place_info+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.event_location)+" </b>"+place_info+"<br/>";
                 }
                 if(place_time!=null && !place_time.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.play_time)+"</b>"+place_time+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.play_time)+" </b>"+place_time+"<br/>";
                 }
                 if(program!=null && !program.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.program)+"</b>"+program+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.program)+" </b>"+program+"<br/>";
                 }
                 if(spendtimefestival!=null && !spendtimefestival.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.time_required)+"</b>"+spendtimefestival+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.time_required)+" </b>"+spendtimefestival+"<br/>";
                 }
                 if(sponsor1!=null && !sponsor1.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sponser_info)+"</b>"+sponsor1+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sponser_info)+" </b>"+sponsor1+"<br/>";
                 }
                 if(sponsor1Tel!=null && !sponsor1Tel.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sponser_contact_nb)+"</b>"+sponsor1Tel+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sponser_contact_nb)+" </b>"+sponsor1Tel+"<br/>";
                 }
                 if(sponsor2!=null && !sponsor2.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sponser2)+"</b>"+sponsor2+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sponser2)+" </b>"+sponsor2+"<br/>";
                 }
                 if(sponsor2Tel!=null && !sponsor2Tel.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sponser2tel)+"</b>"+sponsor2Tel+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sponser2tel)+" </b>"+sponsor2Tel+"<br/>";
                 }
                 if(subevent!=null && !subevent.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.sub_event)+"</b>"+subevent+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.sub_event)+" </b>"+subevent+"<br/>";
                 }
                 if(useTimeFestival!=null && !useTimeFestival.equalsIgnoreCase("")){
-                    touristinfo+="<b>"+getResources().getString(R.string.use_fee)+"</b>"+useTimeFestival+"<br/>";
+                    touristinfo+="<b>"+getResources().getString(R.string.use_fee)+" </b>"+useTimeFestival+"<br/>";
                 }
             }
             // to here only
