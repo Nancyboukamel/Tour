@@ -4,15 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/seoul">
-    <ImageView
-        android:id="@+id/k-travel-login"
-        android:layout_width="168dp"
-        android:layout_height="124dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ktravel" />
-
-
+    
     <RelativeLayout
         android:id="@+id/tour_app"
         android:layout_width="wrap_content"
