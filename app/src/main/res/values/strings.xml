@@ -5,7 +5,7 @@
 	<string name="Email">Email </string>
 	<string name="Signin">Sign In </string>
 	<string name="signup">Sign Up </string>
-	<string name="already_register">Already registered! Login Me. </string>
+	<string name="already_register">Already registered! Log me in. </string>
 	<string name="confirm_password">Confirm password </string>
 	<string name="not_member">Not a member. Sign up now. </string>
 	<string name="title_activity_home">Home </string>
@@ -41,7 +41,7 @@
 	<string name="start_date">Start date </string>
 	<string name="end_date">End date </string>
 	<string name="website">Website </string>
-	<string name="direction">Direction </string>
+	<string name="direction">Directions </string>
 	<string name="telephone">Telephone </string>
 	<string name="opening_day">Opening day </string>
 	<string name="closed_day">Closed day </string>
@@ -54,16 +54,16 @@
 	<string name="information_center">Information Center </string>
 	<string name="parking_fee">Parking fee </string>
 	<string name="use_fee">Use fee </string>
-	<string name="spend_time">Spend time </string>
+	<string name="spend_time">Time required </string>
 	<string name="scale">Scale </string>
 	<string name="open_period">Open period </string>
 	<string name="closed_period">Closed period </string>
 	<string name="reservation_guide">Reservation Guide </string>
 	<string name="admission_fee">Admission fee </string>
 	<string name="fair_day">Fair day:Fair day </string>
-	<string name="business_hour">Business hour </string>
+	<string name="business_hour">Business hours </string>
 	<string name="restroom_information">Rest room information  </string>
-	<string name="sale_item">Sale Item </string>
+	<string name="sale_item">Sale Items </string>
 	<string name="store_guidance">Store guidance </string>
 	<string name="accommodation_capacity">Accomendation capacity </string>
 	<string name="benikia">Benikia </string>
@@ -82,7 +82,7 @@
 	<string name="open_date">Open date </string>
 	<string name="seat_number">Seat number </string>
 	<string name="smoking">Smoking </string>
-	<string name="treat_menu">Treat menu </string>
+	<string name="treat_menu">Menu </string>
 	<string name="credit_card">Credit card </string>
 	<string name="facilities">Facilities </string>
 	<string name="disable_facility">Disable facility </string>

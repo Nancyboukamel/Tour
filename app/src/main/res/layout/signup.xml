@@ -10,11 +10,10 @@
         android:id="@+id/tour_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/login"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/margin_30"
         android:layout_marginRight="@dimen/margin_30"
-        android:layout_centerInParent="true">
-
+        android:background="@drawable/login">
 
 
         <TextView
@@ -22,31 +21,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="@string/signup"
-            android:textSize="@dimen/text_size_20"
             android:layout_marginTop="@dimen/margin_16"
-            android:textStyle="bold|italic"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:text="@string/signup"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text_size_20"
+            android:textStyle="bold|italic" />
 
         <RelativeLayout
             android:id="@+id/username_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittextshape"
+            android:layout_below="@+id/login_sticker"
             android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginRight="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_30"
-            android:layout_below="@+id/login_sticker">
+            android:background="@drawable/edittextshape">
 
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_10"
-            android:hint="@string/Username"
-            android:padding="5dp"
-            android:background="@android:color/transparent"
-            android:textColorHint="@color/colorPrimary"/>
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/Username"
+                android:padding="5dp"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="@dimen/text_size_10" />
 
         </RelativeLayout>
 
@@ -54,22 +53,22 @@
             android:id="@+id/password_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittextshape"
             android:layout_below="@+id/username_input"
             android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginRight="@dimen/margin_16"
-            android:layout_marginTop="@dimen/margin_16">
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@drawable/edittextshape">
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/Password"
-            android:textSize="@dimen/text_size_10"
-            android:padding="5dp"
-            android:inputType="textPassword"
-            android:background="@android:color/transparent"
-            android:textColorHint="@color/colorPrimary"/>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/Password"
+                android:inputType="textPassword"
+                android:padding="5dp"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="@dimen/text_size_10" />
 
         </RelativeLayout>
 
@@ -77,22 +76,22 @@
             android:id="@+id/confirm_password_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittextshape"
+            android:layout_below="@+id/password_input"
             android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginRight="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_16"
-            android:layout_below="@+id/password_input">
+            android:background="@drawable/edittextshape">
 
-        <EditText
-            android:id="@+id/confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/confirm_password"
-            android:textSize="@dimen/text_size_10"
-            android:padding="5dp"
-            android:inputType="textPassword"
-            android:background="@android:color/transparent"
-            android:textColorHint="@color/colorPrimary"/>
+            <EditText
+                android:id="@+id/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:padding="5dp"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="@dimen/text_size_10" />
 
         </RelativeLayout>
 
@@ -100,11 +99,11 @@
             android:id="@+id/email_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/confirm_password_input"
+            android:layout_marginBottom="@dimen/margin_50"
             android:layout_marginLeft="@dimen/margin_16"
             android:layout_marginRight="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_16"
-            android:layout_below="@+id/confirm_password_input"
-            android:layout_marginBottom="@dimen/margin_50"
             android:background="@drawable/edittextshape">
 
             <EditText
@@ -112,9 +111,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:padding="5dp"
-                android:inputType="textEmailAddress"
                 android:hint="@string/Email"
+                android:inputType="textEmailAddress"
+                android:padding="5dp"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="@dimen/text_size_10" />
 
